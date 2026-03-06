@@ -1,0 +1,44 @@
+services:
+
+  keuzewijzeraardgasvrij-backend:
+    build: app
+    hostname: keuzewijzeraardgasvrij-backend
+    image: ${REGISTRY:-127.0.0.1:5001}/${REPOSITORY:-salmagundi/keuzewijzeraardgasvrij-backend}:${VERSION:-latest}
+    ports:
+      - 8082:8000
+      - 5680:5678
+    networks:
+      - keuzewijzeraardgasvrij_network
+    depends_on:
+      - database
+    env_file:
+      - path: .env
+      - path: .env.local
+        required: false
+      - path: .local.env
+        required: false
+    command: bash -c "/app/deploy/docker-entrypoint.sh && exec python -m debugpy --listen 0.0.0.0:5678 ./manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./app:/app
+    stdin_open: true
+    tty: true
+
+  database:
+    networks:
+      - keuzewijzeraardgasvrij_network
+    image: postgres:15.7
+    command: -c 'max_connections=500'
+    shm_size: "512m"
+    ports:
+      - "6411:5432"
+    env_file:
+      - .env
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+networks:
+  keuzewijzeraardgasvrij_network:
+    external: true
+
+volumes:
+  postgresql-data:
