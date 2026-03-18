@@ -1,0 +1,316 @@
+[
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Individuele Luchtwarmtepomp op Ventilatie",
+      "subsystemen": [
+        1,
+        3
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Individuele Luchtwarmtepomp op Buitenlucht",
+      "subsystemen": [
+        2,
+        3
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "subsystemen": [
+        11,
+        16,
+        3
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "subsystemen": [
+        12,
+        16,
+        3
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "subsystemen": [
+        4,
+        6,
+        16,
+        3
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Particulier Externe warmtelevering",
+      "subsystemen": [
+        8,
+        9
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Particulier Externe warmtelevering + externe koeling",
+      "subsystemen": [
+        8,
+        9,
+        10
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Collectieve Luchtwarmtepomp op Buitenlucht",
+      "subsystemen": [
+        13,
+        10,
+        9,
+        5
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
+      "subsystemen": [
+        7,
+        14,
+        15,
+        10,
+        9
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
+      "subsystemen": [
+        12,
+        14,
+        15,
+        10,
+        9
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Zakelijk Collectief Externe warmtelevering",
+      "subsystemen": [
+        8,
+        9
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "beschrijving": "",
+      "beschrijving_url": null,
+      "naam": "Zakelijk Collectief Externe warmtelevering + externe koeling",
+      "subsystemen": [
+        8,
+        10,
+        9
+      ]
+    },
+    "model": "systemen.hoofdsysteem",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "naam": "Nibe S735",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "naam": "Itho HPS 55 (split)",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "naam": "Voorraadvat 150L",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "naam": "Open bron (mono 35m³/h)",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "naam": "Warmtepomp boiler 100L",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "naam": "Regeneratie",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "naam": "Bodemlus Collectief",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "naam": "Afleverset",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "naam": "Distributie",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "naam": "Distributie + koude",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "naam": "Bodemlus individueel",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "naam": "Bodemlus Collectief (70% gelijktijdig)",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "naam": "LWP (Carrier)",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 13
+  },
+  {
+    "fields": {
+      "naam": "LT WP (Carrier)",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 14
+  },
+  {
+    "fields": {
+      "naam": "HT WP (Trane RTSF 100 - 80/60)",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 15
+  },
+  {
+    "fields": {
+      "naam": "Itho W/W Warmtepomp WPU 5G / NIBE S1256-13",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 16
+  },
+  {
+    "fields": {
+      "naam": "Afleverset + koude",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 17
+  },
+  {
+    "fields": {
+      "naam": "openbron 70m³/h",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 18
+  }
+]
