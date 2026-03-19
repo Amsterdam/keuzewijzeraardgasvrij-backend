@@ -1,0 +1,1033 @@
+[
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 1,
+    "fields": { "hoofdsysteem": 1, "scenario": "laag", "cop_tap": 2.7, "cop_cv": 4, "cop_gkw": 2.4 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 2,
+    "fields": { "hoofdsysteem": 2, "scenario": "laag", "cop_tap": 1, "cop_cv": 2.6, "cop_gkw": 3.7 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 3,
+    "fields": { "hoofdsysteem": 3, "scenario": "laag", "cop_tap": 3.2, "cop_cv": 4.7, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 4,
+    "fields": { "hoofdsysteem": 4, "scenario": "laag", "cop_tap": 3.8, "cop_cv": 5.3, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 5,
+    "fields": { "hoofdsysteem": 5, "scenario": "laag", "cop_tap": 3.8, "cop_cv": 5.3, "cop_gkw": 30 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 6,
+    "fields": { "hoofdsysteem": 6, "scenario": "laag", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 0 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 7,
+    "fields": { "hoofdsysteem": 7, "scenario": "laag", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 1 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 8,
+    "fields": { "hoofdsysteem": 8, "scenario": "laag", "cop_tap": 2, "cop_cv": 3.5, "cop_gkw": 4.5 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 9,
+    "fields": { "hoofdsysteem": 9, "scenario": "laag", "cop_tap": 3, "cop_cv": 5, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 10,
+    "fields": { "hoofdsysteem": 10, "scenario": "laag", "cop_tap": 3, "cop_cv": 5, "cop_gkw": 30 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 11,
+    "fields": { "hoofdsysteem": 11, "scenario": "laag", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 0 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 12,
+    "fields": { "hoofdsysteem": 12, "scenario": "laag", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 1 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 13,
+    "fields": { "hoofdsysteem": 1, "scenario": "midden", "cop_tap": 2.7, "cop_cv": 4, "cop_gkw": 2.4 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 14,
+    "fields": { "hoofdsysteem": 2, "scenario": "midden", "cop_tap": 1, "cop_cv": 2.6, "cop_gkw": 2.4 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 15,
+    "fields": { "hoofdsysteem": 3, "scenario": "midden", "cop_tap": 3.2, "cop_cv": 4.7, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 16,
+    "fields": { "hoofdsysteem": 4, "scenario": "midden", "cop_tap": 3.8, "cop_cv": 5.3, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 17,
+    "fields": { "hoofdsysteem": 5, "scenario": "midden", "cop_tap": 3.8, "cop_cv": 5.3, "cop_gkw": 30 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 18,
+    "fields": { "hoofdsysteem": 6, "scenario": "midden", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 0 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 19,
+    "fields": { "hoofdsysteem": 7, "scenario": "midden", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 1 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 20,
+    "fields": { "hoofdsysteem": 8, "scenario": "midden", "cop_tap": 2, "cop_cv": 3.5, "cop_gkw": 4.5 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 21,
+    "fields": { "hoofdsysteem": 9, "scenario": "midden", "cop_tap": 3, "cop_cv": 5, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 22,
+    "fields": { "hoofdsysteem": 10, "scenario": "midden", "cop_tap": 3, "cop_cv": 5, "cop_gkw": 30 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 23,
+    "fields": { "hoofdsysteem": 11, "scenario": "midden", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 0 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 24,
+    "fields": { "hoofdsysteem": 12, "scenario": "midden", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 1 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 25,
+    "fields": { "hoofdsysteem": 1, "scenario": "hoog", "cop_tap": 2.7, "cop_cv": 4, "cop_gkw": 2.4 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 26,
+    "fields": { "hoofdsysteem": 2, "scenario": "hoog", "cop_tap": 1, "cop_cv": 2.6, "cop_gkw": 2.4 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 27,
+    "fields": { "hoofdsysteem": 3, "scenario": "hoog", "cop_tap": 3.2, "cop_cv": 4.7, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 28,
+    "fields": { "hoofdsysteem": 4, "scenario": "hoog", "cop_tap": 3.8, "cop_cv": 5.3, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 29,
+    "fields": { "hoofdsysteem": 5, "scenario": "hoog", "cop_tap": 3.8, "cop_cv": 5.3, "cop_gkw": 30 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 30,
+    "fields": { "hoofdsysteem": 6, "scenario": "hoog", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 0 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 31,
+    "fields": { "hoofdsysteem": 7, "scenario": "hoog", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 1 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 32,
+    "fields": { "hoofdsysteem": 8, "scenario": "hoog", "cop_tap": 2, "cop_cv": 3.5, "cop_gkw": 4.5 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 33,
+    "fields": { "hoofdsysteem": 9, "scenario": "hoog", "cop_tap": 3, "cop_cv": 5, "cop_gkw": 20 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 34,
+    "fields": { "hoofdsysteem": 10, "scenario": "hoog", "cop_tap": 3, "cop_cv": 5, "cop_gkw": 30 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 35,
+    "fields": { "hoofdsysteem": 11, "scenario": "hoog", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 0 }
+  },
+  {
+    "model": "kengetallen.hoofdkengetal",
+    "pk": 36,
+    "fields": { "hoofdsysteem": 12, "scenario": "hoog", "cop_tap": 1, "cop_cv": 1, "cop_gkw": 1 }
+  },
+
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 1,
+    "fields": {
+      "subsysteem": 2,
+      "scenario": "laag",
+      "investeringskosten": 4750,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 2,
+    "fields": {
+      "subsysteem": 16,
+      "scenario": "laag",
+      "investeringskosten": 6150,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 3,
+    "fields": {
+      "subsysteem": 13,
+      "scenario": "laag",
+      "investeringskosten": 106000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 4,
+    "fields": {
+      "subsysteem": 14,
+      "scenario": "laag",
+      "investeringskosten": 49440,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 5,
+    "fields": {
+      "subsysteem": 15,
+      "scenario": "laag",
+      "investeringskosten": 75300,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 6,
+    "fields": {
+      "subsysteem": 3,
+      "scenario": "laag",
+      "investeringskosten": 1700,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 7,
+    "fields": {
+      "subsysteem": 5,
+      "scenario": "laag",
+      "investeringskosten": 1000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 8,
+    "fields": {
+      "subsysteem": 4,
+      "scenario": "laag",
+      "investeringskosten": 50000,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 35,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 9,
+    "fields": {
+      "subsysteem": 6,
+      "scenario": "laag",
+      "investeringskosten": 50000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 35,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 10,
+    "fields": {
+      "subsysteem": 18,
+      "scenario": "laag",
+      "investeringskosten": 500000,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 70,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 11,
+    "fields": {
+      "subsysteem": 7,
+      "scenario": "laag",
+      "investeringskosten": 6330,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.67,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": 4.35
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 12,
+    "fields": {
+      "subsysteem": 8,
+      "scenario": "laag",
+      "investeringskosten": 1500,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 13,
+    "fields": {
+      "subsysteem": 9,
+      "scenario": "laag",
+      "investeringskosten": 1500,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 14,
+    "fields": {
+      "subsysteem": 17,
+      "scenario": "laag",
+      "investeringskosten": 2000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 15,
+    "fields": {
+      "subsysteem": 10,
+      "scenario": "laag",
+      "investeringskosten": 2500,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 16,
+    "fields": {
+      "subsysteem": 11,
+      "scenario": "laag",
+      "investeringskosten": 4200,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 17,
+    "fields": {
+      "subsysteem": 12,
+      "scenario": "laag",
+      "investeringskosten": 2940,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 18,
+    "fields": {
+      "subsysteem": 1,
+      "scenario": "midden",
+      "investeringskosten": 12000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 19,
+    "fields": {
+      "subsysteem": 2,
+      "scenario": "midden",
+      "investeringskosten": 4750,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 20,
+    "fields": {
+      "subsysteem": 16,
+      "scenario": "midden",
+      "investeringskosten": 7600,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 21,
+    "fields": {
+      "subsysteem": 13,
+      "scenario": "midden",
+      "investeringskosten": 228000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 22,
+    "fields": {
+      "subsysteem": 14,
+      "scenario": "midden",
+      "investeringskosten": 162720,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 23,
+    "fields": {
+      "subsysteem": 15,
+      "scenario": "midden",
+      "investeringskosten": 75300,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 24,
+    "fields": {
+      "subsysteem": 3,
+      "scenario": "midden",
+      "investeringskosten": 1700,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 25,
+    "fields": {
+      "subsysteem": 5,
+      "scenario": "midden",
+      "investeringskosten": 1000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 26,
+    "fields": {
+      "subsysteem": 4,
+      "scenario": "midden",
+      "investeringskosten": 50000,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 35,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 27,
+    "fields": {
+      "subsysteem": 6,
+      "scenario": "midden",
+      "investeringskosten": 50000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 35,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 28,
+    "fields": {
+      "subsysteem": 18,
+      "scenario": "midden",
+      "investeringskosten": 500000,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 70,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 29,
+    "fields": {
+      "subsysteem": 7,
+      "scenario": "midden",
+      "investeringskosten": 6330,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.67,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": 4.35
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 30,
+    "fields": {
+      "subsysteem": 8,
+      "scenario": "midden",
+      "investeringskosten": 1500,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 31,
+    "fields": {
+      "subsysteem": 9,
+      "scenario": "midden",
+      "investeringskosten": 1500,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 32,
+    "fields": {
+      "subsysteem": 17,
+      "scenario": "midden",
+      "investeringskosten": 2000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 33,
+    "fields": {
+      "subsysteem": 10,
+      "scenario": "midden",
+      "investeringskosten": 2500,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 34,
+    "fields": {
+      "subsysteem": 11,
+      "scenario": "midden",
+      "investeringskosten": 6330,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 35,
+    "fields": {
+      "subsysteem": 12,
+      "scenario": "midden",
+      "investeringskosten": 4431,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 36,
+    "fields": {
+      "subsysteem": 1,
+      "scenario": "hoog",
+      "investeringskosten": 14000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 37,
+    "fields": {
+      "subsysteem": 2,
+      "scenario": "hoog",
+      "investeringskosten": 6450,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 38,
+    "fields": {
+      "subsysteem": 16,
+      "scenario": "hoog",
+      "investeringskosten": 12800,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 39,
+    "fields": {
+      "subsysteem": 13,
+      "scenario": "hoog",
+      "investeringskosten": 342000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 40,
+    "fields": {
+      "subsysteem": 14,
+      "scenario": "hoog",
+      "investeringskosten": 162720,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 41,
+    "fields": {
+      "subsysteem": 15,
+      "scenario": "hoog",
+      "investeringskosten": 75300,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 42,
+    "fields": {
+      "subsysteem": 3,
+      "scenario": "hoog",
+      "investeringskosten": 1700,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 43,
+    "fields": {
+      "subsysteem": 5,
+      "scenario": "hoog",
+      "investeringskosten": 1000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 44,
+    "fields": {
+      "subsysteem": 4,
+      "scenario": "hoog",
+      "investeringskosten": 50000,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 35,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 45,
+    "fields": {
+      "subsysteem": 6,
+      "scenario": "hoog",
+      "investeringskosten": 50000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 35,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 46,
+    "fields": {
+      "subsysteem": 18,
+      "scenario": "hoog",
+      "investeringskosten": 500000,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.75,
+      "debiet_bron": 70,
+      "energie_bron": 4.18,
+      "delta_temperatuur_retour": 6,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 47,
+    "fields": {
+      "subsysteem": 7,
+      "scenario": "hoog",
+      "investeringskosten": 6330,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": 0.67,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": 4.35
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 48,
+    "fields": {
+      "subsysteem": 8,
+      "scenario": "hoog",
+      "investeringskosten": 1500,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 49,
+    "fields": {
+      "subsysteem": 9,
+      "scenario": "hoog",
+      "investeringskosten": 1500,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 50,
+    "fields": {
+      "subsysteem": 17,
+      "scenario": "hoog",
+      "investeringskosten": 2000,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 51,
+    "fields": {
+      "subsysteem": 10,
+      "scenario": "hoog",
+      "investeringskosten": 2500,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 52,
+    "fields": {
+      "subsysteem": 11,
+      "scenario": "hoog",
+      "investeringskosten": 8400,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 53,
+    "fields": {
+      "subsysteem": 12,
+      "scenario": "hoog",
+      "investeringskosten": 5880,
+      "levensduur": 30,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  }
+]
