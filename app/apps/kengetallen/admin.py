@@ -10,8 +10,10 @@ def get_all_field_names(model):
 @admin.register(Hoofdkengetal)
 class HoofdkengetalAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(Hoofdkengetal)
+    list_select_related = True
 
 
 @admin.register(Subkengetal)
 class SubkengetalAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(Subkengetal)
+    list_select_related = True
