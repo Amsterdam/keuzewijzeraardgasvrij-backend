@@ -6,6 +6,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 from django.views.generic import RedirectView
 
+from apps.calculation_inputs.views import CalculationInputCreateView
+
 
 router = DefaultRouter()
 
@@ -24,6 +26,11 @@ urlpatterns = [
     path("", ok),
     path("admin/", admin.site.urls),
     path("api/v1/", include(router.urls)),
+    path(
+        "api/v1/calculation-inputs/",
+        CalculationInputCreateView.as_view(),
+        name="calculationinput-create",
+    ),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger/",
