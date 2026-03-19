@@ -68,7 +68,7 @@ class CalculationInputCreateApiTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("type_dak", response.data)
 
-    def test_throttleing(self):
+    def test_throttling(self):
         for _ in range(20):
             response = self.client.post(self.url, data=_valid_payload(), format="json")
             self.assertIn(
