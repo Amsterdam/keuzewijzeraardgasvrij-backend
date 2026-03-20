@@ -16,6 +16,7 @@ class DebugAnonThrottle(AnonRateThrottle):
         xff = meta.get("HTTP_X_FORWARDED_FOR")
         real_ip = meta.get("HTTP_X_REAL_IP")
         remote_addr = meta.get("REMOTE_ADDR")
+        test_ip = meta.get("X-APP-USER-IP")
 
         ident = super().get_ident(request)
 
@@ -25,6 +26,7 @@ class DebugAnonThrottle(AnonRateThrottle):
                 "X_REAL_IP": real_ip,
                 "REMOTE_ADDR": remote_addr,
                 "USED_IDENT": ident,
+                "TEST_IP": test_ip,
             }
         )
 
