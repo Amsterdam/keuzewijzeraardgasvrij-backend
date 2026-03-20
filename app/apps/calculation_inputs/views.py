@@ -11,26 +11,9 @@ class DebugAnonThrottle(AnonRateThrottle):
     scope = "calculation_input"
 
     def get_ident(self, request):
-        meta = request.META
-
-        xff = meta.get("HTTP_X_FORWARDED_FOR")
-        real_ip = meta.get("HTTP_X_REAL_IP")
-        remote_addr = meta.get("REMOTE_ADDR")
-        test_ip = meta.get("X-APP-USER-IP")
-
-        ident = super().get_ident(request)
-
-        print(
-            {
-                "X_FORWARDED_FOR": xff,
-                "X_REAL_IP": real_ip,
-                "REMOTE_ADDR": remote_addr,
-                "USED_IDENT": ident,
-                "TEST_IP": test_ip,
-            }
-        )
-
-        return ident
+        http_headers = {k: v for k, v in request.META.items()}
+        print(http_headers)
+        return super().get_ident(request)
 
 
 class CalculationInputCreateView(generics.CreateAPIView):
