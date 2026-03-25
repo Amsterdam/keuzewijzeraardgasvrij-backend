@@ -6,7 +6,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 from django.views.generic import RedirectView
 
-from apps.calculation_inputs.views import CalculationInputCreateView
+from apps.calculations.views import CalculationInputCreateView
 
 
 router = DefaultRouter()

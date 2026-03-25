@@ -1,4 +1,5 @@
 import os
+import sys
 from os.path import join
 from pathlib import Path
 from .azure_settings import Azure
@@ -29,7 +30,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "apps.systemen",
     "apps.kengetallen",
-    "apps.calculation_inputs",
+    "apps.calculations",
 ]
 
 
@@ -118,6 +119,15 @@ DATABASES = {
         "PORT": DATABASE_PORT,
     },
 }
+
+# Running tests locally should not require a Dockerized Postgres service.
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    }
 
 
 # Password validation
