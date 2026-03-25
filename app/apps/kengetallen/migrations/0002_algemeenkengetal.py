@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                     "type",
                     models.CharField(
                         choices=[
-                            ("tapwater", "Tapwater"),
+                            ("tap", "TAP"),
                             ("cv", "CV"),
                             ("gkw", "GKW"),
                         ],

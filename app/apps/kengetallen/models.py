@@ -85,6 +85,11 @@ class Subkengetal(Kengetal):
 
 
 class AlgemeenKengetal(Kengetal):
+
     naam = models.CharField(max_length=255)
     omschrijving = models.CharField(max_length=255)
     waarde = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "Algemeen kengetal"
+        verbose_name_plural = "Algemene kengetallen"

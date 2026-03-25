@@ -96,14 +96,13 @@ class EnergieCalculator:
             scenario,
             [
                 "warmtevraag_tap",
-                "gelijktijdigheid_tap",
                 "percentage_ruimteverwarming",
                 "rendement_gasketel",
             ],
         )
 
         warmtevraag_kw_per_woning = kengetallen["warmtevraag_tap"]
-        gelijktijdigheid_tap = kengetallen["gelijktijdigheid_tap"]
+        gelijktijdigheid_tap = 1 / Decimal(calculation_input.aantal_woningen).sqrt()
         percentage_ruimteverwarming = kengetallen["percentage_ruimteverwarming"]
         rendement_gasketel = kengetallen["rendement_gasketel"]
 

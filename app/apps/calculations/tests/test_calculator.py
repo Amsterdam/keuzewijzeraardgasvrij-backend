@@ -53,7 +53,7 @@ class EnergieCalculatorTest(TestCase):
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
             warmtevraag_tap = self._kengetal(scenario, "warmtevraag_tap")
-            gelijktijdigheid_tap = self._kengetal(scenario, "gelijktijdigheid_tap")
+            gelijktijdigheid_tap = 1 / Decimal(aantal_woningen).sqrt()
             percentage_ruimteverwarming = self._kengetal(
                 scenario, "percentage_ruimteverwarming"
             )
