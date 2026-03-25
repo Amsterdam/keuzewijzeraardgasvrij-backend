@@ -452,7 +452,6 @@
       "onttrekkingsvermogen": null
     }
   },
-
   {
     "model": "kengetallen.subkengetal",
     "pk": 18,
@@ -1030,7 +1029,22 @@
       "onttrekkingsvermogen": null
     }
   },
-
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 54,
+    "fields": {
+      "subsysteem": 1,
+      "scenario": "laag",
+      "investeringskosten": 11800,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 1,

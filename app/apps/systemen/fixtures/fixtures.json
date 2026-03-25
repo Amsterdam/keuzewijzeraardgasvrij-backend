@@ -171,6 +171,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Nibe S735",
       "type": "kengetal"
     },
@@ -179,6 +180,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Itho HPS 55 (split)",
       "type": "kengetal"
     },
@@ -187,6 +189,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Voorraadvat 150L",
       "type": "kengetal"
     },
@@ -203,6 +206,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Warmtepomp boiler 100L",
       "type": "kengetal"
     },
@@ -227,6 +231,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Afleverset",
       "type": "kengetal"
     },
@@ -235,6 +240,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Distributie",
       "type": "kengetal"
     },
@@ -243,6 +249,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Distributie + koude",
       "type": "kengetal"
     },
@@ -251,6 +258,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Bodemlus individueel",
       "type": "kengetal"
     },
@@ -259,6 +267,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Bodemlus Collectief (70% gelijktijdig)",
       "type": "kengetal"
     },
@@ -267,6 +276,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "LWP (Carrier)",
       "type": "kengetal"
     },
@@ -275,6 +285,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "LT WP (Carrier)",
       "type": "kengetal"
     },
@@ -283,6 +294,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "HT WP (Trane RTSF 100 - 80/60)",
       "type": "kengetal"
     },
@@ -291,6 +303,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Itho W/W Warmtepomp WPU 5G / NIBE S1256-13",
       "type": "kengetal"
     },
@@ -299,6 +312,7 @@
   },
   {
     "fields": {
+      "calculation_method": "Investering",
       "naam": "Afleverset + koude",
       "type": "kengetal"
     },
