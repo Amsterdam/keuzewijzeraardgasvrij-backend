@@ -1,4 +1,5 @@
 import math
+from decimal import Decimal
 
 from django.utils import timezone
 from rest_framework import serializers
@@ -7,31 +8,57 @@ from .models import CalculationInput
 
 
 def _validate_finite_number(value, _: str):
-    if value is None or not math.isfinite(value):
+    if value is None:
+        raise serializers.ValidationError("Must be a finite number.")
+    if isinstance(value, Decimal):
+        if not value.is_finite():
+            raise serializers.ValidationError("Must be a finite number.")
+        return value
+    if not math.isfinite(value):
         raise serializers.ValidationError("Must be a finite number.")
     return value
 
 
 class CalculationInputCreateSerializer(serializers.ModelSerializer):
     bouwjaar = serializers.IntegerField(min_value=1, max_value=timezone.now().year)
-    bruto_vloeroppervlak = serializers.FloatField(min_value=0.0, max_value=1_000_000.0)
+    bruto_vloeroppervlak = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("1000000"),
+    )
     aantal_woningen = serializers.IntegerField(min_value=1, max_value=100_000)
 
-    gasverbruik_per_woning = serializers.FloatField(
-        min_value=0.0, max_value=1_000_000_000.0
+    gasverbruik_per_woning = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("999999999.999999999"),
     )
-    gasverbruik_vve_totaal = serializers.FloatField(
-        min_value=0.0, max_value=1_000_000_000.0
+    gasverbruik_vve_totaal = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("999999999.999999999"),
     )
-    elektriciteitsverbruik_per_woning = serializers.FloatField(
-        min_value=0.0, max_value=1_000_000_000.0
+    elektriciteitsverbruik_per_woning = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("999999999.999999999"),
     )
-    elektriciteitsverbruik_vve_totaal = serializers.FloatField(
-        min_value=0.0, max_value=1_000_000_000.0
+    elektriciteitsverbruik_vve_totaal = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("999999999.999999999"),
     )
 
-    gecontracteerd_vermogen = serializers.FloatField(
-        min_value=0.0, max_value=1_000_000.0
+    gecontracteerd_vermogen = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("1000000"),
     )
 
     class Meta:

@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 from django.db import models
 
 
 class CalculationInput(models.Model):
     bouwjaar = models.PositiveIntegerField()
-    bruto_vloeroppervlak = models.FloatField()
+    bruto_vloeroppervlak = models.DecimalField(max_digits=18, decimal_places=9)
     aantal_woningen = models.PositiveIntegerField()
 
     mechanische_ventilatie_aanwezig = models.BooleanField()
@@ -21,12 +23,16 @@ class CalculationInput(models.Model):
 
     tapwater_op_gas = models.BooleanField()
 
-    gasverbruik_per_woning = models.FloatField()
-    gasverbruik_vve_totaal = models.FloatField()
-    elektriciteitsverbruik_per_woning = models.FloatField()
-    elektriciteitsverbruik_vve_totaal = models.FloatField()
+    gasverbruik_per_woning = models.DecimalField(max_digits=18, decimal_places=9)
+    gasverbruik_vve_totaal = models.DecimalField(max_digits=18, decimal_places=9)
+    elektriciteitsverbruik_per_woning = models.DecimalField(
+        max_digits=18, decimal_places=9
+    )
+    elektriciteitsverbruik_vve_totaal = models.DecimalField(
+        max_digits=18, decimal_places=9
+    )
 
-    gecontracteerd_vermogen = models.FloatField()
+    gecontracteerd_vermogen = models.DecimalField(max_digits=18, decimal_places=9)
 
     huidige_warmtesysteem = models.CharField(
         max_length=20,
@@ -46,3 +52,20 @@ class CalculationInput(models.Model):
 
     def __str__(self):
         return f"CalculationInput {self.pk or '-'} ({self.bouwjaar})"
+
+
+class Conversie(models.Model):
+    """Conversion factors used by calculation logic.
+
+    Values are stored in the database and typically loaded via fixtures.
+    """
+
+    naam = models.CharField(max_length=64, unique=True)
+    waarde = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "Conversie"
+        verbose_name_plural = "Conversies"
+
+    def __str__(self) -> str:
+        return f"{self.naam}={self.waarde}"

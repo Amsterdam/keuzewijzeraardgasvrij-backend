@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Hoofdkengetal, Subkengetal
+from .models import AlgemeenKengetal, Hoofdkengetal, Subkengetal
 
 
 def get_all_field_names(model):
@@ -17,3 +17,8 @@ class HoofdkengetalAdmin(admin.ModelAdmin):
 class SubkengetalAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(Subkengetal)
     list_select_related = True
+
+
+@admin.register(AlgemeenKengetal)
+class AlgemeenKengetalAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(AlgemeenKengetal)

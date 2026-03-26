@@ -1,5 +1,6 @@
 from rest_framework import generics
 
+
 from .models import CalculationInput
 from .serializers import CalculationInputCreateSerializer
 

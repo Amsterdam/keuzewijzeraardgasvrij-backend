@@ -1,11 +1,20 @@
+from __future__ import annotations
+
+
 from django.db import models
+
+
+class ScenarioKeuze(models.TextChoices):
+    LAAG = "laag", "Laag"
+    MIDDEN = "midden", "Midden"
+    HOOG = "hoog", "Hoog"
 
 
 class Kengetal(models.Model):
     SCENARIO_KEUZES = [
-        ("laag", "Laag"),
-        ("midden", "Midden"),
-        ("hoog", "Hoog"),
+        (ScenarioKeuze.LAAG, "Laag"),
+        (ScenarioKeuze.MIDDEN, "Midden"),
+        (ScenarioKeuze.HOOG, "Hoog"),
     ]
 
     scenario = models.CharField(max_length=10, choices=SCENARIO_KEUZES)
@@ -21,9 +30,9 @@ class Hoofdkengetal(Kengetal):
         related_name="hoofdkengetallen",
     )
 
-    cop_tap = models.FloatField()
-    cop_cv = models.FloatField()
-    cop_gkw = models.FloatField()
+    cop_tap = models.DecimalField(max_digits=18, decimal_places=9)
+    cop_cv = models.DecimalField(max_digits=18, decimal_places=9)
+    cop_gkw = models.DecimalField(max_digits=18, decimal_places=9)
 
     class Meta:
         verbose_name = "Hoofdkengetal"
@@ -46,14 +55,20 @@ class Subkengetal(Kengetal):
         related_name="subkengetallen",
     )
 
-    investeringskosten = models.FloatField()
+    investeringskosten = models.DecimalField(max_digits=18, decimal_places=9)
     levensduur = models.IntegerField()
-    beheer_en_onderhoud = models.FloatField()
-    verhouding_vermogen_bron = models.FloatField(blank=True, null=True)
+    beheer_en_onderhoud = models.DecimalField(max_digits=18, decimal_places=9)
+    verhouding_vermogen_bron = models.DecimalField(
+        max_digits=18, decimal_places=9, blank=True, null=True
+    )
     debiet_bron = models.IntegerField(blank=True, null=True)
-    energie_bron = models.FloatField(blank=True, null=True)
+    energie_bron = models.DecimalField(
+        max_digits=18, decimal_places=9, blank=True, null=True
+    )
     delta_temperatuur_retour = models.IntegerField(blank=True, null=True)
-    onttrekkingsvermogen = models.FloatField(blank=True, null=True)
+    onttrekkingsvermogen = models.DecimalField(
+        max_digits=18, decimal_places=9, blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Subkengetal"
@@ -67,3 +82,14 @@ class Subkengetal(Kengetal):
 
     def __str__(self):
         return f"{self.subsysteem.naam} - {self.scenario}"
+
+
+class AlgemeenKengetal(Kengetal):
+
+    naam = models.CharField(max_length=255)
+    omschrijving = models.CharField(max_length=255)
+    waarde = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "Algemeen kengetal"
+        verbose_name_plural = "Algemene kengetallen"

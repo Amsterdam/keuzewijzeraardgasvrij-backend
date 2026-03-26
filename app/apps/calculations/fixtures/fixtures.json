@@ -1,0 +1,12 @@
+[
+  {
+    "model": "calculation_inputs.conversie",
+    "pk": 1,
+    "fields": {"naam": "m3gas_naar_kwh", "waarde": "9.769"}
+  },
+  {
+    "model": "calculation_inputs.conversie",
+    "pk": 2,
+    "fields": {"naam": "kwh_naar_gj", "waarde": "0.0036"}
+  }
+]

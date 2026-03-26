@@ -5,8 +5,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from apps.calculation_inputs.models import CalculationInput
-from apps.calculation_inputs.serializers import CalculationInputCreateSerializer
+from apps.calculations.models import CalculationInput
+from apps.calculations.serializers import CalculationInputCreateSerializer
 
 
 def _valid_payload():

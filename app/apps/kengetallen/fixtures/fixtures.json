@@ -452,7 +452,6 @@
       "onttrekkingsvermogen": null
     }
   },
-
   {
     "model": "kengetallen.subkengetal",
     "pk": 18,
@@ -1029,5 +1028,131 @@
       "delta_temperatuur_retour": null,
       "onttrekkingsvermogen": null
     }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 54,
+    "fields": {
+      "subsysteem": 1,
+      "scenario": "laag",
+      "investeringskosten": 11800,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 1,
+    "fields": {"scenario": "laag", "naam": "percentage_ruimteverwarming", "omschrijving": "Persentage gas voor ruimteverwarming [bij tapwater op gas]", "waarde": "0.8"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 2,
+    "fields": {"scenario": "midden", "naam": "percentage_ruimteverwarming", "omschrijving": "Persentage gas voor ruimteverwarming [bij tapwater op gas]", "waarde": "0.8"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 3,
+    "fields": {"scenario": "hoog", "naam": "percentage_ruimteverwarming", "omschrijving": "Persentage gas voor ruimteverwarming [bij tapwater op gas]", "waarde": "0.8"}
+  },
+
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 4,
+    "fields": {"scenario": "laag", "naam": "rendement_gasketel", "omschrijving": "Rendement gasketel", "waarde": "1"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 5,
+    "fields": {"scenario": "midden", "naam": "rendement_gasketel", "omschrijving": "Rendement gasketel", "waarde": "1"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 6,
+    "fields": {"scenario": "hoog", "naam": "rendement_gasketel", "omschrijving": "Rendement gasketel", "waarde": "1"}
+  },
+
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 7,
+    "fields": {"scenario": "laag", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.8"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 8,
+    "fields": {"scenario": "midden", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.7"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 9,
+    "fields": {"scenario": "hoog", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.7"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 13,
+    "fields": {"scenario": "laag", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "24"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 14,
+    "fields": {"scenario": "midden", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "24"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 15,
+    "fields": {"scenario": "hoog", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "24"}
+  },
+
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 16,
+    "fields": {"scenario": "laag", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "4"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 17,
+    "fields": {"scenario": "midden", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "7"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 18,
+    "fields": {"scenario": "hoog", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "12"}
+  },
+
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 19,
+    "fields": {"scenario": "laag", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 20,
+    "fields": {"scenario": "midden", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 21,
+    "fields": {"scenario": "hoog", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+  },
+
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 22,
+    "fields": {"scenario": "laag", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "445"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 23,
+    "fields": {"scenario": "midden", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "445"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 24,
+    "fields": {"scenario": "hoog", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "445"}
   }
 ]
