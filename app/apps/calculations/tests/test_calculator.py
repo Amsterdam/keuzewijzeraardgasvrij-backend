@@ -20,6 +20,7 @@ def _calculation_input(**overrides: object) -> CalculationInput:
         "ruimte_op_het_dak_aanwezig": True,
         "type_dak": "plat_dak",
         "tapwater_op_gas": True,
+        "koken_op_gas": False,
         "gasverbruik_per_woning": Decimal("500"),
         "gasverbruik_vve_totaal": Decimal("1334.6"),
         "elektriciteitsverbruik_per_woning": Decimal("1000"),
@@ -63,6 +64,7 @@ class EnergieCalculatorTest(TestCase):
                 calc_input = _calculation_input(
                     aantal_woningen=aantal_woningen,
                     tapwater_op_gas=tapwater_op_gas,
+                    koken_op_gas=False,
                     gasverbruik_vve_totaal=gasverbruik_vve_totaal,
                 )
                 result = EnergieCalculator().calculate(
@@ -76,7 +78,10 @@ class EnergieCalculatorTest(TestCase):
                     else Decimal(0)
                 )
                 expected_kwh = (
-                    expected_gas * rendement_gasketel * conversie_m3gas_naar_kwh
+                    expected_gas
+                    * rendement_gasketel
+                    * conversie_m3gas_naar_kwh
+                    / aantal_woningen
                 )
                 expected_gj = expected_kwh * conversie_kwh_naar_gj
 
@@ -112,6 +117,7 @@ class EnergieCalculatorTest(TestCase):
                 calc_input = _calculation_input(
                     aantal_woningen=aantal_woningen,
                     tapwater_op_gas=tapwater_op_gas,
+                    koken_op_gas=False,
                     gasverbruik_vve_totaal=gasverbruik_vve_totaal,
                 )
                 result = EnergieCalculator().calculate(
@@ -125,7 +131,10 @@ class EnergieCalculatorTest(TestCase):
                     else gasverbruik_vve_totaal
                 )
                 expected_kwh = (
-                    expected_gas * rendement_gasketel * conversie_m3gas_naar_kwh
+                    expected_gas
+                    * rendement_gasketel
+                    * conversie_m3gas_naar_kwh
+                    / aantal_woningen
                 )
                 expected_gj = expected_kwh * conversie_kwh_naar_gj
 
@@ -144,37 +153,127 @@ class EnergieCalculatorTest(TestCase):
 
     def test_gkw_all_scenarios_tapwater_true_and_false(self):
         aantal_woningen = 200
-        gasverbruik_vve_totaal = Decimal("1334.6")
-
         conversie_kwh_naar_gj = self._conversie("kwh_naar_gj")
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
             warmtevraag_koude = self._kengetal(scenario, "warmtevraag_koude")
             koudevraag_capaciteit = self._kengetal(scenario, "koudevraag_capaciteit")
 
+            calc_input = _calculation_input()
+            result = EnergieCalculator().calculate(
+                EnergieType.GKW, scenario, calc_input
+            )
+
+            expected_vermogen = warmtevraag_koude
+            expected_kwh = koudevraag_capaciteit * calc_input.bruto_vloeroppervlak
+            expected_gj = expected_kwh * conversie_kwh_naar_gj
+
+            self.assertEqual(result["Type"], EnergieType.GKW)
+            self.assertEqual(result["Scenario"], str(scenario))
+            self.assertEqual(result["Vermogen warmte [kW/woning]"], expected_vermogen)
+            self.assertEqual(
+                result["Vermogen warmte [kW/vve]"],
+                expected_vermogen * Decimal(aantal_woningen),
+            )
+            self.assertEqual(result["Gas [m³/j]"], Decimal("0"))
+            self.assertEqual(result["Capaciteit warmte [kWh/j/w]"], expected_kwh)
+            self.assertEqual(result["Capaciteit warmte [GJ/j/w]"], expected_gj)
+
+    def test_tap_koken_op_gas_subtracts_gasvraag_koken(self):
+        aantal_woningen = 200
+        gasverbruik_vve_totaal = Decimal("1334.6")
+        conversie_m3gas_naar_kwh = self._conversie("m3gas_naar_kwh")
+
+        for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
+            percentage_ruimteverwarming = self._kengetal(
+                scenario, "percentage_ruimteverwarming"
+            )
+            rendement_gasketel = self._kengetal(scenario, "rendement_gasketel")
+            gasvraag_koken = self._kengetal(scenario, "gasvraag_koken")
+
+            base = _calculation_input(
+                aantal_woningen=aantal_woningen,
+                tapwater_op_gas=True,
+                koken_op_gas=False,
+                gasverbruik_vve_totaal=gasverbruik_vve_totaal,
+            )
+            with_koken_op_gas = _calculation_input(
+                aantal_woningen=aantal_woningen,
+                tapwater_op_gas=True,
+                koken_op_gas=True,
+                gasverbruik_vve_totaal=gasverbruik_vve_totaal,
+            )
+
+            base_result = EnergieCalculator().calculate(EnergieType.TAP, scenario, base)
+            koken_result = EnergieCalculator().calculate(
+                EnergieType.TAP, scenario, with_koken_op_gas
+            )
+
+            expected_delta_gas = (
+                Decimal(1) - percentage_ruimteverwarming
+            ) * gasvraag_koken
+            self.assertEqual(
+                base_result["Gas [m³/j]"] - koken_result["Gas [m³/j]"],
+                expected_delta_gas,
+            )
+
+            expected_delta_kwh = (
+                expected_delta_gas
+                * rendement_gasketel
+                * conversie_m3gas_naar_kwh
+                / aantal_woningen
+            )
+            self.assertEqual(
+                base_result["Capaciteit warmte [kWh/j/w]"]
+                - koken_result["Capaciteit warmte [kWh/j/w]"],
+                expected_delta_kwh,
+            )
+
+    def test_cv_koken_op_gas_subtracts_gasvraag_koken(self):
+        aantal_woningen = 200
+        conversie_m3gas_naar_kwh = self._conversie("m3gas_naar_kwh")
+
+        for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
+            percentage_ruimteverwarming = self._kengetal(
+                scenario, "percentage_ruimteverwarming"
+            )
+            rendement_gasketel = self._kengetal(scenario, "rendement_gasketel")
+            gasvraag_koken = self._kengetal(scenario, "gasvraag_koken")
+
             for tapwater_op_gas in (True, False):
-                calc_input = _calculation_input(
+                base = _calculation_input(
                     aantal_woningen=aantal_woningen,
                     tapwater_op_gas=tapwater_op_gas,
-                    gasverbruik_vve_totaal=gasverbruik_vve_totaal,
+                    koken_op_gas=False,
                 )
-                result = EnergieCalculator().calculate(
-                    EnergieType.GKW, scenario, calc_input
+                with_koken_op_gas = _calculation_input(
+                    aantal_woningen=aantal_woningen,
+                    tapwater_op_gas=tapwater_op_gas,
+                    koken_op_gas=True,
                 )
 
-                expected_vermogen = warmtevraag_koude
-                expected_kwh = koudevraag_capaciteit
-                expected_gj = expected_kwh * conversie_kwh_naar_gj
+                base_result = EnergieCalculator().calculate(
+                    EnergieType.CV, scenario, base
+                )
+                koken_result = EnergieCalculator().calculate(
+                    EnergieType.CV, scenario, with_koken_op_gas
+                )
 
-                self.assertEqual(result["Type"], EnergieType.GKW)
-                self.assertEqual(result["Scenario"], str(scenario))
+                factor = percentage_ruimteverwarming if tapwater_op_gas else Decimal(1)
+                expected_delta_gas = factor * gasvraag_koken
                 self.assertEqual(
-                    result["Vermogen warmte [kW/woning]"], expected_vermogen
+                    base_result["Gas [m³/j]"] - koken_result["Gas [m³/j]"],
+                    expected_delta_gas,
+                )
+
+                expected_delta_kwh = (
+                    expected_delta_gas
+                    * rendement_gasketel
+                    * conversie_m3gas_naar_kwh
+                    / aantal_woningen
                 )
                 self.assertEqual(
-                    result["Vermogen warmte [kW/vve]"],
-                    expected_vermogen * Decimal(aantal_woningen),
+                    base_result["Capaciteit warmte [kWh/j/w]"]
+                    - koken_result["Capaciteit warmte [kWh/j/w]"],
+                    expected_delta_kwh,
                 )
-                self.assertEqual(result["Gas [m³/j]"], Decimal("0"))
-                self.assertEqual(result["Capaciteit warmte [kWh/j/w]"], expected_kwh)
-                self.assertEqual(result["Capaciteit warmte [GJ/j/w]"], expected_gj)

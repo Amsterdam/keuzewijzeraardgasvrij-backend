@@ -1143,16 +1143,31 @@
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 22,
-    "fields": {"scenario": "laag", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "445"}
+    "fields": {"scenario": "laag", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "2"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 23,
-    "fields": {"scenario": "midden", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "445"}
+    "fields": {"scenario": "midden", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "2.5"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 24,
-    "fields": {"scenario": "hoog", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "445"}
+    "fields": {"scenario": "hoog", "naam": "koudevraag_capaciteit", "omschrijving": "Koudevraag capaciteit per woning [kWh/j/w]", "waarde": "3"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 25,
+    "fields": {"scenario": "laag", "naam": "gasvraag_koken", "omschrijving": "Gasvraag koken per woning [m³/j/w]", "waarde": "50"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 26,
+    "fields": {"scenario": "midden", "naam": "gasvraag_koken", "omschrijving": "Gasvraag koken per woning [m³/j/w]", "waarde": "50"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 27,
+    "fields": {"scenario": "hoog", "naam": "gasvraag_koken", "omschrijving": "Gasvraag koken per woning [m³/j/w]", "waarde": "50"}
   }
 ]

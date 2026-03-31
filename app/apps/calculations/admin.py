@@ -39,8 +39,8 @@ class CalculationInputAdmin(admin.ModelAdmin):
                     result = calculator.calculate(energie_type, scenario, obj)
                     rows.append(
                         (
-                            result["Type"],
                             result["Scenario"],
+                            result["Type"],
                             fmt(result["Vermogen warmte [kW/woning]"]),
                             fmt(result["Vermogen warmte [kW/vve]"]),
                             fmt(result["Gas [m³/j]"]),

@@ -22,7 +22,7 @@ class CalculationInput(models.Model):
     )
 
     tapwater_op_gas = models.BooleanField()
-
+    koken_op_gas = models.BooleanField(default=False)
     gasverbruik_per_woning = models.DecimalField(max_digits=18, decimal_places=9)
     gasverbruik_vve_totaal = models.DecimalField(max_digits=18, decimal_places=9)
     elektriciteitsverbruik_per_woning = models.DecimalField(

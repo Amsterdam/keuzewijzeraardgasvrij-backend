@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
+from numbers import Number
 from typing import Final, Iterable, Literal, TypedDict
 
 from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
@@ -64,7 +65,9 @@ class EnergieCalculator:
             )
         else:
             result = self._calculate_gkw(
-                scenario, conversie_kwh_naar_gj=conversie_kwh_naar_gj
+                scenario,
+                conversie_kwh_naar_gj=conversie_kwh_naar_gj,
+                calculation_input=calculation_input,
             )
 
         aantal_woningen = self._to_decimal(calculation_input.aantal_woningen)
@@ -98,6 +101,7 @@ class EnergieCalculator:
                 "warmtevraag_tap",
                 "percentage_ruimteverwarming",
                 "rendement_gasketel",
+                "gasvraag_koken",
             ],
         )
 
@@ -114,10 +118,15 @@ class EnergieCalculator:
         gasverbruik_vve_totaal = self._to_decimal(
             calculation_input.gasverbruik_vve_totaal
         )
+        gasverbruik_minus_gasvraag = (
+            gasverbruik_vve_totaal - kengetallen["gasvraag_koken"]
+            if calculation_input.koken_op_gas
+            else gasverbruik_vve_totaal
+        )
         gas_m3_per_year = (
             tapwater_factor
             * (Decimal(1) - percentage_ruimteverwarming)
-            * gasverbruik_vve_totaal
+            * gasverbruik_minus_gasvraag
         )
 
         capaciteit_kwh, capaciteit_gj = self._calculate_capaciteit_warmte_gj(
@@ -125,6 +134,7 @@ class EnergieCalculator:
             rendement_gasketel=rendement_gasketel,
             conversie_m3gas_naar_kwh=conversie_m3gas_naar_kwh,
             conversie_kwh_naar_gj=conversie_kwh_naar_gj,
+            aantal_woningen=calculation_input.aantal_woningen,
         )
         return {
             "vermogen_warmte_kw_per_woning": vermogen_warmte_kw_per_woning,
@@ -148,6 +158,7 @@ class EnergieCalculator:
                 "percentage_ruimteverwarming",
                 "rendement_gasketel",
                 "gelijktijdigheid_cv",
+                "gasvraag_koken",
             ],
         )
 
@@ -166,13 +177,19 @@ class EnergieCalculator:
         gasverbruik_vve_totaal = self._to_decimal(
             calculation_input.gasverbruik_vve_totaal
         )
-        gas_m3_per_year = ruimteverwarming_factor * gasverbruik_vve_totaal
+        gasverbruik_minus_gasvraag = (
+            gasverbruik_vve_totaal - kengetallen["gasvraag_koken"]
+            if calculation_input.koken_op_gas
+            else gasverbruik_vve_totaal
+        )
+        gas_m3_per_year = ruimteverwarming_factor * gasverbruik_minus_gasvraag
 
         capaciteit_kwh, capaciteit_gj = self._calculate_capaciteit_warmte_gj(
             gas_m3_per_year=gas_m3_per_year,
             rendement_gasketel=rendement_gasketel,
             conversie_m3gas_naar_kwh=conversie_m3gas_naar_kwh,
             conversie_kwh_naar_gj=conversie_kwh_naar_gj,
+            aantal_woningen=calculation_input.aantal_woningen,
         )
 
         return {
@@ -183,7 +200,11 @@ class EnergieCalculator:
         }
 
     def _calculate_gkw(
-        self, scenario: ScenarioKeuze, *, conversie_kwh_naar_gj: Decimal
+        self,
+        scenario: ScenarioKeuze,
+        *,
+        conversie_kwh_naar_gj: Decimal,
+        calculation_input: CalculationInput,
     ):
         kengetallen = self._get_kengetallen(
             scenario,
@@ -193,7 +214,10 @@ class EnergieCalculator:
             ],
         )
         vermogen_warmte_kw_per_woning = kengetallen["warmtevraag_koude"]
-        capaciteit_kwh = kengetallen["koudevraag_capaciteit"]
+        capaciteit_kwh = (
+            kengetallen["koudevraag_capaciteit"]
+            * calculation_input.bruto_vloeroppervlak
+        )
         capaciteit_gj = capaciteit_kwh * conversie_kwh_naar_gj
         return {
             "vermogen_warmte_kw_per_woning": vermogen_warmte_kw_per_woning,
@@ -209,8 +233,14 @@ class EnergieCalculator:
         rendement_gasketel: Decimal,
         conversie_m3gas_naar_kwh: Decimal,
         conversie_kwh_naar_gj: Decimal,
+        aantal_woningen: Number,
     ) -> tuple[Decimal, Decimal]:
-        capaciteit_kwh = gas_m3_per_year * rendement_gasketel * conversie_m3gas_naar_kwh
+        capaciteit_kwh = (
+            gas_m3_per_year
+            * rendement_gasketel
+            * conversie_m3gas_naar_kwh
+            / aantal_woningen
+        )
         return capaciteit_kwh, capaciteit_kwh * conversie_kwh_naar_gj
 
     def _to_decimal(self, value: object) -> Decimal:
