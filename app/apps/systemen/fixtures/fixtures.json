@@ -198,6 +198,7 @@
   },
   {
     "fields": {
+      "calculation_method": "openbron",
       "naam": "Open bron (mono 35m³/h)",
       "type": "kengetal"
     },
@@ -215,6 +216,7 @@
   },
   {
     "fields": {
+      "calculation_method": "openbron",
       "naam": "Regeneratie",
       "type": "kengetal"
     },
@@ -321,6 +323,7 @@
   },
   {
     "fields": {
+      "calculation_method": "openbron",
       "naam": "openbron 70m³/h",
       "type": "kengetal"
     },

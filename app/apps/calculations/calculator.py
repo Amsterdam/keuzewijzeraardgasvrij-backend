@@ -34,6 +34,11 @@ CalculationResult = TypedDict(
 )
 
 
+class EnergieCalculatorFullResult(TypedDict):
+    results: list[CalculationResult]
+    by_scenario: dict[str, dict[EnergieTypeValue, CalculationResult]]
+
+
 class EnergieCalculator:
     """Calculator for energy/gas demand metrics.
 
@@ -42,13 +47,56 @@ class EnergieCalculator:
 
     def calculate(
         self,
-        energie_type: EnergieTypeValue,
-        scenario: ScenarioKeuze,
         calculation_input: CalculationInput,
-    ) -> CalculationResult:
+        *,
+        scenarios: Iterable[ScenarioKeuze] = (
+            ScenarioKeuze.LAAG,
+            ScenarioKeuze.MIDDEN,
+            ScenarioKeuze.HOOG,
+        ),
+        energie_types: Iterable[EnergieTypeValue] = (
+            EnergieType.TAP,
+            EnergieType.CV,
+            EnergieType.GKW,
+        ),
+    ) -> EnergieCalculatorFullResult:
+        """Calculate all energie types for all scenarios.
+
+        This centralizes the scenario + energie_type iteration so callers don't need
+        to loop and invoke the calculator repeatedly.
+        """
+
         conversie_m3gas_naar_kwh = Conversie.objects.get(naam="m3gas_naar_kwh").waarde
         conversie_kwh_naar_gj = Conversie.objects.get(naam="kwh_naar_gj").waarde
 
+        results: list[CalculationResult] = []
+        by_scenario: dict[str, dict[EnergieTypeValue, CalculationResult]] = {}
+
+        for scenario in scenarios:
+            scenario_key = str(scenario)
+            by_scenario[scenario_key] = {}
+            for energie_type in energie_types:
+                single = self._calculate_single(
+                    energie_type,
+                    scenario,
+                    calculation_input,
+                    conversie_m3gas_naar_kwh=conversie_m3gas_naar_kwh,
+                    conversie_kwh_naar_gj=conversie_kwh_naar_gj,
+                )
+                results.append(single)
+                by_scenario[scenario_key][energie_type] = single
+
+        return {"results": results, "by_scenario": by_scenario}
+
+    def _calculate_single(
+        self,
+        energie_type: EnergieTypeValue,
+        scenario: ScenarioKeuze,
+        calculation_input: CalculationInput,
+        *,
+        conversie_m3gas_naar_kwh: Decimal,
+        conversie_kwh_naar_gj: Decimal,
+    ) -> CalculationResult:
         if energie_type == EnergieType.TAP:
             result = self._calculate_tap(
                 scenario,

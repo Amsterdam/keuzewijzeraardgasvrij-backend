@@ -1,0 +1,90 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Berekeningen</h1>
+
+  <form method="get" style="margin-bottom: 16px;">
+    <label for="calculation_input_id"><strong>Calculation input</strong></label>
+    <select id="calculation_input_id" name="calculation_input_id">
+      <option value="">-- selecteer --</option>
+      {% for ci in calculation_inputs %}
+        <option value="{{ ci.id }}" {% if selected_id and ci.id == selected_id %}selected{% endif %}>
+          #{{ ci.id }} ({{ ci.bouwjaar }})
+        </option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="button">Toon</button>
+  </form>
+
+  {% if selected_input %}
+      <h2>Input</h2>
+      <table class="adminlist" style="margin-bottom: 16px;">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in input_rows %}
+            <tr>
+              <td>{{ row.field }}</td>
+              <td>{{ row.value }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    <h2>Energieberekening</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Type</th>
+          <th>Vermogen [kW/w]</th>
+          <th>Vermogen [kW/vve]</th>
+          <th>Gas [m³/j]</th>
+          <th>Capaciteit [kWh/j/w]</th>
+          <th>Capaciteit [GJ/j/w]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in energie_rows %}
+          <tr>
+            <td>{{ row.scenario }}</td>
+            <td>{{ row.type }}</td>
+            <td>{{ row.vermogen_woning }}</td>
+            <td>{{ row.vermogen_vve }}</td>
+            <td>{{ row.gas }}</td>
+            <td>{{ row.cap_kwh }}</td>
+            <td>{{ row.cap_gj }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Investeringsberekening</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Subsysteem</th>
+          <th>Scenario</th>
+          <th>Calculation method</th>
+          <th>Afschrijving [€/w/j]</th>
+          <th>Onderhoud [€/w/j]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in subsysteem_rows %}
+          <tr>
+            <td>{{ row.naam }}</td>
+            <td>{{ row.scenario }}</td>
+            <td>{{ row.method }}</td>
+            <td>{{ row.afschrijving }}</td>
+            <td>{{ row.onderhoud }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

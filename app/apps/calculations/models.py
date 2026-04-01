@@ -69,3 +69,12 @@ class Conversie(models.Model):
 
     def __str__(self) -> str:
         return f"{self.naam}={self.waarde}"
+
+
+class CalculationDashboard(CalculationInput):
+    """Proxy model used to expose a custom admin page in the sidebar."""
+
+    class Meta:
+        proxy = True
+        verbose_name = "Berekeningen"
+        verbose_name_plural = "Berekeningen"
