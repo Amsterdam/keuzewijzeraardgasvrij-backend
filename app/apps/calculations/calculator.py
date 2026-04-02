@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from decimal import Decimal
 from numbers import Number
-from typing import Final, Iterable, Literal, TypedDict
+from typing import Final, Iterable, Literal
 
 from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
 
@@ -20,23 +21,21 @@ class EnergieType:
     GKW: Final[EnergieTypeValue] = "gkw"
 
 
-CalculationResult = TypedDict(
-    "CalculationResult",
-    {
-        "Type": EnergieTypeValue,
-        "Scenario": str,
-        "Vermogen warmte [kW/woning]": Decimal,
-        "Vermogen warmte [kW/vve]": Decimal,
-        "Gas [m³/j]": Decimal,
-        "Capaciteit warmte [kWh/j/w]": Decimal,
-        "Capaciteit warmte [GJ/j/w]": Decimal,
-    },
-)
+@dataclass(frozen=True)
+class EnergieCalculationResult:
+    energie_type: EnergieTypeValue
+    scenario: str
+    vermogen_warmte_kw_per_woning: Decimal
+    vermogen_warmte_kw_per_vve: Decimal
+    gas_m3_per_year: Decimal
+    capaciteit_warmte_kwh_per_year_per_woning: Decimal
+    capaciteit_warmte_gj_per_year_per_woning: Decimal
 
 
-class EnergieCalculatorFullResult(TypedDict):
-    results: list[CalculationResult]
-    by_scenario: dict[str, dict[EnergieTypeValue, CalculationResult]]
+@dataclass(frozen=True)
+class EnergieCalculatorFullResult:
+    results: list[EnergieCalculationResult]
+    by_scenario: dict[str, dict[EnergieTypeValue, EnergieCalculationResult]]
 
 
 class EnergieCalculator:
@@ -69,8 +68,8 @@ class EnergieCalculator:
         conversie_m3gas_naar_kwh = Conversie.objects.get(naam="m3gas_naar_kwh").waarde
         conversie_kwh_naar_gj = Conversie.objects.get(naam="kwh_naar_gj").waarde
 
-        results: list[CalculationResult] = []
-        by_scenario: dict[str, dict[EnergieTypeValue, CalculationResult]] = {}
+        results: list[EnergieCalculationResult] = []
+        by_scenario: dict[str, dict[EnergieTypeValue, EnergieCalculationResult]] = {}
 
         for scenario in scenarios:
             scenario_key = str(scenario)
@@ -86,7 +85,7 @@ class EnergieCalculator:
                 results.append(single)
                 by_scenario[scenario_key][energie_type] = single
 
-        return {"results": results, "by_scenario": by_scenario}
+        return EnergieCalculatorFullResult(results=results, by_scenario=by_scenario)
 
     def _calculate_single(
         self,
@@ -96,7 +95,7 @@ class EnergieCalculator:
         *,
         conversie_m3gas_naar_kwh: Decimal,
         conversie_kwh_naar_gj: Decimal,
-    ) -> CalculationResult:
+    ) -> EnergieCalculationResult:
         if energie_type == EnergieType.TAP:
             result = self._calculate_tap(
                 scenario,
@@ -120,20 +119,20 @@ class EnergieCalculator:
 
         aantal_woningen = self._to_decimal(calculation_input.aantal_woningen)
 
-        return {
-            "Type": energie_type,
-            "Scenario": str(scenario),
-            "Vermogen warmte [kW/woning]": result["vermogen_warmte_kw_per_woning"],
-            "Vermogen warmte [kW/vve]": result["vermogen_warmte_kw_per_woning"]
-            * aantal_woningen,
-            "Gas [m³/j]": result["gas_m3_per_year"],
-            "Capaciteit warmte [kWh/j/w]": result[
+        vermogen_warmte_kw_per_woning = result["vermogen_warmte_kw_per_woning"]
+        return EnergieCalculationResult(
+            energie_type=energie_type,
+            scenario=str(scenario),
+            vermogen_warmte_kw_per_woning=vermogen_warmte_kw_per_woning,
+            vermogen_warmte_kw_per_vve=vermogen_warmte_kw_per_woning * aantal_woningen,
+            gas_m3_per_year=result["gas_m3_per_year"],
+            capaciteit_warmte_kwh_per_year_per_woning=result[
                 "capaciteit_warmte_kwh_per_year_per_woning"
             ],
-            "Capaciteit warmte [GJ/j/w]": result[
+            capaciteit_warmte_gj_per_year_per_woning=result[
                 "capaciteit_warmte_gj_per_year_per_woning"
             ],
-        }
+        )
 
     def _calculate_tap(
         self,

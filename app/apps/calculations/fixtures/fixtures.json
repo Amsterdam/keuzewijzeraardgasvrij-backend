@@ -8,5 +8,20 @@
     "model": "calculation_inputs.conversie",
     "pk": 2,
     "fields": {"naam": "kwh_naar_gj", "waarde": "0.0036"}
+  },
+  {
+    "model": "calculation_inputs.conversie",
+    "pk": 3,
+    "fields": {"naam": "m3_naar_l", "waarde": "1000"}
+  },
+  {
+    "model": "calculation_inputs.conversie",
+    "pk": 4,
+    "fields": {"naam": "h_naar_sec", "waarde": "3600"}
+  },
+  {
+    "model": "calculation_inputs.conversie",
+    "pk": 5,
+    "fields": {"naam": "kj_naar_j", "waarde": "1000"}
   }
 ]

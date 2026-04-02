@@ -32,12 +32,12 @@ class SubsysteemCalculateTest(TestCase):
                 subkengetal.investeringskosten * subkengetal.beheer_en_onderhoud
             )
 
-            result = full["by_scenario"][str(scenario)]
+            result = full.by_scenario[str(scenario)]
             self.assertEqual(
-                result["afschrijving_eur_per_woning_per_jaar"],
+                result.berekening.afschrijving_eur_per_woning_per_jaar,
                 expected_afschrijving,
             )
             self.assertEqual(
-                result["onderhoud_eur_per_woning_per_jaar"],
+                result.berekening.onderhoud_eur_per_woning_per_jaar,
                 expected_onderhoud,
             )

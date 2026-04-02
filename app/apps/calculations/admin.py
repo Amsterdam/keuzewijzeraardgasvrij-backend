@@ -76,21 +76,21 @@ class CalculationInputAdmin(admin.ModelAdmin):
 
             calculator = EnergieCalculator()
             energie_full = calculator.calculate(selected_input)
-            for result in energie_full["results"]:
+            for result in energie_full.results:
                 energie_rows.append(
                     {
-                        "scenario": result["Scenario"],
-                        "type": result["Type"],
-                        "vermogen_woning": fmt(result["Vermogen warmte [kW/woning]"]),
-                        "vermogen_vve": fmt(result["Vermogen warmte [kW/vve]"]),
+                        "scenario": result.scenario,
+                        "type": result.energie_type,
+                        "vermogen_woning": fmt(result.vermogen_warmte_kw_per_woning),
+                        "vermogen_vve": fmt(result.vermogen_warmte_kw_per_vve),
                         "gas": fmt(
-                            result["Gas [m³/j]"],
+                            result.gas_m3_per_year,
                         ),
                         "cap_kwh": fmt(
-                            result["Capaciteit warmte [kWh/j/w]"],
+                            result.capaciteit_warmte_kwh_per_year_per_woning,
                         ),
                         "cap_gj": fmt(
-                            result["Capaciteit warmte [GJ/j/w]"],
+                            result.capaciteit_warmte_gj_per_year_per_woning,
                         ),
                     }
                 )
@@ -100,17 +100,17 @@ class CalculationInputAdmin(admin.ModelAdmin):
                     continue
 
                 subsysteem_full = subsysteem.calculate(energie_calculation=energie_full)
-                for result in subsysteem_full["results"]:
+                for result in subsysteem_full.results:
                     subsysteem_rows.append(
                         {
                             "naam": subsysteem.naam,
-                            "scenario": result.get("Scenario", ""),
-                            "method": result.get("Method", method),
+                            "scenario": result.scenario,
+                            "method": result.method or method,
                             "afschrijving": fmt_eur(
-                                result["afschrijving_eur_per_woning_per_jaar"]
+                                result.berekening.afschrijving_eur_per_woning_per_jaar
                             ),
                             "onderhoud": fmt_eur(
-                                result["onderhoud_eur_per_woning_per_jaar"]
+                                result.berekening.onderhoud_eur_per_woning_per_jaar
                             ),
                         }
                     )
