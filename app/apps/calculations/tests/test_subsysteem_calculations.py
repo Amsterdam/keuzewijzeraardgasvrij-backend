@@ -18,7 +18,7 @@ class SubsysteemCalculateTest(TestCase):
             subsysteem.calculation_method, SubsysteemCalculationMethod.Investering
         )
 
-        full = subsysteem.calculate()
+        subsysteem_calculations = subsysteem.calculate()
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
             subkengetal = Subkengetal.objects.get(
@@ -32,7 +32,7 @@ class SubsysteemCalculateTest(TestCase):
                 subkengetal.investeringskosten * subkengetal.beheer_en_onderhoud
             )
 
-            result = full.by_scenario[str(scenario)]
+            result = subsysteem_calculations.by_scenario[str(scenario)]
             self.assertEqual(
                 result.berekening.afschrijving_eur_per_woning_per_jaar,
                 expected_afschrijving,

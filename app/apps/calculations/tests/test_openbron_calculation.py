@@ -53,13 +53,13 @@ class OpenbronCalculationTest(TestCase):
         )
 
         calc_input = _calculation_input()
-        energie_full = EnergieCalculator().calculate(calc_input)
+        energie = EnergieCalculator().calculate(calc_input)
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
             subkengetal = Subkengetal.objects.get(
                 subsysteem=subsysteem, scenario=scenario
             )
-            cv_row = energie_full.by_scenario[str(scenario)][EnergieType.CV]
+            cv_row = energie.by_scenario[str(scenario)][EnergieType.CV]
 
             result = calculate_openbron_systeem(
                 subkengetal,
@@ -115,20 +115,20 @@ class OpenbronCalculationTest(TestCase):
         )
 
         calc_input = _calculation_input()
-        energie_full = EnergieCalculator().calculate(calc_input)
+        energie = EnergieCalculator().calculate(calc_input)
 
-        full = subsysteem.calculate(energie_calculation=energie_full)
+        subsysteem_calculations = subsysteem.calculate(energie_calculation=energie)
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
             subkengetal = Subkengetal.objects.get(
                 subsysteem=subsysteem, scenario=scenario
             )
-            cv_row = energie_full.by_scenario[str(scenario)][EnergieType.CV]
+            cv_row = energie.by_scenario[str(scenario)][EnergieType.CV]
             direct = calculate_openbron_systeem(
                 subkengetal, cv_energie_calculation=cv_row
             )
 
-            via_model = full.by_scenario[str(scenario)].berekening
+            via_model = subsysteem_calculations.by_scenario[str(scenario)].berekening
 
             self.assertEqual(
                 via_model.afschrijving_eur_per_woning_per_jaar,

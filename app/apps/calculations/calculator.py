@@ -39,10 +39,7 @@ class EnergieCalculatorFullResult:
 
 
 class EnergieCalculator:
-    """Calculator for energy/gas demand metrics.
-
-    Conversion factors are stored in the `Conversie` table (loaded via fixtures).
-    """
+    """Calculator for energy/gas demand metrics."""
 
     def calculate(
         self,
@@ -59,11 +56,7 @@ class EnergieCalculator:
             EnergieType.GKW,
         ),
     ) -> EnergieCalculatorFullResult:
-        """Calculate all energie types for all scenarios.
-
-        This centralizes the scenario + energie_type iteration so callers don't need
-        to loop and invoke the calculator repeatedly.
-        """
+        """Calculate all energie types for all scenarios."""
 
         conversie_m3gas_naar_kwh = Conversie.objects.get(naam="m3gas_naar_kwh").waarde
         conversie_kwh_naar_gj = Conversie.objects.get(naam="kwh_naar_gj").waarde
@@ -117,14 +110,13 @@ class EnergieCalculator:
                 calculation_input=calculation_input,
             )
 
-        aantal_woningen = self._to_decimal(calculation_input.aantal_woningen)
-
         vermogen_warmte_kw_per_woning = result["vermogen_warmte_kw_per_woning"]
         return EnergieCalculationResult(
             energie_type=energie_type,
             scenario=str(scenario),
             vermogen_warmte_kw_per_woning=vermogen_warmte_kw_per_woning,
-            vermogen_warmte_kw_per_vve=vermogen_warmte_kw_per_woning * aantal_woningen,
+            vermogen_warmte_kw_per_vve=vermogen_warmte_kw_per_woning
+            * calculation_input.aantal_woningen,
             gas_m3_per_year=result["gas_m3_per_year"],
             capaciteit_warmte_kwh_per_year_per_woning=result[
                 "capaciteit_warmte_kwh_per_year_per_woning"

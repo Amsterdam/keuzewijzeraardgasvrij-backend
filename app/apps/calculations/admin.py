@@ -45,11 +45,8 @@ class CalculationInputAdmin(admin.ModelAdmin):
         subsysteem_rows = []
         if selected_input is not None:
 
-            def fmt(value: Decimal) -> str:
+            def format(value: Decimal) -> str:
                 return str(value.quantize(Decimal("0.0001")))
-
-            def fmt_eur(value: Decimal) -> str:
-                return str(value.quantize(Decimal("0.01")))
 
             input_rows = [
                 {
@@ -58,7 +55,7 @@ class CalculationInputAdmin(admin.ModelAdmin):
                 },
                 {
                     "field": "gasverbruik_vve_totaal",
-                    "value": fmt(selected_input.gasverbruik_vve_totaal),
+                    "value": format(selected_input.gasverbruik_vve_totaal),
                 },
                 {
                     "field": "tapwater_op_gas",
@@ -70,26 +67,26 @@ class CalculationInputAdmin(admin.ModelAdmin):
                 },
                 {
                     "field": "bruto_vloeroppervlak",
-                    "value": fmt(selected_input.bruto_vloeroppervlak),
+                    "value": format(selected_input.bruto_vloeroppervlak),
                 },
             ]
 
             calculator = EnergieCalculator()
-            energie_full = calculator.calculate(selected_input)
-            for result in energie_full.results:
+            energie = calculator.calculate(selected_input)
+            for result in energie.results:
                 energie_rows.append(
                     {
                         "scenario": result.scenario,
                         "type": result.energie_type,
-                        "vermogen_woning": fmt(result.vermogen_warmte_kw_per_woning),
-                        "vermogen_vve": fmt(result.vermogen_warmte_kw_per_vve),
-                        "gas": fmt(
+                        "vermogen_woning": format(result.vermogen_warmte_kw_per_woning),
+                        "vermogen_vve": format(result.vermogen_warmte_kw_per_vve),
+                        "gas": format(
                             result.gas_m3_per_year,
                         ),
-                        "cap_kwh": fmt(
+                        "cap_kwh": format(
                             result.capaciteit_warmte_kwh_per_year_per_woning,
                         ),
-                        "cap_gj": fmt(
+                        "cap_gj": format(
                             result.capaciteit_warmte_gj_per_year_per_woning,
                         ),
                     }
@@ -99,17 +96,19 @@ class CalculationInputAdmin(admin.ModelAdmin):
                 if not method:
                     continue
 
-                subsysteem_full = subsysteem.calculate(energie_calculation=energie_full)
-                for result in subsysteem_full.results:
+                subsysteem_calculations = subsysteem.calculate(
+                    energie_calculation=energie
+                )
+                for result in subsysteem_calculations.results:
                     subsysteem_rows.append(
                         {
                             "naam": subsysteem.naam,
                             "scenario": result.scenario,
                             "method": result.method or method,
-                            "afschrijving": fmt_eur(
+                            "afschrijving": format(
                                 result.berekening.afschrijving_eur_per_woning_per_jaar
                             ),
-                            "onderhoud": fmt_eur(
+                            "onderhoud": format(
                                 result.berekening.onderhoud_eur_per_woning_per_jaar
                             ),
                         }

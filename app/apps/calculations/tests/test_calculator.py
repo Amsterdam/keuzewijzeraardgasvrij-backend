@@ -67,8 +67,8 @@ class EnergieCalculatorTest(TestCase):
                     koken_op_gas=False,
                     gasverbruik_vve_totaal=gasverbruik_vve_totaal,
                 )
-                full = EnergieCalculator().calculate(calc_input)
-                result = full.by_scenario[str(scenario)][EnergieType.TAP]
+                energie = EnergieCalculator().calculate(calc_input)
+                result = energie.by_scenario[str(scenario)][EnergieType.TAP]
 
                 expected_vermogen = warmtevraag_tap * gelijktijdigheid_tap
                 expected_gas = (
@@ -123,8 +123,8 @@ class EnergieCalculatorTest(TestCase):
                     koken_op_gas=False,
                     gasverbruik_vve_totaal=gasverbruik_vve_totaal,
                 )
-                full = EnergieCalculator().calculate(calc_input)
-                result = full.by_scenario[str(scenario)][EnergieType.CV]
+                energie = EnergieCalculator().calculate(calc_input)
+                result = energie.by_scenario[str(scenario)][EnergieType.CV]
 
                 expected_vermogen = warmtevraag_cv * gelijktijdigheid_cv
                 expected_gas = (
@@ -166,8 +166,8 @@ class EnergieCalculatorTest(TestCase):
             koudevraag_capaciteit = self._kengetal(scenario, "koudevraag_capaciteit")
 
             calc_input = _calculation_input()
-            full = EnergieCalculator().calculate(calc_input)
-            result = full.by_scenario[str(scenario)][EnergieType.GKW]
+            energie = EnergieCalculator().calculate(calc_input)
+            result = energie.by_scenario[str(scenario)][EnergieType.GKW]
 
             expected_vermogen = warmtevraag_koude
             expected_kwh = koudevraag_capaciteit * calc_input.bruto_vloeroppervlak
@@ -213,11 +213,11 @@ class EnergieCalculatorTest(TestCase):
                 gasverbruik_vve_totaal=gasverbruik_vve_totaal,
             )
 
-            base_full = EnergieCalculator().calculate(base)
-            koken_full = EnergieCalculator().calculate(with_koken_op_gas)
+            base_energie = EnergieCalculator().calculate(base)
+            koken_energie = EnergieCalculator().calculate(with_koken_op_gas)
 
-            base_result = base_full.by_scenario[str(scenario)][EnergieType.TAP]
-            koken_result = koken_full.by_scenario[str(scenario)][EnergieType.TAP]
+            base_result = base_energie.by_scenario[str(scenario)][EnergieType.TAP]
+            koken_result = koken_energie.by_scenario[str(scenario)][EnergieType.TAP]
 
             expected_delta_gas = (
                 Decimal(1) - percentage_ruimteverwarming
@@ -262,11 +262,11 @@ class EnergieCalculatorTest(TestCase):
                     koken_op_gas=True,
                 )
 
-                base_full = EnergieCalculator().calculate(base)
-                koken_full = EnergieCalculator().calculate(with_koken_op_gas)
+                base_energie = EnergieCalculator().calculate(base)
+                koken_energie = EnergieCalculator().calculate(with_koken_op_gas)
 
-                base_result = base_full.by_scenario[str(scenario)][EnergieType.CV]
-                koken_result = koken_full.by_scenario[str(scenario)][EnergieType.CV]
+                base_result = base_energie.by_scenario[str(scenario)][EnergieType.CV]
+                koken_result = koken_energie.by_scenario[str(scenario)][EnergieType.CV]
 
                 factor = percentage_ruimteverwarming if tapwater_op_gas else Decimal(1)
                 expected_delta_gas = factor * gasvraag_koken
