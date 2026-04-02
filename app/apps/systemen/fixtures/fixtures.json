@@ -225,6 +225,7 @@
   },
   {
     "fields": {
+      "calculation_method": "gbs",
       "naam": "Bodemlus Collectief",
       "type": "kengetal"
     },

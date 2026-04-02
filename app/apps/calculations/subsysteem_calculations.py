@@ -13,6 +13,7 @@ from apps.calculations.calculator import EnergieCalculationResult
 class SubsysteemCalculationMethod(models.TextChoices):
     Investering = "Investering", "Investering"
     Openbron = "openbron", "Openbron"
+    Gbs = "gbs", "GBS"
 
 
 @dataclass(frozen=True)
@@ -102,4 +103,47 @@ def calculate_openbron_systeem(
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving,
         onderhoud_eur_per_woning_per_jaar=onderhoud,
+    )
+
+
+def calculate_gbs(
+    subkengetal: Subkengetal,
+    *,
+    cv_energie_calculation: EnergieCalculationResult,
+    aantal_woningen: int | Decimal,
+) -> SubsysteemBerekening:
+    """Calculation method 'GBS'.
+    Based on the `Subkengetal` connected to the subsysteem + scenario:
+    - Warmtevraag vermogen VvE totaal [kW]:
+        `warmtevraag_vermogen_vve_totaal = cv_energie_calculation.vermogen_warmte_kw_per_vve`
+    - Vermogen bron [kW]:
+        `verhouding_bron = warmtevraag_vermogen_vve_totaal * subkengetal.verhouding_vermogen_bron`
+    - Aantal lussen:
+        `berekening_aantal_lussen = verhouding_bron / subkengetal.onttrekkingsvermogen`
+    - Investering VvE:
+        `investering_vve = subkengetal.investeringskosten * berekening_aantal_lussen`
+    - Investering per woning:
+        `investering_eur_per_woning = investering_vve / aantal_woningen`
+    - Afschrijving [€/w/j]:
+        `afschrijving_woning_per_jaar = investering_eur_per_woning / Decimal(subkengetal.levensduur)`
+    - Onderhoud [€/w/j]:
+        `onderhoud_woning_per_jaar = investering_eur_per_woning * subkengetal.beheer_en_onderhoud`
+    """
+    warmtevraag_vermogen_vve_totaal = cv_energie_calculation.vermogen_warmte_kw_per_vve
+    verhouding_bron = (
+        warmtevraag_vermogen_vve_totaal * subkengetal.verhouding_vermogen_bron
+    )
+    berekening_aantal_lussen = verhouding_bron / subkengetal.onttrekkingsvermogen
+    investering_vve = subkengetal.investeringskosten * berekening_aantal_lussen
+
+    investering_eur_per_woning = investering_vve / aantal_woningen
+    afschrijving_woning_per_jaar = investering_eur_per_woning / Decimal(
+        subkengetal.levensduur
+    )
+    onderhoud_woning_per_jaar = (
+        investering_eur_per_woning * subkengetal.beheer_en_onderhoud
+    )
+    return SubsysteemBerekening(
+        afschrijving_eur_per_woning_per_jaar=afschrijving_woning_per_jaar,
+        onderhoud_eur_per_woning_per_jaar=onderhoud_woning_per_jaar,
     )
