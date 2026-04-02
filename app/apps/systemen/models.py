@@ -5,11 +5,15 @@ from django.db import models
 
 from apps.calculations.subsysteem_calculations import (
     SubsysteemCalculationMethod,
+    SubsysteemFullResult,
+    SubsysteemScenarioResult,
     calculate_investering,
+    calculate_openbron_systeem,
 )
 
 
 from apps.kengetallen.models import ScenarioKeuze
+from apps.calculations.calculator import EnergieCalculatorFullResult, EnergieType
 
 
 class Hoofdsysteem(models.Model):
@@ -52,11 +56,57 @@ class Subsysteem(models.Model):
     def __str__(self):
         return self.naam
 
-    def calculate(self, scenario: ScenarioKeuze):
-        """Calculate subsysteem-specific values for a given scenario.
+    def calculate(
+        self,
+        *,
+        scenarios=(ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG),
+        energie_calculation: EnergieCalculatorFullResult | None = None,
+    ) -> SubsysteemFullResult:
+        """Calculate subsysteem-specific values for all scenarios."""
+        results: list[SubsysteemScenarioResult] = []
+        by_scenario: dict[str, SubsysteemScenarioResult] = {}
+        for scenario in scenarios:
+            single = self._calculate_single_scenario(
+                scenario, energie_calculation=energie_calculation
+            )
+            results.append(single)
+            by_scenario[str(scenario)] = single
 
-        Uses the related `Subkengetal` row for this subsysteem + scenario.
-        """
+        return SubsysteemFullResult(results=results, by_scenario=by_scenario)
+
+    def _calculate_single_scenario(
+        self,
+        scenario: ScenarioKeuze,
+        *,
+        energie_calculation: EnergieCalculatorFullResult | None,
+    ):
+        """Calculate values for a single scenario."""
 
         if self.calculation_method == SubsysteemCalculationMethod.Investering:
-            return calculate_investering(self.subkengetallen.get(scenario=scenario))
+            berekening = calculate_investering(
+                self.subkengetallen.get(scenario=scenario)
+            )
+            return SubsysteemScenarioResult(
+                scenario=str(scenario),
+                method=str(self.calculation_method),
+                berekening=berekening,
+            )
+
+        if self.calculation_method == SubsysteemCalculationMethod.Openbron:
+            if energie_calculation is None:
+                raise ValueError(
+                    "energie_calculation is required for Openbron calculations"
+                )
+
+            cv_result = energie_calculation.by_scenario[str(scenario)][EnergieType.CV]
+            berekening = calculate_openbron_systeem(
+                self.subkengetallen.get(scenario=scenario),
+                cv_energie_calculation=cv_result,
+            )
+            return SubsysteemScenarioResult(
+                scenario=str(scenario),
+                method=str(self.calculation_method),
+                berekening=berekening,
+            )
+
+        raise ValueError(f"Unknown calculation method: {self.calculation_method}")

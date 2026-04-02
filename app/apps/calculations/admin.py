@@ -1,11 +1,13 @@
 from decimal import Decimal
 
 from django.contrib import admin
-from django.utils.html import format_html, format_html_join
+from django.http import HttpResponseRedirect
+from django.template.response import TemplateResponse
+from django.urls import path, reverse
 
-from .models import CalculationInput, Conversie
-from .calculator import EnergieCalculator, EnergieType
-from apps.kengetallen.models import ScenarioKeuze
+from .models import CalculationDashboard, CalculationInput, Conversie
+from .calculator import EnergieCalculator
+from apps.systemen.models import Subsysteem
 
 
 def get_all_field_names(model):
@@ -16,60 +18,134 @@ def get_all_field_names(model):
 class CalculationInputAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(CalculationInput)
 
-    readonly_fields = ("calculation_results",)
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                "dashboard/",
+                self.admin_site.admin_view(self.dashboard_view),
+                name="calculationinput-dashboard",
+            )
+        ]
+        return custom + urls
 
-    def calculation_results(self, obj: CalculationInput | None) -> str:
-        """Render a small table with `EnergieCalculator.calculate()` results.
+    def dashboard_view(self, request):
+        calculation_inputs = CalculationInput.objects.order_by("-id")[:200]
 
-        Shown on the admin change (details) page for a single CalculationInput.
-        """
+        selected_input = None
+        selected_id = request.GET.get("calculation_input_id")
+        if selected_id:
+            try:
+                selected_input = CalculationInput.objects.get(pk=selected_id)
+            except CalculationInput.DoesNotExist:
+                selected_input = None
 
-        if obj is None:
-            return "-"
+        input_rows = []
+        energie_rows = []
+        subsysteem_rows = []
+        if selected_input is not None:
 
-        def fmt(value: Decimal) -> str:
-            return str(value.quantize(Decimal("0.0001")))
+            def format(value: Decimal) -> str:
+                return str(value.quantize(Decimal("0.0001")))
 
-        calculator = EnergieCalculator()
-        rows: list[tuple[str, str, str, str, str, str, str]] = []
+            input_rows = [
+                {
+                    "field": "aantal_woningen",
+                    "value": str(selected_input.aantal_woningen),
+                },
+                {
+                    "field": "gasverbruik_vve_totaal",
+                    "value": format(selected_input.gasverbruik_vve_totaal),
+                },
+                {
+                    "field": "tapwater_op_gas",
+                    "value": "true" if selected_input.tapwater_op_gas else "false",
+                },
+                {
+                    "field": "koken_op_gas",
+                    "value": "true" if selected_input.koken_op_gas else "false",
+                },
+                {
+                    "field": "bruto_vloeroppervlak",
+                    "value": format(selected_input.bruto_vloeroppervlak),
+                },
+            ]
 
-        for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
-            for energie_type in (EnergieType.TAP, EnergieType.CV, EnergieType.GKW):
-                try:
-                    result = calculator.calculate(energie_type, scenario, obj)
-                    rows.append(
-                        (
-                            result["Scenario"],
-                            result["Type"],
-                            fmt(result["Vermogen warmte [kW/woning]"]),
-                            fmt(result["Vermogen warmte [kW/vve]"]),
-                            fmt(result["Gas [m³/j]"]),
-                            fmt(result["Capaciteit warmte [kWh/j/w]"]),
-                            fmt(result["Capaciteit warmte [GJ/j/w]"]),
-                        )
+            calculator = EnergieCalculator()
+            energie = calculator.calculate(selected_input)
+            for result in energie.results:
+                energie_rows.append(
+                    {
+                        "scenario": result.scenario,
+                        "type": result.energie_type,
+                        "vermogen_woning": format(result.vermogen_warmte_kw_per_woning),
+                        "vermogen_vve": format(result.vermogen_warmte_kw_per_vve),
+                        "gas": format(
+                            result.gas_m3_per_year,
+                        ),
+                        "cap_kwh": format(
+                            result.capaciteit_warmte_kwh_per_year_per_woning,
+                        ),
+                        "cap_gj": format(
+                            result.capaciteit_warmte_gj_per_year_per_woning,
+                        ),
+                    }
+                )
+            for subsysteem in Subsysteem.objects.order_by("naam"):
+                method = subsysteem.calculation_method
+                if not method:
+                    continue
+
+                subsysteem_calculations = subsysteem.calculate(
+                    energie_calculation=energie
+                )
+                for result in subsysteem_calculations.results:
+                    subsysteem_rows.append(
+                        {
+                            "naam": subsysteem.naam,
+                            "scenario": result.scenario,
+                            "method": result.method or method,
+                            "afschrijving": format(
+                                result.berekening.afschrijving_eur_per_woning_per_jaar
+                            ),
+                            "onderhoud": format(
+                                result.berekening.onderhoud_eur_per_woning_per_jaar
+                            ),
+                        }
                     )
-                except Exception as exc:  # admin-only display
-                    rows.append(
-                        (str(scenario), energie_type, f"ERROR: {exc}", "", "", "", "")
-                    )
 
-        return format_html(
-            "<table>"
-            "<thead><tr>"
-            "<th>Scenario</th><th>Type</th>"
-            "<th>Vermogen [kW/w]</th><th>Vermogen [kW/vve]</th>"
-            "<th>Gas [m³/j]</th><th>Capaciteit [kWh/j/w]</th><th>Capaciteit [GJ/j/w]</th>"
-            "</tr></thead>"
-            "<tbody>{}</tbody>"
-            "</table>",
-            format_html_join(
-                "",
-                "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>",
-                rows,
+        context = {
+            **self.admin_site.each_context(request),
+            "calculation_inputs": calculation_inputs,
+            "selected_input": selected_input,
+            "selected_id": (
+                int(selected_id) if selected_id and selected_id.isdigit() else None
             ),
+            "input_rows": input_rows,
+            "energie_rows": energie_rows,
+            "subsysteem_rows": subsysteem_rows,
+            "title": "Berekeningen",
+        }
+        return TemplateResponse(
+            request,
+            "admin/calculation_inputs/calculationinput/dashboard.html",
+            context,
         )
 
-    calculation_results.short_description = "Berekening energie"
+
+@admin.register(CalculationDashboard)
+class CalculationDashboardAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        return HttpResponseRedirect(reverse("admin:calculationinput-dashboard"))
 
 
 @admin.register(Conversie)
