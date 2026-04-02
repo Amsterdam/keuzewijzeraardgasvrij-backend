@@ -62,10 +62,7 @@ class Subsysteem(models.Model):
         scenarios=(ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG),
         energie_calculation: EnergieCalculatorFullResult | None = None,
     ) -> SubsysteemFullResult:
-        """Calculate subsysteem-specific values for all scenarios.
-
-        Centralizes the scenario iteration so callers don't need to loop.
-        """
+        """Calculate subsysteem-specific values for all scenarios."""
         results: list[SubsysteemScenarioResult] = []
         by_scenario: dict[str, SubsysteemScenarioResult] = {}
         for scenario in scenarios:
