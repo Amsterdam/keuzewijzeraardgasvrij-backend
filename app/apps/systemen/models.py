@@ -7,6 +7,7 @@ from apps.calculations.subsysteem_calculations import (
     SubsysteemCalculationMethod,
     SubsysteemFullResult,
     SubsysteemScenarioResult,
+    calculate_gbs,
     calculate_investering,
     calculate_openbron_systeem,
 )
@@ -14,6 +15,7 @@ from apps.calculations.subsysteem_calculations import (
 
 from apps.kengetallen.models import ScenarioKeuze
 from apps.calculations.calculator import EnergieCalculatorFullResult, EnergieType
+from apps.calculations.models import CalculationInput
 
 
 class Hoofdsysteem(models.Model):
@@ -61,13 +63,16 @@ class Subsysteem(models.Model):
         *,
         scenarios=(ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG),
         energie_calculation: EnergieCalculatorFullResult | None = None,
+        calculation_input: CalculationInput | None = None,
     ) -> SubsysteemFullResult:
         """Calculate subsysteem-specific values for all scenarios."""
         results: list[SubsysteemScenarioResult] = []
         by_scenario: dict[str, SubsysteemScenarioResult] = {}
         for scenario in scenarios:
             single = self._calculate_single_scenario(
-                scenario, energie_calculation=energie_calculation
+                scenario,
+                energie_calculation=energie_calculation,
+                calculation_input=calculation_input,
             )
             results.append(single)
             by_scenario[str(scenario)] = single
@@ -79,6 +84,7 @@ class Subsysteem(models.Model):
         scenario: ScenarioKeuze,
         *,
         energie_calculation: EnergieCalculatorFullResult | None,
+        calculation_input: CalculationInput | None,
     ):
         """Calculate values for a single scenario."""
 
@@ -109,4 +115,20 @@ class Subsysteem(models.Model):
                 berekening=berekening,
             )
 
+        if self.calculation_method == SubsysteemCalculationMethod.Gbs:
+            if energie_calculation is None:
+                raise ValueError("energie_calculation is required for GBS calculations")
+            if calculation_input is None:
+                raise ValueError("calculation_input is required for GBS calculations")
+            cv_result = energie_calculation.by_scenario[str(scenario)][EnergieType.CV]
+            berekening = calculate_gbs(
+                self.subkengetallen.get(scenario=scenario),
+                cv_energie_calculation=cv_result,
+                aantal_woningen=calculation_input.aantal_woningen,
+            )
+            return SubsysteemScenarioResult(
+                scenario=str(scenario),
+                method=str(self.calculation_method),
+                berekening=berekening,
+            )
         raise ValueError(f"Unknown calculation method: {self.calculation_method}")

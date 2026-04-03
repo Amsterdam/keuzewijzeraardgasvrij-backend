@@ -97,7 +97,8 @@ class CalculationInputAdmin(admin.ModelAdmin):
                     continue
 
                 subsysteem_calculations = subsysteem.calculate(
-                    energie_calculation=energie
+                    energie_calculation=energie,
+                    calculation_input=selected_input,
                 )
                 for result in subsysteem_calculations.results:
                     subsysteem_rows.append(
