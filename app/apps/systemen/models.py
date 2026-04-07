@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 
+from dataclasses import dataclass
+from decimal import Decimal
+
 from django.db import models
 
 from apps.calculations.subsysteem_calculations import (
@@ -13,9 +16,42 @@ from apps.calculations.subsysteem_calculations import (
 )
 
 
-from apps.kengetallen.models import ScenarioKeuze
-from apps.calculations.calculator import EnergieCalculatorFullResult, EnergieType
-from apps.calculations.models import CalculationInput
+from apps.kengetallen.models import Hoofdkengetal, ScenarioKeuze
+from apps.calculations.calculator import (
+    EnergieCalculatorFullResult,
+    EnergieCalculationResult,
+    EnergieType,
+    EnergieTypeValue,
+)
+from apps.calculations.models import CalculationInput, EnergyPrice
+
+
+@dataclass(frozen=True, slots=True)
+class HoofdsysteemScenarioResult:
+    scenario: str
+    by_type: dict[EnergieTypeValue, EnergieCalculationResult]
+    capaciteit_warmte_kwh_per_year_per_woning_total: Decimal
+    capaciteit_warmte_gj_per_year_per_woning_total: Decimal
+
+    elektriciteit_tap_gj_per_year_per_woning: Decimal
+    elektriciteit_cv_gj_per_year_per_woning: Decimal
+    elektriciteit_gkw_gj_per_year_per_woning: Decimal
+
+    prijs_tap_eur_per_gj: Decimal
+    prijs_cv_eur_per_gj: Decimal
+    prijs_gkw_eur_per_gj: Decimal
+
+    energiekosten_tap_eur_per_woning_per_jaar: Decimal
+    energiekosten_cv_eur_per_woning_per_jaar: Decimal
+    energiekosten_gkw_eur_per_woning_per_jaar: Decimal
+    energiekosten_totaal_eur_per_woning_per_jaar: Decimal
+
+
+@dataclass(frozen=True, slots=True)
+class HoofdsysteemFullResult:
+    energy: EnergieCalculatorFullResult
+    results: list[HoofdsysteemScenarioResult]
+    by_scenario: dict[str, HoofdsysteemScenarioResult]
 
 
 class Hoofdsysteem(models.Model):
@@ -30,6 +66,147 @@ class Hoofdsysteem(models.Model):
 
     def __str__(self):
         return self.naam
+
+    def calculate(
+        self,
+        *,
+        energie_calculation: EnergieCalculatorFullResult,
+        scenarios=(ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG),
+        energie_types=(EnergieType.TAP, EnergieType.CV, EnergieType.GKW),
+    ) -> HoofdsysteemFullResult:
+        """Calculate values for this hoofdsysteem.
+
+        Currently returns:
+        - The full typed energy calculation output
+        - Per-scenario totals based on the capaciteit fields ("cap" values)
+
+        Additional energy cost calculation (per scenario):
+        - capaciteit warmte [GJ/w/j] from `energie_calculation` (TAP/CV/GKW)
+        - COPs from `Hoofdkengetal`
+        - dynamic energy prices (€/GJ) based on connected subsysteem names
+        """
+
+        prijs_tap, prijs_cv, prijs_gkw = self._select_energy_prices()
+
+        results: list[HoofdsysteemScenarioResult] = []
+        by_scenario: dict[str, HoofdsysteemScenarioResult] = {}
+
+        for scenario in scenarios:
+            scenario_key = str(scenario)
+            by_type = energie_calculation.by_scenario[scenario_key]
+
+            hoofdkengetal = Hoofdkengetal.objects.get(
+                hoofdsysteem=self,
+                scenario=scenario_key,
+            )
+
+            single = self._calculate_scenario_result(
+                scenario_key=scenario_key,
+                by_type=by_type,
+                hoofdkengetal=hoofdkengetal,
+                energie_types=energie_types,
+                prijs_tap=prijs_tap,
+                prijs_cv=prijs_cv,
+                prijs_gkw=prijs_gkw,
+            )
+            results.append(single)
+            by_scenario[scenario_key] = single
+
+        return HoofdsysteemFullResult(
+            energy=energie_calculation, results=results, by_scenario=by_scenario
+        )
+
+    def _calculate_scenario_result(
+        self,
+        *,
+        scenario_key: str,
+        by_type: dict[EnergieTypeValue, EnergieCalculationResult],
+        hoofdkengetal: Hoofdkengetal,
+        energie_types: tuple[EnergieTypeValue, ...],
+        prijs_tap: Decimal,
+        prijs_cv: Decimal,
+        prijs_gkw: Decimal,
+    ) -> HoofdsysteemScenarioResult:
+        capaciteit_kwh_total = sum(
+            (
+                by_type[energie_type].capaciteit_warmte_kwh_per_year_per_woning
+                for energie_type in energie_types
+            ),
+            start=Decimal("0"),
+        )
+        capaciteit_gj_total = sum(
+            (
+                by_type[energie_type].capaciteit_warmte_gj_per_year_per_woning
+                for energie_type in energie_types
+            ),
+            start=Decimal("0"),
+        )
+
+        cap_tap = by_type[EnergieType.TAP].capaciteit_warmte_gj_per_year_per_woning
+        cap_cv = by_type[EnergieType.CV].capaciteit_warmte_gj_per_year_per_woning
+        cap_gkw = by_type[EnergieType.GKW].capaciteit_warmte_gj_per_year_per_woning
+
+        elec_tap_gj = (
+            cap_tap / hoofdkengetal.cop_tap if hoofdkengetal.cop_tap else Decimal("0")
+        )
+        elec_cv_gj = (
+            cap_cv / hoofdkengetal.cop_cv if hoofdkengetal.cop_cv else Decimal("0")
+        )
+        elec_gkw_gj = (
+            cap_gkw / hoofdkengetal.cop_gkw if hoofdkengetal.cop_gkw else Decimal("0")
+        )
+
+        kosten_tap = elec_tap_gj * prijs_tap
+        kosten_cv = elec_cv_gj * prijs_cv
+        kosten_gkw = elec_gkw_gj * prijs_gkw
+        kosten_total = kosten_tap + kosten_cv + kosten_gkw
+
+        return HoofdsysteemScenarioResult(
+            scenario=scenario_key,
+            by_type=by_type,
+            capaciteit_warmte_kwh_per_year_per_woning_total=capaciteit_kwh_total,
+            capaciteit_warmte_gj_per_year_per_woning_total=capaciteit_gj_total,
+            elektriciteit_tap_gj_per_year_per_woning=elec_tap_gj,
+            elektriciteit_cv_gj_per_year_per_woning=elec_cv_gj,
+            elektriciteit_gkw_gj_per_year_per_woning=elec_gkw_gj,
+            prijs_tap_eur_per_gj=prijs_tap,
+            prijs_cv_eur_per_gj=prijs_cv,
+            prijs_gkw_eur_per_gj=prijs_gkw,
+            energiekosten_tap_eur_per_woning_per_jaar=kosten_tap,
+            energiekosten_cv_eur_per_woning_per_jaar=kosten_cv,
+            energiekosten_gkw_eur_per_woning_per_jaar=kosten_gkw,
+            energiekosten_totaal_eur_per_woning_per_jaar=kosten_total,
+        )
+
+    def _select_energy_prices(self) -> tuple[Decimal, Decimal, Decimal]:
+        elektriciteit_prijs_default = "Elektriciteit"
+
+        if self.subsystemen.filter(naam="Particulier Stadswarmte").exists():
+            prijs_tap = self._price_eur_per_gj("SV particulier tap")
+            prijs_cv = self._price_eur_per_gj("SV particulier CV")
+            prijs_gkw = Decimal("0")
+        elif self.subsystemen.filter(naam="Particulier Stadswarmte + koude").exists():
+            prijs_tap = self._price_eur_per_gj("SV particulier tap")
+            prijs_cv = self._price_eur_per_gj("SV particulier CV")
+            prijs_gkw = self._price_eur_per_gj("SV particulier GKW")
+        elif self.subsystemen.filter(naam="Zakelijk Stadswarmte").exists():
+            prijs_tap = self._price_eur_per_gj("SV zakelijk tap (warmte)")
+            prijs_cv = self._price_eur_per_gj("SV zakelijk CV (warmte)")
+            prijs_gkw = Decimal("0")
+        elif self.subsystemen.filter(naam="Zakelijk Stadswarmte + koude").exists():
+            prijs_tap = self._price_eur_per_gj("SV zakelijk tap (warmte + Koude)")
+            prijs_cv = self._price_eur_per_gj("SV zakelijk CV (warmte + Koude)")
+            prijs_gkw = self._price_eur_per_gj("SV zakelijk GKW (warmte + Koude)")
+        else:
+            prijs_tap = self._price_eur_per_gj(elektriciteit_prijs_default)
+            prijs_cv = self._price_eur_per_gj(elektriciteit_prijs_default)
+            prijs_gkw = self._price_eur_per_gj(elektriciteit_prijs_default)
+
+        return prijs_tap, prijs_cv, prijs_gkw
+
+    def _price_eur_per_gj(self, name: str) -> Decimal:
+        value = EnergyPrice.objects.get(naam=name).prijs_eur_per_gj
+        return value if value is not None else Decimal("0")
 
 
 class SubsysteemType(models.TextChoices):

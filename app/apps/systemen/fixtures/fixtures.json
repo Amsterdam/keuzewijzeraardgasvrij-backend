@@ -75,7 +75,8 @@
       "naam": "Particulier Externe warmtelevering",
       "subsystemen": [
         8,
-        9
+        9,
+        19
       ]
     },
     "model": "systemen.hoofdsysteem",
@@ -89,7 +90,8 @@
       "subsystemen": [
         8,
         9,
-        10
+        10,
+        20
       ]
     },
     "model": "systemen.hoofdsysteem",
@@ -149,7 +151,8 @@
       "naam": "Zakelijk Collectief Externe warmtelevering",
       "subsystemen": [
         8,
-        9
+        9,
+        21
       ]
     },
     "model": "systemen.hoofdsysteem",
@@ -163,7 +166,8 @@
       "subsystemen": [
         8,
         10,
-        9
+        9,
+        22
       ]
     },
     "model": "systemen.hoofdsysteem",
@@ -330,5 +334,37 @@
     },
     "model": "systemen.subsysteem",
     "pk": 18
+  },
+  {
+    "fields": {
+      "naam": "Particulier Stadswarmte",
+      "type": "stadswarmte"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 19
+  },
+  {
+    "fields": {
+      "naam": "Particulier Stadswarmte + koude",
+      "type": "stadswarmte"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 20
+  },
+  {
+    "fields": {
+      "naam": "Zakelijk Stadswarmte",
+      "type": "stadswarmte"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 21
+  },
+  {
+    "fields": {
+      "naam": "Zakelijk Stadswarmte + koude",
+      "type": "stadswarmte"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 22
   }
 ]

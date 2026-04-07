@@ -71,6 +71,34 @@ class Conversie(models.Model):
         return f"{self.naam}={self.waarde}"
 
 
+class EnergyPrice(models.Model):
+    """Energy price per GJ.
+
+    Values are stored in the database and typically loaded via fixtures.
+
+    Some prices may be unknown/not applicable; those can be stored as null.
+    """
+
+    naam = models.CharField(max_length=64, unique=True)
+    prijs_eur_per_gj = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = "Energy price"
+        verbose_name_plural = "Energy prices"
+
+    def __str__(self) -> str:
+        return (
+            f"{self.naam}={self.prijs_eur_per_gj} €/GJ"
+            if self.prijs_eur_per_gj is not None
+            else f"{self.naam}=<null> €/GJ"
+        )
+
+
 class CalculationDashboard(CalculationInput):
     """Proxy model used to expose a custom admin page in the sidebar."""
 

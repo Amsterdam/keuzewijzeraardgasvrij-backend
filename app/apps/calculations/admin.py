@@ -5,9 +5,9 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
 
-from .models import CalculationDashboard, CalculationInput, Conversie
-from .calculator import EnergieCalculator
-from apps.systemen.models import Subsysteem
+from .models import CalculationDashboard, CalculationInput, Conversie, EnergyPrice
+from .calculator import EnergieCalculator, EnergieType
+from apps.systemen.models import Hoofdsysteem, Subsysteem
 
 
 def get_all_field_names(model):
@@ -43,10 +43,16 @@ class CalculationInputAdmin(admin.ModelAdmin):
         input_rows = []
         energie_rows = []
         subsysteem_rows = []
+        hoofdsysteem_rows = []
         if selected_input is not None:
 
             def format(value: Decimal) -> str:
                 return str(value.quantize(Decimal("0.0001")))
+
+            def format_eur(value: Decimal) -> str:
+                if isinstance(value, int):
+                    value = Decimal(value)
+                return str(value.quantize(Decimal("0.01")))
 
             input_rows = [
                 {
@@ -91,6 +97,9 @@ class CalculationInputAdmin(admin.ModelAdmin):
                         ),
                     }
                 )
+
+            scenario_order = {"laag": 0, "midden": 1, "hoog": 2}
+
             for subsysteem in Subsysteem.objects.order_by("naam"):
                 method = subsysteem.calculation_method
                 if not method:
@@ -103,17 +112,78 @@ class CalculationInputAdmin(admin.ModelAdmin):
                 for result in subsysteem_calculations.results:
                     subsysteem_rows.append(
                         {
+                            "subsysteem_id": subsysteem.id,
                             "naam": subsysteem.naam,
                             "scenario": result.scenario,
                             "method": result.method or method,
-                            "afschrijving": format(
+                            "afschrijving": format_eur(
                                 result.berekening.afschrijving_eur_per_woning_per_jaar
                             ),
-                            "onderhoud": format(
+                            "onderhoud": format_eur(
                                 result.berekening.onderhoud_eur_per_woning_per_jaar
                             ),
                         }
                     )
+            for hoofdsysteem in Hoofdsysteem.objects.order_by("id"):
+                full = hoofdsysteem.calculate(energie_calculation=energie)
+                for result in full.results:
+                    by_type = result.by_type
+                    hoofdsysteem_rows.append(
+                        {
+                            "hoofdsysteem_id": hoofdsysteem.id,
+                            "naam": hoofdsysteem.naam,
+                            "scenario": result.scenario,
+                            "cap_tap_gj": format(
+                                by_type[
+                                    EnergieType.TAP
+                                ].capaciteit_warmte_gj_per_year_per_woning
+                            ),
+                            "cap_cv_gj": format(
+                                by_type[
+                                    EnergieType.CV
+                                ].capaciteit_warmte_gj_per_year_per_woning
+                            ),
+                            "cap_gkw_gj": format(
+                                by_type[
+                                    EnergieType.GKW
+                                ].capaciteit_warmte_gj_per_year_per_woning
+                            ),
+                            "elek_tap_gj": format(
+                                result.elektriciteit_tap_gj_per_year_per_woning
+                            ),
+                            "elek_cv_gj": format(
+                                result.elektriciteit_cv_gj_per_year_per_woning
+                            ),
+                            "elek_gkw_gj": format(
+                                result.elektriciteit_gkw_gj_per_year_per_woning
+                            ),
+                            "prijs_tap": format_eur(result.prijs_tap_eur_per_gj),
+                            "prijs_cv": format_eur(result.prijs_cv_eur_per_gj),
+                            "prijs_gkw": format_eur(result.prijs_gkw_eur_per_gj),
+                            "kosten_tap": format_eur(
+                                result.energiekosten_tap_eur_per_woning_per_jaar
+                            ),
+                            "kosten_cv": format_eur(
+                                result.energiekosten_cv_eur_per_woning_per_jaar
+                            ),
+                            "kosten_gkw": format_eur(
+                                result.energiekosten_gkw_eur_per_woning_per_jaar
+                            ),
+                            "kosten_totaal": format_eur(
+                                result.energiekosten_totaal_eur_per_woning_per_jaar
+                            ),
+                            "cap_totaal_gj": format(
+                                result.capaciteit_warmte_gj_per_year_per_woning_total
+                            ),
+                        }
+                    )
+
+            hoofdsysteem_rows.sort(
+                key=lambda row: (
+                    scenario_order.get(row.get("scenario"), 99),
+                    row.get("hoofdsysteem_id", 0),
+                )
+            )
 
         context = {
             **self.admin_site.each_context(request),
@@ -125,6 +195,7 @@ class CalculationInputAdmin(admin.ModelAdmin):
             "input_rows": input_rows,
             "energie_rows": energie_rows,
             "subsysteem_rows": subsysteem_rows,
+            "hoofdsysteem_rows": hoofdsysteem_rows,
             "title": "Berekeningen",
         }
         return TemplateResponse(
@@ -152,3 +223,8 @@ class CalculationDashboardAdmin(admin.ModelAdmin):
 @admin.register(Conversie)
 class ConversieAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(Conversie)
+
+
+@admin.register(EnergyPrice)
+class EnergyPriceAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(EnergyPrice)
