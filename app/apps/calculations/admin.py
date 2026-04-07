@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
 
-from .models import CalculationDashboard, CalculationInput, Conversie, EnergyPrice
+from .models import CalculationDashboard, Conversie, EnergiePrijs, GebruikersInvoer
 from .calculator import EnergieCalculator, EnergieType
 from apps.systemen.models import Hoofdsysteem, Subsysteem
 
@@ -14,9 +14,9 @@ def get_all_field_names(model):
     return [field.name for field in model._meta.fields]
 
 
-@admin.register(CalculationInput)
-class CalculationInputAdmin(admin.ModelAdmin):
-    list_display = get_all_field_names(CalculationInput)
+@admin.register(GebruikersInvoer)
+class GebruikersInvoerAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(GebruikersInvoer)
 
     def get_urls(self):
         urls = super().get_urls()
@@ -24,20 +24,20 @@ class CalculationInputAdmin(admin.ModelAdmin):
             path(
                 "dashboard/",
                 self.admin_site.admin_view(self.dashboard_view),
-                name="calculationinput-dashboard",
+                name="gebruikersinvoer-dashboard",
             )
         ]
         return custom + urls
 
     def dashboard_view(self, request):
-        calculation_inputs = CalculationInput.objects.order_by("-id")[:200]
+        gebruikers_invoer = GebruikersInvoer.objects.order_by("-id")[:200]
 
         selected_input = None
         selected_id = request.GET.get("calculation_input_id")
         if selected_id:
             try:
-                selected_input = CalculationInput.objects.get(pk=selected_id)
-            except CalculationInput.DoesNotExist:
+                selected_input = GebruikersInvoer.objects.get(pk=selected_id)
+            except GebruikersInvoer.DoesNotExist:
                 selected_input = None
 
         input_rows = []
@@ -187,7 +187,7 @@ class CalculationInputAdmin(admin.ModelAdmin):
 
         context = {
             **self.admin_site.each_context(request),
-            "calculation_inputs": calculation_inputs,
+            "gebruikers_invoer": gebruikers_invoer,
             "selected_input": selected_input,
             "selected_id": (
                 int(selected_id) if selected_id and selected_id.isdigit() else None
@@ -200,7 +200,7 @@ class CalculationInputAdmin(admin.ModelAdmin):
         }
         return TemplateResponse(
             request,
-            "admin/calculation_inputs/calculationinput/dashboard.html",
+            "admin/dashboard.html",
             context,
         )
 
@@ -217,7 +217,7 @@ class CalculationDashboardAdmin(admin.ModelAdmin):
         return False
 
     def changelist_view(self, request, extra_context=None):
-        return HttpResponseRedirect(reverse("admin:calculationinput-dashboard"))
+        return HttpResponseRedirect(reverse("admin:gebruikersinvoer-dashboard"))
 
 
 @admin.register(Conversie)
@@ -225,6 +225,6 @@ class ConversieAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(Conversie)
 
 
-@admin.register(EnergyPrice)
-class EnergyPriceAdmin(admin.ModelAdmin):
-    list_display = get_all_field_names(EnergyPrice)
+@admin.register(EnergiePrijs)
+class EnergiePrijsAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(EnergiePrijs)

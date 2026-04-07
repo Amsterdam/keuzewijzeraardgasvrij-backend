@@ -5,8 +5,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from apps.calculations.models import CalculationInput
-from apps.calculations.serializers import CalculationInputCreateSerializer
+from apps.calculations.models import GebruikersInvoer
+from apps.calculations.serializers import GebruikersInvoerCreateSerializer
 
 
 def _valid_payload():
@@ -39,9 +39,9 @@ class CalculationInputCreateApiTest(TestCase):
     def test_post_creates_calculation_input(self):
         response = self.client.post(self.url, data=_valid_payload(), format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
-        self.assertEqual(CalculationInput.objects.count(), 1)
+        self.assertEqual(GebruikersInvoer.objects.count(), 1)
 
-        created = CalculationInput.objects.get()
+        created = GebruikersInvoer.objects.get()
         self.assertEqual(created.bouwjaar, 1990)
         self.assertEqual(created.type_dak, "plat_dak")
 
@@ -78,40 +78,40 @@ class CalculationInputCreateApiTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
 
 
-class CalculationInputCreateSerializerTest(TestCase):
+class GebruikersInvoerCreateSerializerTest(TestCase):
     def test_valid_payload_is_valid(self):
-        serializer = CalculationInputCreateSerializer(data=_valid_payload())
+        serializer = GebruikersInvoerCreateSerializer(data=_valid_payload())
         self.assertTrue(serializer.is_valid(), serializer.errors)
 
     def test_rejects_bruto_vloeroppervlak_zero(self):
         payload = _valid_payload()
         payload["bruto_vloeroppervlak"] = 0
-        serializer = CalculationInputCreateSerializer(data=payload)
+        serializer = GebruikersInvoerCreateSerializer(data=payload)
         self.assertFalse(serializer.is_valid())
         self.assertIn("bruto_vloeroppervlak", serializer.errors)
 
     def test_rejects_non_finite_numbers(self):
         payload = _valid_payload()
         payload["gasverbruik_per_woning"] = math.inf
-        serializer = CalculationInputCreateSerializer(data=payload)
+        serializer = GebruikersInvoerCreateSerializer(data=payload)
         self.assertFalse(serializer.is_valid())
         self.assertIn("gasverbruik_per_woning", serializer.errors)
 
         payload = _valid_payload()
         payload["elektriciteitsverbruik_vve_totaal"] = math.nan
-        serializer = CalculationInputCreateSerializer(data=payload)
+        serializer = GebruikersInvoerCreateSerializer(data=payload)
         self.assertFalse(serializer.is_valid())
         self.assertIn("elektriciteitsverbruik_vve_totaal", serializer.errors)
 
     def test_rejects_invalid_choices(self):
         payload = _valid_payload()
         payload["type_dak"] = "geen_dak"
-        serializer = CalculationInputCreateSerializer(data=payload)
+        serializer = GebruikersInvoerCreateSerializer(data=payload)
         self.assertFalse(serializer.is_valid())
         self.assertIn("type_dak", serializer.errors)
 
         payload = _valid_payload()
         payload["huidige_warmtesysteem"] = "onbekend"
-        serializer = CalculationInputCreateSerializer(data=payload)
+        serializer = GebruikersInvoerCreateSerializer(data=payload)
         self.assertFalse(serializer.is_valid())
         self.assertIn("huidige_warmtesysteem", serializer.errors)

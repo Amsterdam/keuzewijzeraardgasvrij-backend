@@ -1,10 +1,10 @@
 from rest_framework import generics
 
 
-from .models import CalculationInput
-from .serializers import CalculationInputCreateSerializer
+from .models import GebruikersInvoer
+from .serializers import GebruikersInvoerCreateSerializer
 
 
-class CalculationInputCreateView(generics.CreateAPIView):
-    queryset = CalculationInput.objects.all()
-    serializer_class = CalculationInputCreateSerializer
+class GebruikersInvoerCreateView(generics.CreateAPIView):
+    queryset = GebruikersInvoer.objects.all()
+    serializer_class = GebruikersInvoerCreateSerializer

@@ -6,13 +6,13 @@ from django.test import TestCase
 
 from apps.calculations.calculator import EnergieType
 from apps.calculations.calculator import EnergieCalculator
-from apps.calculations.models import CalculationInput, EnergyPrice
+from apps.calculations.models import EnergiePrijs, GebruikersInvoer
 from apps.kengetallen.models import Hoofdkengetal, ScenarioKeuze
 from apps.systemen.models import Hoofdsysteem
 from apps.systemen.models import Subsysteem
 
 
-def _calculation_input(**overrides: object) -> CalculationInput:
+def _calculation_input(**overrides: object) -> GebruikersInvoer:
     defaults: dict[str, object] = {
         "bouwjaar": 1990,
         "bruto_vloeroppervlak": Decimal("1234.5"),
@@ -34,7 +34,7 @@ def _calculation_input(**overrides: object) -> CalculationInput:
         "wens_tot_koelen": False,
     }
     defaults.update(overrides)
-    return CalculationInput.objects.create(**defaults)
+    return GebruikersInvoer.objects.create(**defaults)
 
 
 class HoofdsysteemCalculateTest(TestCase):
@@ -59,7 +59,7 @@ class HoofdsysteemCalculateTest(TestCase):
                 scenario=scenario_key,
             )
 
-            energieprijs_eur_per_gj = EnergyPrice.objects.get(
+            energieprijs_eur_per_gj = EnergiePrijs.objects.get(
                 naam="Elektriciteit"
             ).prijs_eur_per_gj
             expected_kwh = (
@@ -155,13 +155,13 @@ class HoofdsysteemCalculateTest(TestCase):
         energie = EnergieCalculator().calculate(calc_input)
         full = hoofdsysteem.calculate(energie_calculation=energie)
 
-        prijs_tap = EnergyPrice.objects.get(
+        prijs_tap = EnergiePrijs.objects.get(
             naam="SV zakelijk tap (warmte + Koude)"
         ).prijs_eur_per_gj
-        prijs_cv = EnergyPrice.objects.get(
+        prijs_cv = EnergiePrijs.objects.get(
             naam="SV zakelijk CV (warmte + Koude)"
         ).prijs_eur_per_gj
-        prijs_gkw = EnergyPrice.objects.get(
+        prijs_gkw = EnergiePrijs.objects.get(
             naam="SV zakelijk GKW (warmte + Koude)"
         ).prijs_eur_per_gj
 

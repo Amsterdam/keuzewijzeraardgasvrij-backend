@@ -23,7 +23,7 @@ from apps.calculations.calculator import (
     EnergieType,
     EnergieTypeValue,
 )
-from apps.calculations.models import CalculationInput, EnergyPrice
+from apps.calculations.models import EnergiePrijs, GebruikersInvoer
 
 
 @dataclass(frozen=True, slots=True)
@@ -205,7 +205,7 @@ class Hoofdsysteem(models.Model):
         return prijs_tap, prijs_cv, prijs_gkw
 
     def _price_eur_per_gj(self, name: str) -> Decimal:
-        value = EnergyPrice.objects.get(naam=name).prijs_eur_per_gj
+        value = EnergiePrijs.objects.get(naam=name).prijs_eur_per_gj
         return value if value is not None else Decimal("0")
 
 
@@ -240,7 +240,7 @@ class Subsysteem(models.Model):
         *,
         scenarios=(ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG),
         energie_calculation: EnergieCalculatorFullResult | None = None,
-        calculation_input: CalculationInput | None = None,
+        calculation_input: GebruikersInvoer | None = None,
     ) -> SubsysteemFullResult:
         """Calculate subsysteem-specific values for all scenarios."""
         results: list[SubsysteemScenarioResult] = []
@@ -261,7 +261,7 @@ class Subsysteem(models.Model):
         scenario: ScenarioKeuze,
         *,
         energie_calculation: EnergieCalculatorFullResult | None,
-        calculation_input: CalculationInput | None,
+        calculation_input: GebruikersInvoer | None,
     ):
         """Calculate values for a single scenario."""
 
