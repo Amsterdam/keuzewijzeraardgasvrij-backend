@@ -23,5 +23,50 @@
     "model": "calculation_inputs.conversie",
     "pk": 5,
     "fields": {"naam": "kj_naar_j", "waarde": "1000"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 1,
+    "fields": {"naam": "Elektriciteit", "prijs_eur_per_gj": "53.00"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 2,
+    "fields": {"naam": "SV particulier tap", "prijs_eur_per_gj": "46.69"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 3,
+    "fields": {"naam": "SV particulier CV", "prijs_eur_per_gj": "46.69"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 4,
+    "fields": {"naam": "SV particulier GKW", "prijs_eur_per_gj": null}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 5,
+    "fields": {"naam": "SV zakelijk tap (warmte + Koude)", "prijs_eur_per_gj": "32.33"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 6,
+    "fields": {"naam": "SV zakelijk CV (warmte + Koude)", "prijs_eur_per_gj": "32.33"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 7,
+    "fields": {"naam": "SV zakelijk GKW (warmte + Koude)", "prijs_eur_per_gj": "13.26"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 8,
+    "fields": {"naam": "SV zakelijk tap (warmte)", "prijs_eur_per_gj": "38.72"}
+  },
+  {
+    "model": "calculation_inputs.energieprijs",
+    "pk": 9,
+    "fields": {"naam": "SV zakelijk CV (warmte)", "prijs_eur_per_gj": "38.72"}
   }
 ]

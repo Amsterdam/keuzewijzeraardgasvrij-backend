@@ -2,10 +2,10 @@
 
 {% block content %}
   <form method="get" style="margin-bottom: 16px;">
-    <label for="calculation_input_id"><strong>Calculation input</strong></label>
+    <label for="calculation_input_id"><strong>GebruikersInvoer</strong></label>
     <select id="calculation_input_id" name="calculation_input_id">
       <option value="">-- selecteer --</option>
-      {% for ci in calculation_inputs %}
+      {% for ci in gebruikers_invoer %}
         <option value="{{ ci.id }}" {% if selected_id and ci.id == selected_id %}selected{% endif %}>
           #{{ ci.id }} ({{ ci.bouwjaar }})
         </option>
@@ -80,6 +80,52 @@
             <td>{{ row.method }}</td>
             <td>{{ row.afschrijving }}</td>
             <td>{{ row.onderhoud }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Hoofdsysteemberekening</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Hoofdsysteem</th>
+          <th>Scenario</th>
+          <th>Cap TAP [GJ/w/j]</th>
+          <th>Cap CV [GJ/w/j]</th>
+          <th>Cap GKW [GJ/w/j]</th>
+          <th>Cap totaal [GJ/w/j]</th>
+          <th>Elek TAP [GJ/w/j]</th>
+          <th>Elek CV [GJ/w/j]</th>
+          <th>Elek GKW [GJ/w/j]</th>
+          <th>Prijs TAP [€/GJ]</th>
+          <th>Prijs CV [€/GJ]</th>
+          <th>Prijs GKW [€/GJ]</th>
+          <th>Kosten TAP [€/w/j]</th>
+          <th>Kosten CV [€/w/j]</th>
+          <th>Kosten GKW [€/w/j]</th>
+          <th>Energiekosten totaal [€/w/j]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in hoofdsysteem_rows %}
+          <tr>
+            <td>{{ row.naam }}</td>
+            <td>{{ row.scenario }}</td>
+            <td>{{ row.cap_tap_gj }}</td>
+            <td>{{ row.cap_cv_gj }}</td>
+            <td>{{ row.cap_gkw_gj }}</td>
+            <td>{{ row.cap_totaal_gj }}</td>
+            <td>{{ row.elek_tap_gj }}</td>
+            <td>{{ row.elek_cv_gj }}</td>
+            <td>{{ row.elek_gkw_gj }}</td>
+            <td>{{ row.prijs_tap }}</td>
+            <td>{{ row.prijs_cv }}</td>
+            <td>{{ row.prijs_gkw }}</td>
+            <td>{{ row.kosten_tap }}</td>
+            <td>{{ row.kosten_cv }}</td>
+            <td>{{ row.kosten_gkw }}</td>
+            <td>{{ row.kosten_totaal }}</td>
           </tr>
         {% endfor %}
       </tbody>

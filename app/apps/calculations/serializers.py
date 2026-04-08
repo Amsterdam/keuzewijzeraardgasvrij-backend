@@ -4,7 +4,7 @@ from decimal import Decimal
 from django.utils import timezone
 from rest_framework import serializers
 
-from .models import CalculationInput
+from .models import GebruikersInvoer
 
 
 def _validate_finite_number(value, _: str):
@@ -19,7 +19,7 @@ def _validate_finite_number(value, _: str):
     return value
 
 
-class CalculationInputCreateSerializer(serializers.ModelSerializer):
+class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
     bouwjaar = serializers.IntegerField(min_value=1, max_value=timezone.now().year)
     bruto_vloeroppervlak = serializers.DecimalField(
         max_digits=18,
@@ -62,7 +62,7 @@ class CalculationInputCreateSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = CalculationInput
+        model = GebruikersInvoer
         fields = [
             "id",
             "bouwjaar",

@@ -5,7 +5,7 @@ from decimal import Decimal
 from django.test import TestCase
 
 from apps.calculations.calculator import EnergieCalculator, EnergieType
-from apps.calculations.models import CalculationInput
+from apps.calculations.models import GebruikersInvoer
 from apps.calculations.subsysteem_calculations import (
     SubsysteemCalculationMethod,
     calculate_gbs,
@@ -14,7 +14,7 @@ from apps.kengetallen.models import ScenarioKeuze, Subkengetal
 from apps.systemen.models import Subsysteem
 
 
-def _calculation_input(**overrides: object) -> CalculationInput:
+def _calculation_input(**overrides: object) -> GebruikersInvoer:
     defaults: dict[str, object] = {
         "bouwjaar": 1990,
         "bruto_vloeroppervlak": Decimal("1234.5"),
@@ -36,7 +36,7 @@ def _calculation_input(**overrides: object) -> CalculationInput:
         "wens_tot_koelen": False,
     }
     defaults.update(overrides)
-    return CalculationInput.objects.create(**defaults)
+    return GebruikersInvoer.objects.create(**defaults)
 
 
 class GbsCalculationTest(TestCase):

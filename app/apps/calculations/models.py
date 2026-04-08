@@ -3,7 +3,7 @@ from __future__ import annotations
 from django.db import models
 
 
-class CalculationInput(models.Model):
+class GebruikersInvoer(models.Model):
     bouwjaar = models.PositiveIntegerField()
     bruto_vloeroppervlak = models.DecimalField(max_digits=18, decimal_places=9)
     aantal_woningen = models.PositiveIntegerField()
@@ -47,11 +47,11 @@ class CalculationInput(models.Model):
     wens_tot_koelen = models.BooleanField()
 
     class Meta:
-        verbose_name = "Calculation input"
-        verbose_name_plural = "Calculation inputs"
+        verbose_name = "Gebruikersinvoer"
+        verbose_name_plural = "Gebruikersinvoer"
 
     def __str__(self):
-        return f"CalculationInput {self.pk or '-'} ({self.bouwjaar})"
+        return f"GebruikersInvoer {self.pk or '-'} ({self.bouwjaar})"
 
 
 class Conversie(models.Model):
@@ -71,7 +71,35 @@ class Conversie(models.Model):
         return f"{self.naam}={self.waarde}"
 
 
-class CalculationDashboard(CalculationInput):
+class EnergiePrijs(models.Model):
+    """Energy price per GJ.
+
+    Values are stored in the database and typically loaded via fixtures.
+
+    Some prices may be unknown/not applicable; those can be stored as null.
+    """
+
+    naam = models.CharField(max_length=64, unique=True)
+    prijs_eur_per_gj = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = "Energieprijs"
+        verbose_name_plural = "Energieprijzen"
+
+    def __str__(self) -> str:
+        return (
+            f"{self.naam}={self.prijs_eur_per_gj} €/GJ"
+            if self.prijs_eur_per_gj is not None
+            else f"{self.naam}=<null> €/GJ"
+        )
+
+
+class CalculationDashboard(GebruikersInvoer):
     """Proxy model used to expose a custom admin page in the sidebar."""
 
     class Meta:

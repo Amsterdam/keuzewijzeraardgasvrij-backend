@@ -7,7 +7,7 @@ from typing import Final, Iterable, Literal
 
 from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
 
-from .models import CalculationInput, Conversie
+from .models import Conversie, GebruikersInvoer
 
 
 EnergieTypeValue = Literal["tapwater", "cv", "gkw"]
@@ -43,7 +43,7 @@ class EnergieCalculator:
 
     def calculate(
         self,
-        calculation_input: CalculationInput,
+        calculation_input: GebruikersInvoer,
         *,
         scenarios: Iterable[ScenarioKeuze] = (
             ScenarioKeuze.LAAG,
@@ -84,7 +84,7 @@ class EnergieCalculator:
         self,
         energie_type: EnergieTypeValue,
         scenario: ScenarioKeuze,
-        calculation_input: CalculationInput,
+        calculation_input: GebruikersInvoer,
         *,
         conversie_m3gas_naar_kwh: Decimal,
         conversie_kwh_naar_gj: Decimal,
@@ -129,7 +129,7 @@ class EnergieCalculator:
     def _calculate_tap(
         self,
         scenario: ScenarioKeuze,
-        calculation_input: CalculationInput,
+        calculation_input: GebruikersInvoer,
         *,
         conversie_m3gas_naar_kwh: Decimal,
         conversie_kwh_naar_gj: Decimal,
@@ -185,7 +185,7 @@ class EnergieCalculator:
     def _calculate_cv(
         self,
         scenario: ScenarioKeuze,
-        calculation_input: CalculationInput,
+        calculation_input: GebruikersInvoer,
         *,
         conversie_m3gas_naar_kwh: Decimal,
         conversie_kwh_naar_gj: Decimal,
@@ -243,7 +243,7 @@ class EnergieCalculator:
         scenario: ScenarioKeuze,
         *,
         conversie_kwh_naar_gj: Decimal,
-        calculation_input: CalculationInput,
+        calculation_input: GebruikersInvoer,
     ):
         kengetallen = self._get_kengetallen(
             scenario,
