@@ -61,6 +61,72 @@
       </tbody>
     </table>
 
+    <h2>Stadsverwarming kengetallen</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Klanttype</th>
+          <th>Producttype</th>
+          <th>Kostetype</th>
+          <th>Eenheid</th>
+          <th>Interval</th>
+          <th>Vermogen berekenen op</th>
+          <th>kW_min</th>
+          <th>kW_max</th>
+          <th>Waarde 1</th>
+          <th>Waarde 2</th>
+          <th>Bijbehorend vermogen CV [kW/vve]</th>
+          <th>Bijbehorend vermogen TAP [kW/vve]</th>
+          <th>Bijbehorend vermogen Koude [kW/vve]</th>
+          <th>Te berekenen vermogen [kW/vve]</th>
+          <th>Is tussen mix max</th>
+          <th>Is boven max</th>
+          <th>Waarde Vast</th>
+          <th>Waarde Variabel</th>
+          <th>Waarde Geclassificeerd</th>
+          <th>Factor naar jaar</th>
+          <th>Factor collectief</th>
+          <th>Stadsverwarming kosten totaal</th>
+          <th>Stadsverwarming kosten particulier</th>
+          <th>Stadsverwarming kosten zakelijk warmte</th>
+          <th>Stadsverwarming kosten zakelijk warmte + koude</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in stadsverwarming_rows %}
+          <tr>
+            <td>{{ row.scenario }}</td>
+            <td>{{ row.klanttype }}</td>
+            <td>{{ row.producttype }}</td>
+            <td>{{ row.kostetype }}</td>
+            <td>{{ row.eenheid }}</td>
+            <td>{{ row.interval }}</td>
+            <td>{{ row.vermogen_berekenen_op }}</td>
+            <td>{{ row.kw_min }}</td>
+            <td>{{ row.kw_max }}</td>
+            <td>{{ row.waarde_1 }}</td>
+            <td>{{ row.waarde_2 }}</td>
+            <td>{{ row.vermogen_cv_vve }}</td>
+            <td>{{ row.vermogen_tap_vve }}</td>
+            <td>{{ row.vermogen_koude_vve }}</td>
+            <td>{{ row.te_berekenen_vermogen }}</td>
+            <td>{{ row.is_tussen_mix_max }}</td>
+            <td>{{ row.is_boven_max }}</td>
+            <td>{{ row.waarde_vast }}</td>
+            <td>{{ row.waarde_variabel }}</td>
+            <td>{{ row.waarde_geclassificeerd }}</td>
+            <td>{{ row.factor_naar_jaar }}</td>
+            <td>{{ row.factor_collectief }}</td>
+            <td>{{ row.stadsverwarming_kosten_totaal }}</td>
+            <td>{{ row.stadsverwarming_kosten_particulier }}</td>
+            <td>{{ row.stadsverwarming_kosten_zakelijk_warmte }}</td>
+            <td>{{ row.stadsverwarming_kosten_zakelijk_warmte_koude }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
     <h2>Subsysteemberekening</h2>
     <table class="adminlist">
       <thead>

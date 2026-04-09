@@ -93,3 +93,84 @@ class AlgemeenKengetal(Kengetal):
     class Meta:
         verbose_name = "Algemeen kengetal"
         verbose_name_plural = "Algemene kengetallen"
+
+
+class StadsverwarmingKlantType(models.TextChoices):
+    PARTICULIER = "particulier", "Particulier"
+    ZAKELIJK = "zakelijk", "Zakelijk"
+
+
+class StadsverwarmingProductType(models.TextChoices):
+    WARMTE = "warmte", "Warmte"
+    KOUDE = "koude", "Koude"
+    WARMTE_KOUDE = "warmte_koude", "Warmte + koude"
+
+
+class StadsverwarmingEenheid(models.TextChoices):
+    VAST = "vast", "Vast"
+    VARIABEL = "variabel", "Variabel"
+    GECLASSIFICEERD = "geclassificeerd", "Geclassificeerd"
+
+
+class StadsverwarmingInterval(models.TextChoices):
+    EENMALIG = "eenmalig", "Eenmalig"
+    JAARLIJKS = "jaarlijks", "Jaarlijks"
+    MAANDELIJKS = "maandelijks", "Maandelijks"
+
+
+class StadsverwarmingVermogenBerekenenOp(models.TextChoices):
+    WARMTE = "warmte", "Warmte"
+    KOUDE = "koude", "Koude"
+
+
+class StadsverwarmingKengetal(models.Model):
+    klanttype = models.CharField(
+        max_length=20, choices=StadsverwarmingKlantType.choices
+    )
+    producttype = models.CharField(
+        max_length=20,
+        choices=StadsverwarmingProductType.choices,
+    )
+    kostetype = models.CharField(max_length=255)
+    eenheid = models.CharField(max_length=20, choices=StadsverwarmingEenheid.choices)
+    interval = models.CharField(
+        max_length=20,
+        choices=StadsverwarmingInterval.choices,
+    )
+
+    vermogen_berekenen_op = models.CharField(
+        max_length=20,
+        choices=StadsverwarmingVermogenBerekenenOp.choices,
+        blank=True,
+        null=True,
+    )
+
+    kw_min = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        blank=True,
+        null=True,
+    )
+    kw_max = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        blank=True,
+        null=True,
+    )
+
+    waarde_1 = models.DecimalField(max_digits=18, decimal_places=9)
+    waarde_2 = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "Stadsverwarming kengetal"
+        verbose_name_plural = "Stadsverwarming kengetallen"
+        indexes = [
+            models.Index(fields=["klanttype", "producttype"]),
+            models.Index(fields=["kostetype"]),
+        ]
+
+    def __str__(self) -> str:
+        kw_range = ""
+        if self.kw_min is not None or self.kw_max is not None:
+            kw_range = f" ({self.kw_min or 0}–{self.kw_max or '∞'} kW)"
+        return f"{self.klanttype}/{self.producttype} - {self.kostetype}{kw_range}"

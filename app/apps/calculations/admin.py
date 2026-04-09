@@ -6,7 +6,7 @@ from django.template.response import TemplateResponse
 from django.urls import path, reverse
 
 from .models import CalculationDashboard, Conversie, EnergiePrijs, GebruikersInvoer
-from .calculator import EnergieCalculator, EnergieType
+from .calculator import EnergieCalculator, EnergieType, StadsverwarmingCalculator
 from apps.systemen.models import Hoofdsysteem, Subsysteem
 
 
@@ -44,6 +44,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         energie_rows = []
         subsysteem_rows = []
         hoofdsysteem_rows = []
+        stadsverwarming_rows = []
         if selected_input is not None:
 
             def format(value: Decimal) -> str:
@@ -99,6 +100,60 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                 )
 
             scenario_order = {"laag": 0, "midden": 1, "hoog": 2}
+
+            stadsverwarming_result = StadsverwarmingCalculator().calculate(
+                energie_calculation=energie,
+                aantal_woningen=selected_input.aantal_woningen,
+            )
+
+            stadsverwarming_rows = []
+            for r in stadsverwarming_result.results:
+                stadsverwarming_rows.append(
+                    {
+                        "scenario": r.scenario,
+                        "klanttype": str(r.klanttype),
+                        "producttype": str(r.producttype),
+                        "kostetype": r.kostetype,
+                        "eenheid": str(r.eenheid),
+                        "interval": r.interval,
+                        "vermogen_berekenen_op": (
+                            ""
+                            if r.vermogen_berekenen_op is None
+                            else str(r.vermogen_berekenen_op)
+                        ),
+                        "kw_min": "" if r.kw_min is None else str(r.kw_min),
+                        "kw_max": "∞" if r.kw_max is None else str(r.kw_max),
+                        "waarde_1": str(r.waarde_1),
+                        "waarde_2": str(r.waarde_2),
+                        "vermogen_cv_vve": format(r.vermogen_cv_vve),
+                        "vermogen_tap_vve": format(r.vermogen_tap_vve),
+                        "vermogen_koude_vve": format(r.vermogen_koude_vve),
+                        "te_berekenen_vermogen": (
+                            ""
+                            if r.te_berekenen_vermogen is None
+                            else format(r.te_berekenen_vermogen)
+                        ),
+                        "is_tussen_mix_max": "true" if r.is_tussen_min_max else "false",
+                        "is_boven_max": "true" if r.is_boven_max else "false",
+                        "waarde_vast": format_eur(r.waarde_vast),
+                        "waarde_variabel": format_eur(r.waarde_variabel),
+                        "waarde_geclassificeerd": format_eur(r.waarde_geclassificeerd),
+                        "factor_naar_jaar": str(r.factor_naar_jaar),
+                        "factor_collectief": str(r.factor_collectief),
+                        "stadsverwarming_kosten_totaal": format_eur(
+                            r.stadsverwarming_kosten_totaal
+                        ),
+                        "stadsverwarming_kosten_particulier": format_eur(
+                            r.stadsverwarming_kosten_particulier
+                        ),
+                        "stadsverwarming_kosten_zakelijk_warmte": format_eur(
+                            r.stadsverwarming_kosten_zakelijk_warmte
+                        ),
+                        "stadsverwarming_kosten_zakelijk_warmte_koude": format_eur(
+                            r.stadsverwarming_kosten_zakelijk_warmte_koude
+                        ),
+                    }
+                )
 
             for subsysteem in Subsysteem.objects.order_by("naam"):
                 method = subsysteem.calculation_method
@@ -196,6 +251,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "energie_rows": energie_rows,
             "subsysteem_rows": subsysteem_rows,
             "hoofdsysteem_rows": hoofdsysteem_rows,
+            "stadsverwarming_rows": stadsverwarming_rows,
             "title": "Berekeningen",
         }
         return TemplateResponse(

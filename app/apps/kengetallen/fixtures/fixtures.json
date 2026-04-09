@@ -1169,5 +1169,313 @@
     "model": "kengetallen.algemeenkengetal",
     "pk": 27,
     "fields": {"scenario": "hoog", "naam": "gasvraag_koken", "omschrijving": "Gasvraag koken per woning [m³/j/w]", "waarde": "50"}
+  },
+
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 1,
+    "fields": {
+      "klanttype": "particulier",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht warmte",
+      "eenheid": "vast",
+      "interval": "jaarlijks",
+      "vermogen_berekenen_op": null,
+      "kw_min": null,
+      "kw_max": null,
+      "waarde_1": "582.82",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 2,
+    "fields": {
+      "klanttype": "particulier",
+      "producttype": "warmte_koude",
+      "kostetype": "Huur afleverset warmte",
+      "eenheid": "vast",
+      "interval": "jaarlijks",
+      "vermogen_berekenen_op": null,
+      "kw_min": null,
+      "kw_max": null,
+      "waarde_1": "145.83",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 3,
+    "fields": {
+      "klanttype": "particulier",
+      "producttype": "warmte_koude",
+      "kostetype": "Opslag warmte",
+      "eenheid": "vast",
+      "interval": "jaarlijks",
+      "vermogen_berekenen_op": null,
+      "kw_min": null,
+      "kw_max": null,
+      "waarde_1": "31.44",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 4,
+    "fields": {
+      "klanttype": "particulier",
+      "producttype": "koude",
+      "kostetype": "Vastrecht extra voor koude",
+      "eenheid": "vast",
+      "interval": "jaarlijks",
+      "vermogen_berekenen_op": null,
+      "kw_min": null,
+      "kw_max": null,
+      "waarde_1": "281.69",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 5,
+    "fields": {
+      "klanttype": "particulier",
+      "producttype": "warmte",
+      "kostetype": "Aansluitkosten SV warmte",
+      "eenheid": "vast",
+      "interval": "eenmalig",
+      "vermogen_berekenen_op": null,
+      "kw_min": null,
+      "kw_max": null,
+      "waarde_1": "5250",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 6,
+    "fields": {
+      "klanttype": "particulier",
+      "producttype": "koude",
+      "kostetype": "Aansluitkosten SV Koude",
+      "eenheid": "vast",
+      "interval": "eenmalig",
+      "vermogen_berekenen_op": null,
+      "kw_min": null,
+      "kw_max": null,
+      "waarde_1": "5781.86",
+      "waarde_2": "0"
+    }
+  },
+
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 7,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "variabel",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "0",
+      "kw_max": "999",
+      "waarde_1": "1.1816667",
+      "waarde_2": "0.0004083"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 8,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "variabel",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "999",
+      "kw_max": null,
+      "waarde_1": "0.7725",
+      "waarde_2": "0"
+    }
+  },
+
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 9,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "0",
+      "kw_max": "50",
+      "waarde_1": "54.16",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 10,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "50",
+      "kw_max": "101",
+      "waarde_1": "60.4975",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 11,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "101",
+      "kw_max": "149",
+      "waarde_1": "54.08",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 12,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "149",
+      "kw_max": "231",
+      "waarde_1": "73.88",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 13,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "231",
+      "kw_max": "371",
+      "waarde_1": "120.7",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 14,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "371",
+      "kw_max": "601",
+      "waarde_1": "240.22",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 15,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "601",
+      "kw_max": "924",
+      "waarde_1": "333.93",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 16,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "924",
+      "kw_max": "1478",
+      "waarde_1": "469.32",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 17,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "1478",
+      "kw_max": "2309",
+      "waarde_1": "697.17",
+      "waarde_2": "0"
+    }
+  },
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 18,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "warmte_koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "geclassificeerd",
+      "interval": "maandelijks",
+      "vermogen_berekenen_op": "warmte",
+      "kw_min": "2309",
+      "kw_max": null,
+      "waarde_1": "999.15",
+      "waarde_2": "0"
+    }
+  },
+
+  {
+    "model": "kengetallen.stadsverwarmingkengetal",
+    "pk": 19,
+    "fields": {
+      "klanttype": "zakelijk",
+      "producttype": "koude",
+      "kostetype": "Vastrecht periodiek",
+      "eenheid": "variabel",
+      "interval": "jaarlijks",
+      "vermogen_berekenen_op": "koude",
+      "kw_min": "0",
+      "kw_max": null,
+      "waarde_1": "56.62",
+      "waarde_2": "0"
+    }
   }
 ]
