@@ -10,6 +10,7 @@ from apps.calculations.subsysteem_calculations import (
     SubsysteemCalculationMethod,
     SubsysteemFullResult,
     SubsysteemScenarioResult,
+    calculate_stadsverwarming,
     calculate_gbs,
     calculate_investering,
     calculate_openbron_systeem,
@@ -20,6 +21,7 @@ from apps.kengetallen.models import Hoofdkengetal, ScenarioKeuze
 from apps.calculations.calculator import (
     EnergieCalculatorFullResult,
     EnergieCalculationResult,
+    StadsverwarmingCalculator,
     EnergieType,
     EnergieTypeValue,
 )
@@ -160,7 +162,6 @@ class Hoofdsysteem(models.Model):
         kosten_cv = elec_cv_gj * prijs_cv
         kosten_gkw = elec_gkw_gj * prijs_gkw
         kosten_total = kosten_tap + kosten_cv + kosten_gkw
-
         return HoofdsysteemScenarioResult(
             scenario=scenario_key,
             by_type=by_type,
@@ -302,6 +303,31 @@ class Subsysteem(models.Model):
                 self.subkengetallen.get(scenario=scenario),
                 cv_energie_calculation=cv_result,
                 aantal_woningen=calculation_input.aantal_woningen,
+            )
+            return SubsysteemScenarioResult(
+                scenario=str(scenario),
+                method=str(self.calculation_method),
+                berekening=berekening,
+            )
+
+        if self.calculation_method == SubsysteemCalculationMethod.Stadsverwarming:
+            if energie_calculation is None:
+                raise ValueError(
+                    "energie_calculation is required for Stadsverwarming calculations"
+                )
+            if calculation_input is None:
+                raise ValueError(
+                    "calculation_input is required for Stadsverwarming calculations"
+                )
+
+            stadsverwarming_result = StadsverwarmingCalculator().calculate(
+                energie_calculation=energie_calculation,
+                aantal_woningen=calculation_input.aantal_woningen,
+            )
+            berekening = calculate_stadsverwarming(
+                self.naam,
+                stadsverwarming_result,
+                scenario,
             )
             return SubsysteemScenarioResult(
                 scenario=str(scenario),

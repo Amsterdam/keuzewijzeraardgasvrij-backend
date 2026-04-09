@@ -96,7 +96,7 @@ class StadsverwarmingCalculatorTest(TestCase):
             totals.stadsverwarming_kosten_zakelijk_warmte_koude, Decimal("0")
         )
 
-    def test_zakelijk_koude_variabel_jaarlijks_costs_and_flags(self):
+    def test_zakelijk_koude_variabel_jaarlijks(self):
         calc_input = _calculation_input(aantal_woningen=200)
         energie = EnergieCalculator().calculate(calc_input)
 
@@ -152,7 +152,7 @@ class StadsverwarmingCalculatorTest(TestCase):
             match.stadsverwarming_kosten_zakelijk_warmte_koude, expected_total
         )
 
-    def test_particulier_warmte_koude_vast_jaarlijks_splits_nonzero(self):
+    def test_particulier_warmte_koude_vast_jaarlijks(self):
         calc_input = _calculation_input(aantal_woningen=200)
         energie = EnergieCalculator().calculate(calc_input)
 

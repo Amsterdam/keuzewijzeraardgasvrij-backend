@@ -206,6 +206,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                             "onderhoud": format_eur(
                                 result.berekening.onderhoud_eur_per_woning_per_jaar
                             ),
+                            "tco": format_eur(result.berekening.tco),
                         }
                     )
             for hoofdsysteem in Hoofdsysteem.objects.order_by("id"):

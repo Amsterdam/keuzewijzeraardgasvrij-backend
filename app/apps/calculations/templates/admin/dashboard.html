@@ -61,31 +61,7 @@
       </tbody>
     </table>
 
-    <h2>Stadsverwarming totalen per scenario</h2>
-    <table class="adminlist">
-      <thead>
-        <tr>
-          <th>Scenario</th>
-          <th>Stadsverwarming kosten particulier warmte</th>
-          <th>Stadsverwarming kosten particulier koude</th>
-          <th>Stadsverwarming kosten zakelijk warmte</th>
-          <th>Stadsverwarming kosten zakelijk warmte + koude</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in stadsverwarming_totals_rows %}
-          <tr>
-            <td>{{ row.scenario }}</td>
-            <td>{{ row.stadsverwarming_kosten_particulier_warmte }}</td>
-            <td>{{ row.stadsverwarming_kosten_particulier_koude }}</td>
-            <td>{{ row.stadsverwarming_kosten_zakelijk_warmte }}</td>
-            <td>{{ row.stadsverwarming_kosten_zakelijk_warmte_koude }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <h2>Stadsverwarming kengetallen</h2>
+    <h2>Stadsverwarmingsberekening</h2>
     <table class="adminlist">
       <thead>
         <tr>
@@ -152,7 +128,29 @@
         {% endfor %}
       </tbody>
     </table>
-
+    <h2>Stadsverwarming totalen per scenario</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Stadsverwarming kosten particulier warmte</th>
+          <th>Stadsverwarming kosten particulier koude</th>
+          <th>Stadsverwarming kosten zakelijk warmte</th>
+          <th>Stadsverwarming kosten zakelijk warmte + koude</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in stadsverwarming_totals_rows %}
+          <tr>
+            <td>{{ row.scenario }}</td>
+            <td>{{ row.stadsverwarming_kosten_particulier_warmte }}</td>
+            <td>{{ row.stadsverwarming_kosten_particulier_koude }}</td>
+            <td>{{ row.stadsverwarming_kosten_zakelijk_warmte }}</td>
+            <td>{{ row.stadsverwarming_kosten_zakelijk_warmte_koude }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     <h2>Subsysteemberekening</h2>
     <table class="adminlist">
       <thead>
@@ -162,6 +160,7 @@
           <th>Calculation method</th>
           <th>Afschrijving [€/w/j]</th>
           <th>Onderhoud [€/w/j]</th>
+          <th>TCO [€/w/j]</th>
         </tr>
       </thead>
       <tbody>
@@ -172,6 +171,7 @@
             <td>{{ row.method }}</td>
             <td>{{ row.afschrijving }}</td>
             <td>{{ row.onderhoud }}</td>
+            <td>{{ row.tco }}</td>
           </tr>
         {% endfor %}
       </tbody>
