@@ -45,6 +45,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         subsysteem_rows = []
         hoofdsysteem_rows = []
         stadsverwarming_rows = []
+        stadsverwarming_totals_rows = []
         if selected_input is not None:
 
             def format(value: Decimal) -> str:
@@ -106,6 +107,31 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                 aantal_woningen=selected_input.aantal_woningen,
             )
 
+            stadsverwarming_totals_rows = []
+            for scenario_key in ("laag", "midden", "hoog"):
+                totals = stadsverwarming_result.kosten_totals_by_scenario.get(
+                    scenario_key
+                )
+                if totals is None:
+                    continue
+                stadsverwarming_totals_rows.append(
+                    {
+                        "scenario": scenario_key,
+                        "stadsverwarming_kosten_particulier_warmte": format_eur(
+                            totals.stadsverwarming_kosten_particulier_warmte
+                        ),
+                        "stadsverwarming_kosten_particulier_koude": format_eur(
+                            totals.stadsverwarming_kosten_particulier_koude
+                        ),
+                        "stadsverwarming_kosten_zakelijk_warmte": format_eur(
+                            totals.stadsverwarming_kosten_zakelijk_warmte
+                        ),
+                        "stadsverwarming_kosten_zakelijk_warmte_koude": format_eur(
+                            totals.stadsverwarming_kosten_zakelijk_warmte_koude
+                        ),
+                    }
+                )
+
             stadsverwarming_rows = []
             for r in stadsverwarming_result.results:
                 stadsverwarming_rows.append(
@@ -143,8 +169,11 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                         "stadsverwarming_kosten_totaal": format_eur(
                             r.stadsverwarming_kosten_totaal
                         ),
-                        "stadsverwarming_kosten_particulier": format_eur(
-                            r.stadsverwarming_kosten_particulier
+                        "stadsverwarming_kosten_particulier_warmte": format_eur(
+                            r.stadsverwarming_kosten_particulier_warmte
+                        ),
+                        "stadsverwarming_kosten_particulier_koude": format_eur(
+                            r.stadsverwarming_kosten_particulier_koude
                         ),
                         "stadsverwarming_kosten_zakelijk_warmte": format_eur(
                             r.stadsverwarming_kosten_zakelijk_warmte
@@ -252,6 +281,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "subsysteem_rows": subsysteem_rows,
             "hoofdsysteem_rows": hoofdsysteem_rows,
             "stadsverwarming_rows": stadsverwarming_rows,
+            "stadsverwarming_totals_rows": stadsverwarming_totals_rows,
             "title": "Berekeningen",
         }
         return TemplateResponse(
