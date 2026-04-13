@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
+from typing import Final
 
 from django.db import models
 
@@ -11,6 +12,9 @@ from apps.calculations.calculator import (
     EnergieCalculationResult,
     StadsverwarmingCalculatorFullResult,
 )
+
+
+JAREN_TCO: Final[Decimal] = Decimal("30")
 
 
 class SubsysteemCalculationMethod(models.TextChoices):
@@ -51,7 +55,7 @@ def calculate_investering(subkengetal: Subkengetal) -> SubsysteemBerekening:
     investering = subkengetal.investeringskosten
     afschrijving = investering / subkengetal.levensduur
     onderhoud = investering * subkengetal.beheer_en_onderhoud
-    tco = (afschrijving + onderhoud) * 30
+    tco = (afschrijving + onderhoud) * JAREN_TCO
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving,
         onderhoud_eur_per_woning_per_jaar=onderhoud,
@@ -106,7 +110,7 @@ def calculate_openbron_systeem(
 
     afschrijving = investering_eur_per_woning / Decimal(subkengetal.levensduur)
     onderhoud = investering_eur_per_woning * subkengetal.beheer_en_onderhoud
-    tco = (afschrijving + onderhoud) * 30
+    tco = (afschrijving + onderhoud) * JAREN_TCO
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving,
         onderhoud_eur_per_woning_per_jaar=onderhoud,
@@ -150,7 +154,7 @@ def calculate_gbs(
     onderhoud_woning_per_jaar = (
         investering_eur_per_woning * subkengetal.beheer_en_onderhoud
     )
-    tco = (afschrijving_woning_per_jaar + onderhoud_woning_per_jaar) * 30
+    tco = (afschrijving_woning_per_jaar + onderhoud_woning_per_jaar) * JAREN_TCO
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving_woning_per_jaar,
         onderhoud_eur_per_woning_per_jaar=onderhoud_woning_per_jaar,
@@ -174,7 +178,7 @@ def calculate_stadsverwarming(
         kosten = totals.stadsverwarming_kosten_zakelijk_warmte_koude
     else:
         raise ValueError(f"Unknown stadswarmte subsysteem: {subsysteem_naam}")
-    tco = kosten * 30
+    tco = kosten * JAREN_TCO
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=Decimal("0"),
         onderhoud_eur_per_woning_per_jaar=Decimal("0"),
