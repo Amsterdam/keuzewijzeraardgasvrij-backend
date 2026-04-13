@@ -2,24 +2,33 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
+from typing import Final
 
 from django.db import models
 
 from apps.calculations.models import Conversie
 from apps.kengetallen.models import Subkengetal
-from apps.calculations.calculator import EnergieCalculationResult
+from apps.calculations.calculator import (
+    EnergieCalculationResult,
+    StadsverwarmingCalculatorFullResult,
+)
+
+
+JAREN_TCO: Final[Decimal] = Decimal("30")
 
 
 class SubsysteemCalculationMethod(models.TextChoices):
     Investering = "Investering", "Investering"
     Openbron = "openbron", "Openbron"
     Gbs = "gbs", "GBS"
+    Stadsverwarming = "stadsverwarming", "Stadsverwarming"
 
 
 @dataclass(frozen=True)
 class SubsysteemBerekening:
     afschrijving_eur_per_woning_per_jaar: Decimal
     onderhoud_eur_per_woning_per_jaar: Decimal
+    tco: Decimal
 
 
 @dataclass(frozen=True)
@@ -46,9 +55,11 @@ def calculate_investering(subkengetal: Subkengetal) -> SubsysteemBerekening:
     investering = subkengetal.investeringskosten
     afschrijving = investering / subkengetal.levensduur
     onderhoud = investering * subkengetal.beheer_en_onderhoud
+    tco = (afschrijving + onderhoud) * JAREN_TCO
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving,
         onderhoud_eur_per_woning_per_jaar=onderhoud,
+        tco=tco,
     )
 
 
@@ -99,16 +110,16 @@ def calculate_openbron_systeem(
 
     afschrijving = investering_eur_per_woning / Decimal(subkengetal.levensduur)
     onderhoud = investering_eur_per_woning * subkengetal.beheer_en_onderhoud
-
+    tco = (afschrijving + onderhoud) * JAREN_TCO
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving,
         onderhoud_eur_per_woning_per_jaar=onderhoud,
+        tco=tco,
     )
 
 
 def calculate_gbs(
     subkengetal: Subkengetal,
-    *,
     cv_energie_calculation: EnergieCalculationResult,
     aantal_woningen: int | Decimal,
 ) -> SubsysteemBerekening:
@@ -143,7 +154,33 @@ def calculate_gbs(
     onderhoud_woning_per_jaar = (
         investering_eur_per_woning * subkengetal.beheer_en_onderhoud
     )
+    tco = (afschrijving_woning_per_jaar + onderhoud_woning_per_jaar) * JAREN_TCO
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving_woning_per_jaar,
         onderhoud_eur_per_woning_per_jaar=onderhoud_woning_per_jaar,
+        tco=tco,
+    )
+
+
+def calculate_stadsverwarming(
+    subsysteem_naam: str,
+    stadsverwarming_result: StadsverwarmingCalculatorFullResult,
+    scenario: object,
+) -> SubsysteemBerekening:
+    totals = stadsverwarming_result.kosten_totals_by_scenario[str(scenario)]
+    if subsysteem_naam == "Particulier Stadswarmte":
+        kosten = totals.stadsverwarming_kosten_particulier_warmte
+    elif subsysteem_naam == "Particulier Stadswarmte + koude":
+        kosten = totals.stadsverwarming_kosten_particulier_koude
+    elif subsysteem_naam == "Zakelijk Stadswarmte":
+        kosten = totals.stadsverwarming_kosten_zakelijk_warmte
+    elif subsysteem_naam == "Zakelijk Stadswarmte + koude":
+        kosten = totals.stadsverwarming_kosten_zakelijk_warmte_koude
+    else:
+        raise ValueError(f"Unknown stadswarmte subsysteem: {subsysteem_naam}")
+    tco = kosten * JAREN_TCO
+    return SubsysteemBerekening(
+        afschrijving_eur_per_woning_per_jaar=Decimal("0"),
+        onderhoud_eur_per_woning_per_jaar=Decimal("0"),
+        tco=tco,
     )

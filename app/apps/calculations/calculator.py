@@ -5,7 +5,16 @@ from decimal import Decimal
 from numbers import Number
 from typing import Final, Iterable, Literal
 
-from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
+from apps.kengetallen.models import (
+    AlgemeenKengetal,
+    ScenarioKeuze,
+    StadsverwarmingEenheid,
+    StadsverwarmingInterval,
+    StadsverwarmingKengetal,
+    StadsverwarmingKlantType,
+    StadsverwarmingProductType,
+    StadsverwarmingVermogenBerekenenOp,
+)
 
 from .models import Conversie, GebruikersInvoer
 
@@ -14,8 +23,6 @@ EnergieTypeValue = Literal["tapwater", "cv", "gkw"]
 
 
 class EnergieType:
-    """Constants used to choose which energy demand is calculated."""
-
     TAP: Final[EnergieTypeValue] = "tapwater"
     CV: Final[EnergieTypeValue] = "cv"
     GKW: Final[EnergieTypeValue] = "gkw"
@@ -38,9 +45,61 @@ class EnergieCalculatorFullResult:
     by_scenario: dict[str, dict[EnergieTypeValue, EnergieCalculationResult]]
 
 
-class EnergieCalculator:
-    """Calculator for energy/gas demand metrics."""
+@dataclass(frozen=True, slots=True)
+class StadsverwarmingKengetalCalculationResult:
+    scenario: str
+    kengetal_id: int
 
+    klanttype: StadsverwarmingKlantType
+    producttype: StadsverwarmingProductType
+    kostetype: str
+    eenheid: StadsverwarmingEenheid
+    interval: str
+    vermogen_berekenen_op: StadsverwarmingVermogenBerekenenOp | None
+
+    kw_min: Decimal | None
+    kw_max: Decimal | None
+    waarde_1: Decimal
+    waarde_2: Decimal
+
+    vermogen_cv_vve: Decimal
+    vermogen_tap_vve: Decimal
+    vermogen_koude_vve: Decimal
+    te_berekenen_vermogen: Decimal | None
+
+    is_tussen_min_max: bool
+    is_boven_max: bool
+
+    waarde_vast: Decimal
+    waarde_geclassificeerd: Decimal
+    waarde_variabel: Decimal
+
+    factor_naar_jaar: Decimal
+    factor_collectief: Decimal
+
+    stadsverwarming_kosten_totaal: Decimal
+    stadsverwarming_kosten_particulier_warmte: Decimal
+    stadsverwarming_kosten_particulier_koude: Decimal
+    stadsverwarming_kosten_zakelijk_warmte: Decimal
+    stadsverwarming_kosten_zakelijk_warmte_koude: Decimal
+
+
+@dataclass(frozen=True, slots=True)
+class StadsverwarmingScenarioKostenTotals:
+    stadsverwarming_kosten_particulier_warmte: Decimal
+    stadsverwarming_kosten_particulier_koude: Decimal
+    stadsverwarming_kosten_zakelijk_warmte: Decimal
+    stadsverwarming_kosten_zakelijk_warmte_koude: Decimal
+
+
+@dataclass(frozen=True, slots=True)
+class StadsverwarmingCalculatorFullResult:
+    results: list[StadsverwarmingKengetalCalculationResult]
+    by_scenario: dict[str, list[StadsverwarmingKengetalCalculationResult]]
+    kosten_totals_by_scenario: dict[str, StadsverwarmingScenarioKostenTotals]
+
+
+class EnergieCalculator:
     def calculate(
         self,
         calculation_input: GebruikersInvoer,
@@ -56,8 +115,6 @@ class EnergieCalculator:
             EnergieType.GKW,
         ),
     ) -> EnergieCalculatorFullResult:
-        """Calculate all energie types for all scenarios."""
-
         conversie_m3gas_naar_kwh = Conversie.objects.get(naam="m3gas_naar_kwh").waarde
         conversie_kwh_naar_gj = Conversie.objects.get(naam="kwh_naar_gj").waarde
 
@@ -67,6 +124,7 @@ class EnergieCalculator:
         for scenario in scenarios:
             scenario_key = str(scenario)
             by_scenario[scenario_key] = {}
+
             for energie_type in energie_types:
                 single = self._calculate_single(
                     energie_type,
@@ -145,14 +203,16 @@ class EnergieCalculator:
         )
 
         warmtevraag_kw_per_woning = kengetallen["warmtevraag_tap"]
-        gelijktijdigheid_tap = 1 / Decimal(calculation_input.aantal_woningen).sqrt()
+        gelijktijdigheid_tap = (
+            Decimal("1") / Decimal(calculation_input.aantal_woningen).sqrt()
+        )
         percentage_ruimteverwarming = kengetallen["percentage_ruimteverwarming"]
         rendement_gasketel = kengetallen["rendement_gasketel"]
 
         vermogen_warmte_kw_per_woning = warmtevraag_kw_per_woning * gelijktijdigheid_tap
 
         tapwater_factor = (
-            Decimal(1) if calculation_input.tapwater_op_gas else Decimal(0)
+            Decimal("1") if calculation_input.tapwater_op_gas else Decimal("0")
         )
         gasverbruik_vve_totaal = self._to_decimal(
             calculation_input.gasverbruik_vve_totaal
@@ -164,7 +224,7 @@ class EnergieCalculator:
         )
         gas_m3_per_year = (
             tapwater_factor
-            * (Decimal(1) - percentage_ruimteverwarming)
+            * (Decimal("1") - percentage_ruimteverwarming)
             * gasverbruik_minus_gasvraag
         )
 
@@ -211,7 +271,7 @@ class EnergieCalculator:
         ruimteverwarming_factor = (
             percentage_ruimteverwarming
             if calculation_input.tapwater_op_gas
-            else Decimal(1)
+            else Decimal("1")
         )
         gasverbruik_vve_totaal = self._to_decimal(
             calculation_input.gasverbruik_vve_totaal
@@ -260,7 +320,7 @@ class EnergieCalculator:
         capaciteit_gj = capaciteit_kwh * conversie_kwh_naar_gj
         return {
             "vermogen_warmte_kw_per_woning": vermogen_warmte_kw_per_woning,
-            "gas_m3_per_year": Decimal(0),
+            "gas_m3_per_year": Decimal("0"),
             "capaciteit_warmte_kwh_per_year_per_woning": capaciteit_kwh,
             "capaciteit_warmte_gj_per_year_per_woning": capaciteit_gj,
         }
@@ -303,10 +363,312 @@ class EnergieCalculator:
             .iterator()
         )
         values = {naam: self._to_decimal(waarde) for naam, waarde in rows}
-
         missing = requested.difference(values.keys())
         if missing:
             raise AlgemeenKengetal.DoesNotExist(
                 f"Missing AlgemeenKengetal for scenario={scenario}: {sorted(missing)}"
             )
         return values
+
+
+class StadsverwarmingCalculator:
+    def calculate(
+        self,
+        energie_calculation: EnergieCalculatorFullResult,
+        aantal_woningen: int,
+    ) -> StadsverwarmingCalculatorFullResult:
+        jaren_tco = Decimal("30")
+        conversie_md_j = Decimal("12")
+
+        results: list[StadsverwarmingKengetalCalculationResult] = []
+        by_scenario: dict[str, list[StadsverwarmingKengetalCalculationResult]] = {}
+        kosten_totals_by_scenario: dict[str, StadsverwarmingScenarioKostenTotals] = {}
+
+        kengetallen = StadsverwarmingKengetal.objects.order_by("id")
+        for scenario_key, by_type in energie_calculation.by_scenario.items():
+            by_scenario[scenario_key] = []
+
+            total_particulier_warmte = Decimal("0")
+            total_particulier_koude = Decimal("0")
+            total_zakelijk_warmte = Decimal("0")
+            total_zakelijk_warmte_koude = Decimal("0")
+
+            vermogens = self._get_scenario_vermogens(by_type)
+            for kengetal in kengetallen:
+                factor_collectief = self._get_factor_collectief(
+                    klanttype=kengetal.klanttype,
+                    aantal_woningen=aantal_woningen,
+                )
+                factor_naar_jaar = self._get_factor_naar_jaar(
+                    interval=kengetal.interval,
+                    jaren_tco=jaren_tco,
+                    conversie_md_j=conversie_md_j,
+                )
+
+                te_berekenen_vermogen = self._get_te_berekenen_vermogen(
+                    vermogen_berekenen_op=kengetal.vermogen_berekenen_op,
+                    vermogens=vermogens,
+                )
+                is_tussen_min_max, is_boven_max = self._calculate_minmax_flags(
+                    te_berekenen_vermogen=te_berekenen_vermogen,
+                    kw_min=kengetal.kw_min,
+                    kw_max=kengetal.kw_max,
+                )
+
+                waarde_vast = self._get_waarde_vast(kengetal.eenheid, kengetal.waarde_1)
+                waarde_geclassificeerd = self._get_waarde_geclassificeerd(
+                    eenheid=kengetal.eenheid,
+                    is_tussen_min_max=is_tussen_min_max,
+                    waarde_1=kengetal.waarde_1,
+                )
+                waarde_variabel = self._get_waarde_variabel(
+                    eenheid=kengetal.eenheid,
+                    te_berekenen_vermogen=te_berekenen_vermogen,
+                    is_tussen_min_max=is_tussen_min_max,
+                    is_boven_max=is_boven_max,
+                    kw_min=kengetal.kw_min,
+                    kw_max=kengetal.kw_max,
+                    waarde_1=kengetal.waarde_1,
+                    waarde_2=kengetal.waarde_2,
+                )
+
+                kosten_totaal = self._get_kosten_totaal(
+                    waarde_vast=waarde_vast,
+                    waarde_variabel=waarde_variabel,
+                    waarde_geclassificeerd=waarde_geclassificeerd,
+                    factor_naar_jaar=factor_naar_jaar,
+                    factor_collectief=factor_collectief,
+                )
+                (
+                    kosten_particulier_warmte,
+                    kosten_particulier_koude,
+                    kosten_zakelijk_warmte,
+                    kosten_zakelijk_warmte_koude,
+                ) = self._get_kosten_for_type(
+                    klanttype=kengetal.klanttype,
+                    producttype=kengetal.producttype,
+                    kosten_totaal=kosten_totaal,
+                )
+
+                single = StadsverwarmingKengetalCalculationResult(
+                    scenario=str(scenario_key),
+                    kengetal_id=kengetal.id,
+                    klanttype=StadsverwarmingKlantType(kengetal.klanttype),
+                    producttype=StadsverwarmingProductType(kengetal.producttype),
+                    kostetype=str(kengetal.kostetype),
+                    eenheid=StadsverwarmingEenheid(kengetal.eenheid),
+                    interval=str(kengetal.interval),
+                    vermogen_berekenen_op=(
+                        None
+                        if kengetal.vermogen_berekenen_op is None
+                        else StadsverwarmingVermogenBerekenenOp(
+                            kengetal.vermogen_berekenen_op
+                        )
+                    ),
+                    kw_min=kengetal.kw_min,
+                    kw_max=kengetal.kw_max,
+                    waarde_1=kengetal.waarde_1,
+                    waarde_2=kengetal.waarde_2,
+                    vermogen_cv_vve=vermogens[EnergieType.CV],
+                    vermogen_tap_vve=vermogens[EnergieType.TAP],
+                    vermogen_koude_vve=vermogens[EnergieType.GKW],
+                    te_berekenen_vermogen=te_berekenen_vermogen,
+                    is_tussen_min_max=is_tussen_min_max,
+                    is_boven_max=is_boven_max,
+                    waarde_vast=waarde_vast,
+                    waarde_geclassificeerd=waarde_geclassificeerd,
+                    waarde_variabel=waarde_variabel,
+                    factor_naar_jaar=factor_naar_jaar,
+                    factor_collectief=factor_collectief,
+                    stadsverwarming_kosten_totaal=kosten_totaal,
+                    stadsverwarming_kosten_particulier_warmte=kosten_particulier_warmte,
+                    stadsverwarming_kosten_particulier_koude=kosten_particulier_koude,
+                    stadsverwarming_kosten_zakelijk_warmte=kosten_zakelijk_warmte,
+                    stadsverwarming_kosten_zakelijk_warmte_koude=kosten_zakelijk_warmte_koude,
+                )
+
+                results.append(single)
+                by_scenario[scenario_key].append(single)
+
+                total_particulier_warmte += (
+                    single.stadsverwarming_kosten_particulier_warmte
+                )
+                total_particulier_koude += (
+                    single.stadsverwarming_kosten_particulier_koude
+                )
+                total_zakelijk_warmte += single.stadsverwarming_kosten_zakelijk_warmte
+                total_zakelijk_warmte_koude += (
+                    single.stadsverwarming_kosten_zakelijk_warmte_koude
+                )
+
+            kosten_totals_by_scenario[scenario_key] = (
+                StadsverwarmingScenarioKostenTotals(
+                    stadsverwarming_kosten_particulier_warmte=total_particulier_warmte,
+                    stadsverwarming_kosten_particulier_koude=total_particulier_koude,
+                    stadsverwarming_kosten_zakelijk_warmte=total_zakelijk_warmte,
+                    stadsverwarming_kosten_zakelijk_warmte_koude=total_zakelijk_warmte_koude,
+                )
+            )
+
+        return StadsverwarmingCalculatorFullResult(
+            results=results,
+            by_scenario=by_scenario,
+            kosten_totals_by_scenario=kosten_totals_by_scenario,
+        )
+
+    def _get_scenario_vermogens(
+        self,
+        by_type: dict[EnergieTypeValue, EnergieCalculationResult],
+    ) -> dict[EnergieTypeValue, Decimal]:
+        return {
+            EnergieType.CV: by_type[EnergieType.CV].vermogen_warmte_kw_per_vve,
+            EnergieType.TAP: by_type[EnergieType.TAP].vermogen_warmte_kw_per_vve,
+            EnergieType.GKW: by_type[EnergieType.GKW].vermogen_warmte_kw_per_vve,
+        }
+
+    def _get_factor_collectief(
+        self, *, klanttype: str, aantal_woningen: int
+    ) -> Decimal:
+        if klanttype == StadsverwarmingKlantType.ZAKELIJK:
+            return Decimal("1") / Decimal(aantal_woningen)
+        return Decimal("1")
+
+    def _get_factor_naar_jaar(
+        self,
+        interval: str,
+        jaren_tco: Decimal,
+        conversie_md_j: Decimal,
+    ) -> Decimal:
+        if interval == StadsverwarmingInterval.EENMALIG:
+            return Decimal("1") / jaren_tco
+        if interval == StadsverwarmingInterval.MAANDELIJKS:
+            return conversie_md_j
+        return Decimal("1")
+
+    def _get_te_berekenen_vermogen(
+        self,
+        vermogen_berekenen_op: str | None,
+        vermogens: dict[EnergieTypeValue, Decimal],
+    ) -> Decimal | None:
+        if vermogen_berekenen_op == StadsverwarmingVermogenBerekenenOp.WARMTE:
+            return vermogens[EnergieType.CV] + vermogens[EnergieType.TAP]
+        if vermogen_berekenen_op == StadsverwarmingVermogenBerekenenOp.KOUDE:
+            return vermogens[EnergieType.GKW]
+        return None
+
+    def _calculate_minmax_flags(
+        self,
+        te_berekenen_vermogen: Decimal | None,
+        kw_min: Decimal | None,
+        kw_max: Decimal | None,
+    ) -> tuple[bool, bool]:
+        if te_berekenen_vermogen is None:
+            return False, False
+
+        min_val = kw_min if kw_min is not None else Decimal("-Infinity")
+        max_val = kw_max if kw_max is not None else Decimal("Infinity")
+
+        is_boven_max = te_berekenen_vermogen >= max_val
+        is_tussen_min_max = min_val <= te_berekenen_vermogen < max_val
+        return is_tussen_min_max, is_boven_max
+
+    def _get_waarde_vast(self, eenheid: str, waarde_1: Decimal) -> Decimal:
+        return waarde_1 if eenheid == StadsverwarmingEenheid.VAST else Decimal("0")
+
+    def _get_waarde_geclassificeerd(
+        self,
+        eenheid: str,
+        is_tussen_min_max: bool,
+        waarde_1: Decimal,
+    ) -> Decimal:
+        if eenheid == StadsverwarmingEenheid.GECLASSIFICEERD and is_tussen_min_max:
+            return waarde_1
+        return Decimal("0")
+
+    def _get_waarde_variabel(
+        self,
+        eenheid: str,
+        te_berekenen_vermogen: Decimal | None,
+        is_tussen_min_max: bool,
+        is_boven_max: bool,
+        kw_min: Decimal | None,
+        kw_max: Decimal | None,
+        waarde_1: Decimal,
+        waarde_2: Decimal,
+    ) -> Decimal:
+        if eenheid != StadsverwarmingEenheid.VARIABEL or te_berekenen_vermogen is None:
+            return Decimal("0")
+
+        if waarde_2 > 0 and is_tussen_min_max:
+            return (te_berekenen_vermogen - kw_min) * (
+                waarde_1 - (waarde_2 * te_berekenen_vermogen)
+            )
+        if waarde_2 > 0 and is_boven_max and kw_max is not None:
+            return (kw_max - kw_min) * (waarde_1 - (waarde_2 * (kw_max - kw_min)))
+        if waarde_2 == 0 and is_tussen_min_max:
+            return (te_berekenen_vermogen - kw_min) * waarde_1
+        if waarde_2 == 0 and is_boven_max and kw_max is not None:
+            return (kw_max - kw_min) * waarde_1
+
+        return Decimal("0")
+
+    def _get_kosten_totaal(
+        self,
+        *,
+        waarde_vast: Decimal,
+        waarde_variabel: Decimal,
+        waarde_geclassificeerd: Decimal,
+        factor_naar_jaar: Decimal,
+        factor_collectief: Decimal,
+    ) -> Decimal:
+        return (
+            (waarde_vast + waarde_variabel + waarde_geclassificeerd)
+            * factor_naar_jaar
+            * factor_collectief
+        )
+
+    def _get_kosten_for_type(
+        self,
+        *,
+        klanttype: str,
+        producttype: str,
+        kosten_totaal: Decimal,
+    ) -> tuple[Decimal, Decimal, Decimal, Decimal]:
+        if klanttype == StadsverwarmingKlantType.PARTICULIER and producttype in {
+            StadsverwarmingProductType.WARMTE,
+            StadsverwarmingProductType.WARMTE_KOUDE,
+        }:
+            kosten_particulier_warmte = kosten_totaal
+        else:
+            kosten_particulier_warmte = Decimal("0")
+
+        if klanttype == StadsverwarmingKlantType.PARTICULIER and producttype in {
+            StadsverwarmingProductType.KOUDE,
+            StadsverwarmingProductType.WARMTE_KOUDE,
+        }:
+            kosten_particulier_koude = kosten_totaal
+        else:
+            kosten_particulier_koude = Decimal("0")
+
+        if klanttype == StadsverwarmingKlantType.ZAKELIJK and producttype in {
+            StadsverwarmingProductType.WARMTE,
+            StadsverwarmingProductType.WARMTE_KOUDE,
+        }:
+            kosten_zakelijk_warmte = kosten_totaal
+        else:
+            kosten_zakelijk_warmte = Decimal("0")
+
+        if klanttype == StadsverwarmingKlantType.ZAKELIJK and producttype in {
+            StadsverwarmingProductType.KOUDE,
+            StadsverwarmingProductType.WARMTE_KOUDE,
+        }:
+            kosten_zakelijk_warmte_koude = kosten_totaal
+        else:
+            kosten_zakelijk_warmte_koude = Decimal("0")
+
+        return (
+            kosten_particulier_warmte,
+            kosten_particulier_koude,
+            kosten_zakelijk_warmte,
+            kosten_zakelijk_warmte_koude,
+        )

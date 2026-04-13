@@ -337,6 +337,7 @@
   },
   {
     "fields": {
+      "calculation_method": "stadsverwarming",
       "naam": "Particulier Stadswarmte",
       "type": "stadswarmte"
     },
@@ -345,6 +346,7 @@
   },
   {
     "fields": {
+      "calculation_method": "stadsverwarming",
       "naam": "Particulier Stadswarmte + koude",
       "type": "stadswarmte"
     },
@@ -353,6 +355,7 @@
   },
   {
     "fields": {
+      "calculation_method": "stadsverwarming",
       "naam": "Zakelijk Stadswarmte",
       "type": "stadswarmte"
     },
@@ -361,6 +364,7 @@
   },
   {
     "fields": {
+      "calculation_method": "stadsverwarming",
       "naam": "Zakelijk Stadswarmte + koude",
       "type": "stadswarmte"
     },
