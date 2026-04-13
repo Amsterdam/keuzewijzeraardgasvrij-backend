@@ -20,7 +20,6 @@ def _valid_payload():
         "ruimte_op_het_dak_aanwezig": True,
         "type_dak": "plat_dak",
         "tapwater_op_gas": True,
-        "gasverbruik_per_woning": 500.0,
         "gasverbruik_vve_totaal": 5000.0,
         "elektriciteitsverbruik_per_woning": 1000.0,
         "elektriciteitsverbruik_vve_totaal": 10000.0,
@@ -91,12 +90,6 @@ class GebruikersInvoerCreateSerializerTest(TestCase):
         self.assertIn("bruto_vloeroppervlak", serializer.errors)
 
     def test_rejects_non_finite_numbers(self):
-        payload = _valid_payload()
-        payload["gasverbruik_per_woning"] = math.inf
-        serializer = GebruikersInvoerCreateSerializer(data=payload)
-        self.assertFalse(serializer.is_valid())
-        self.assertIn("gasverbruik_per_woning", serializer.errors)
-
         payload = _valid_payload()
         payload["elektriciteitsverbruik_vve_totaal"] = math.nan
         serializer = GebruikersInvoerCreateSerializer(data=payload)
