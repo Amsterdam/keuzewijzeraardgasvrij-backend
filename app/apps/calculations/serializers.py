@@ -75,6 +75,7 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
             "huidige_warmtesysteem",
             "volledig_gasloos",
             "wens_tot_koelen",
+            "koken_op_gas",
         ]
         read_only_fields = ["id"]
 
