@@ -29,12 +29,6 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
     )
     aantal_woningen = serializers.IntegerField(min_value=1, max_value=100_000)
 
-    gasverbruik_per_woning = serializers.DecimalField(
-        max_digits=18,
-        decimal_places=9,
-        min_value=Decimal("0"),
-        max_value=Decimal("999999999.999999999"),
-    )
     gasverbruik_vve_totaal = serializers.DecimalField(
         max_digits=18,
         decimal_places=9,
@@ -74,7 +68,6 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
             "ruimte_op_het_dak_aanwezig",
             "type_dak",
             "tapwater_op_gas",
-            "gasverbruik_per_woning",
             "gasverbruik_vve_totaal",
             "elektriciteitsverbruik_per_woning",
             "elektriciteitsverbruik_vve_totaal",
@@ -90,9 +83,6 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("Must be > 0.")
         return value
-
-    def validate_gasverbruik_per_woning(self, value):
-        return _validate_finite_number(value, "gasverbruik_per_woning")
 
     def validate_gasverbruik_vve_totaal(self, value):
         return _validate_finite_number(value, "gasverbruik_vve_totaal")

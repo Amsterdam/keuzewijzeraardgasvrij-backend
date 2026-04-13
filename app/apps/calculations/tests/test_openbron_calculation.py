@@ -26,7 +26,6 @@ def _calculation_input(**overrides: object) -> GebruikersInvoer:
         "type_dak": "plat_dak",
         "tapwater_op_gas": True,
         "koken_op_gas": False,
-        "gasverbruik_per_woning": Decimal("500"),
         "gasverbruik_vve_totaal": Decimal("1334.6"),
         "elektriciteitsverbruik_per_woning": Decimal("1000"),
         "elektriciteitsverbruik_vve_totaal": Decimal("10000"),
