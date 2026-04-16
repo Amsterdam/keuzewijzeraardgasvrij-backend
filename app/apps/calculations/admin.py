@@ -44,6 +44,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         energie_rows = []
         subsysteem_rows = []
         hoofdsysteem_rows = []
+        hoofdsysteem_tco_sum_rows = []
         stadsverwarming_rows = []
         stadsverwarming_totals_rows = []
         if selected_input is not None:
@@ -86,6 +87,14 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                     {
                         "scenario": result.scenario,
                         "type": result.energie_type,
+                        "woning_type": (
+                            "" if result.woning_type is None else result.woning_type
+                        ),
+                        "vermogen_cv": (
+                            ""
+                            if result.vermogen_cv is None
+                            else format(result.vermogen_cv)
+                        ),
                         "vermogen_woning": format(result.vermogen_warmte_kw_per_woning),
                         "vermogen_vve": format(result.vermogen_warmte_kw_per_vve),
                         "gas": format(
@@ -257,11 +266,50 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                             "kosten_totaal": format_eur(
                                 result.energiekosten_totaal_eur_per_woning_per_jaar
                             ),
+                            "tco": format_eur(result.tco),
                             "cap_totaal_gj": format(
                                 result.capaciteit_warmte_gj_per_year_per_woning_total
                             ),
                         }
                     )
+
+            hoofdsysteem_tco_sum_rows = []
+            for hoofdsysteem in Hoofdsysteem.objects.order_by("id").prefetch_related(
+                "subsystemen"
+            ):
+                full = hoofdsysteem.calculate(energie_calculation=energie)
+                subsystems = list(hoofdsysteem.subsystemen.all())
+                subsysteem_results_by_id = {}
+                for subsysteem in subsystems:
+                    if not subsysteem.calculation_method:
+                        continue
+                    subsysteem_results_by_id[subsysteem.id] = subsysteem.calculate(
+                        energie_calculation=energie,
+                        calculation_input=selected_input,
+                    )
+
+                def _sum_tco_for_scenario(scenario_key: str) -> Decimal:
+                    total = full.by_scenario[scenario_key].tco
+                    for subsysteem in subsystems:
+                        subs_full = subsysteem_results_by_id.get(subsysteem.id)
+                        if subs_full is None:
+                            continue
+                        total += subs_full.by_scenario[scenario_key].berekening.tco
+                    return total
+
+                hoofdsysteem_tco_sum_rows.append(
+                    {
+                        "hoofdsysteem_id": hoofdsysteem.id,
+                        "naam": hoofdsysteem.naam,
+                        "tco_laag": format_eur(_sum_tco_for_scenario("laag")),
+                        "tco_midden": format_eur(_sum_tco_for_scenario("midden")),
+                        "tco_hoog": format_eur(_sum_tco_for_scenario("hoog")),
+                    }
+                )
+
+            hoofdsysteem_tco_sum_rows.sort(
+                key=lambda row: row.get("hoofdsysteem_id", 0)
+            )
 
             hoofdsysteem_rows.sort(
                 key=lambda row: (
@@ -281,6 +329,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "energie_rows": energie_rows,
             "subsysteem_rows": subsysteem_rows,
             "hoofdsysteem_rows": hoofdsysteem_rows,
+            "hoofdsysteem_tco_sum_rows": hoofdsysteem_tco_sum_rows,
             "stadsverwarming_rows": stadsverwarming_rows,
             "stadsverwarming_totals_rows": stadsverwarming_totals_rows,
             "title": "Berekeningen",

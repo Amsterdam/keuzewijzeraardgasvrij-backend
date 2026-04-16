@@ -39,6 +39,8 @@
         <tr>
           <th>Scenario</th>
           <th>Type</th>
+          <th>Woning type</th>
+          <th>Vermogen CV</th>
           <th>Vermogen [kW/w]</th>
           <th>Vermogen [kW/vve]</th>
           <th>Gas [m³/j]</th>
@@ -51,6 +53,8 @@
           <tr>
             <td>{{ row.scenario }}</td>
             <td>{{ row.type }}</td>
+            <td>{{ row.woning_type }}</td>
+            <td>{{ row.vermogen_cv }}</td>
             <td>{{ row.vermogen_woning }}</td>
             <td>{{ row.vermogen_vve }}</td>
             <td>{{ row.gas }}</td>
@@ -197,6 +201,7 @@
           <th>Kosten CV [€/w/j]</th>
           <th>Kosten GKW [€/w/j]</th>
           <th>Energiekosten totaal [€/w/j]</th>
+          <th>TCO [€/w]</th>
         </tr>
       </thead>
       <tbody>
@@ -218,6 +223,29 @@
             <td>{{ row.kosten_cv }}</td>
             <td>{{ row.kosten_gkw }}</td>
             <td>{{ row.kosten_totaal }}</td>
+            <td>{{ row.tco }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Hoofdsysteem TCO (incl. subsystemen)</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Hoofdsysteem</th>
+          <th>TCO Laag [€]</th>
+          <th>TCO Midden [€]</th>
+          <th>TCO Hoog [€]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in hoofdsysteem_tco_sum_rows %}
+          <tr>
+            <td>{{ row.naam }}</td>
+            <td>{{ row.tco_laag }}</td>
+            <td>{{ row.tco_midden }}</td>
+            <td>{{ row.tco_hoog }}</td>
           </tr>
         {% endfor %}
       </tbody>

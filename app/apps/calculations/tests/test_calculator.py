@@ -68,7 +68,6 @@ class EnergieCalculatorTest(TestCase):
                 )
                 energie = EnergieCalculator().calculate(calc_input)
                 result = energie.by_scenario[str(scenario)][EnergieType.TAP]
-
                 expected_vermogen = warmtevraag_tap * gelijktijdigheid_tap
                 expected_gas = (
                     (Decimal(1) - percentage_ruimteverwarming) * gasverbruik_vve_totaal
@@ -104,16 +103,26 @@ class EnergieCalculatorTest(TestCase):
         aantal_woningen = 200
         gasverbruik_vve_totaal = Decimal("1334.6")
 
+        calculator = EnergieCalculator()
+
         conversie_m3gas_naar_kwh = self._conversie("m3gas_naar_kwh")
         conversie_kwh_naar_gj = self._conversie("kwh_naar_gj")
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
-            warmtevraag_cv = self._kengetal(scenario, "warmtevraag_cv")
-            gelijktijdigheid_cv = self._kengetal(scenario, "gelijktijdigheid_cv")
+            gelijktijdigheid_cv_fallback = self._kengetal(
+                scenario, "gelijktijdigheid_cv"
+            )
             percentage_ruimteverwarming = self._kengetal(
                 scenario, "percentage_ruimteverwarming"
             )
             rendement_gasketel = self._kengetal(scenario, "rendement_gasketel")
+
+            gelijktijdigheid_cv = calculator._get_gelijktijdigheidcv_factor(
+                aantal_woningen=aantal_woningen,
+                fallback=gelijktijdigheid_cv_fallback,
+            )
+
+            vermogen_cv_max = self._kengetal(scenario, "vermogen_cv_max")
 
             for tapwater_op_gas in (True, False):
                 calc_input = _calculation_input(
@@ -121,11 +130,21 @@ class EnergieCalculatorTest(TestCase):
                     tapwater_op_gas=tapwater_op_gas,
                     koken_op_gas=False,
                     gasverbruik_vve_totaal=gasverbruik_vve_totaal,
+                    dubbel_glas=False,
+                    wtw_aanwezig=False,
+                    bouwjaar=1990,
                 )
-                energie = EnergieCalculator().calculate(calc_input)
+                energie = calculator.calculate(calc_input)
                 result = energie.by_scenario[str(scenario)][EnergieType.CV]
 
-                expected_vermogen = warmtevraag_cv * gelijktijdigheid_cv
+                expected_woning_type = "Ouder dan 2000"
+                expected_vermogen_cv = vermogen_cv_max
+                expected_vermogen = (
+                    expected_vermogen_cv
+                    * calc_input.bruto_vloeroppervlak
+                    * gelijktijdigheid_cv
+                    / Decimal(aantal_woningen)
+                )
                 expected_gas = (
                     percentage_ruimteverwarming * gasverbruik_vve_totaal
                     if tapwater_op_gas
@@ -141,6 +160,8 @@ class EnergieCalculatorTest(TestCase):
 
                 self.assertEqual(result.energie_type, EnergieType.CV)
                 self.assertEqual(result.scenario, str(scenario))
+                self.assertEqual(result.woning_type, expected_woning_type)
+                self.assertEqual(result.vermogen_cv, expected_vermogen_cv)
                 self.assertEqual(
                     result.vermogen_warmte_kw_per_woning, expected_vermogen
                 )
@@ -168,7 +189,11 @@ class EnergieCalculatorTest(TestCase):
             energie = EnergieCalculator().calculate(calc_input)
             result = energie.by_scenario[str(scenario)][EnergieType.GKW]
 
-            expected_vermogen = warmtevraag_koude
+            expected_vermogen = (
+                warmtevraag_koude
+                * calc_input.bruto_vloeroppervlak
+                / Decimal(calc_input.aantal_woningen)
+            )
             expected_kwh = koudevraag_capaciteit * calc_input.bruto_vloeroppervlak
             expected_gj = expected_kwh * conversie_kwh_naar_gj
 

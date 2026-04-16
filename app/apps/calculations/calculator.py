@@ -4,9 +4,10 @@ from dataclasses import dataclass
 from decimal import Decimal
 from numbers import Number
 from typing import Final, Iterable, Literal
-
+from django.db.models import Q
 from apps.kengetallen.models import (
     AlgemeenKengetal,
+    GelijktijdigheidCV,
     ScenarioKeuze,
     StadsverwarmingEenheid,
     StadsverwarmingInterval,
@@ -37,6 +38,8 @@ class EnergieCalculationResult:
     gas_m3_per_year: Decimal
     capaciteit_warmte_kwh_per_year_per_woning: Decimal
     capaciteit_warmte_gj_per_year_per_woning: Decimal
+    woning_type: str | None = None
+    vermogen_cv: Decimal | None = None
 
 
 @dataclass(frozen=True)
@@ -169,6 +172,8 @@ class EnergieCalculator:
             )
 
         vermogen_warmte_kw_per_woning = result["vermogen_warmte_kw_per_woning"]
+        woning_type = result.get("woning_type")
+        vermogen_cv = result.get("vermogen_cv")
         return EnergieCalculationResult(
             energie_type=energie_type,
             scenario=str(scenario),
@@ -182,6 +187,8 @@ class EnergieCalculator:
             capaciteit_warmte_gj_per_year_per_woning=result[
                 "capaciteit_warmte_gj_per_year_per_woning"
             ],
+            woning_type=None if woning_type is None else str(woning_type),
+            vermogen_cv=None if vermogen_cv is None else self._to_decimal(vermogen_cv),
         )
 
     def _calculate_tap(
@@ -203,13 +210,13 @@ class EnergieCalculator:
         )
 
         warmtevraag_kw_per_woning = kengetallen["warmtevraag_tap"]
-        gelijktijdigheid_tap = (
-            Decimal("1") / Decimal(calculation_input.aantal_woningen).sqrt()
-        )
         percentage_ruimteverwarming = kengetallen["percentage_ruimteverwarming"]
         rendement_gasketel = kengetallen["rendement_gasketel"]
 
-        vermogen_warmte_kw_per_woning = warmtevraag_kw_per_woning * gelijktijdigheid_tap
+        vermogen_warmte_kw_per_woning = (
+            warmtevraag_kw_per_woning
+            / Decimal(calculation_input.aantal_woningen).sqrt()
+        )
 
         tapwater_factor = (
             Decimal("1") if calculation_input.tapwater_op_gas else Decimal("0")
@@ -253,20 +260,44 @@ class EnergieCalculator:
         kengetallen = self._get_kengetallen(
             scenario,
             [
-                "warmtevraag_cv",
                 "percentage_ruimteverwarming",
                 "rendement_gasketel",
                 "gelijktijdigheid_cv",
                 "gasvraag_koken",
+                "vermogen_cv_max",
+                "vermogen_cv_matig",
+                "vermogen_cv_versterkt",
+                "vermogen_cv_min",
             ],
         )
 
-        warmtevraag_kw_per_woning = kengetallen["warmtevraag_cv"]
         percentage_ruimteverwarming = kengetallen["percentage_ruimteverwarming"]
         rendement_gasketel = kengetallen["rendement_gasketel"]
-        gelijktijdigheid_cv = kengetallen["gelijktijdigheid_cv"]
+        gelijktijdigheid_cv = self._get_gelijktijdigheidcv_factor(
+            aantal_woningen=calculation_input.aantal_woningen,
+            fallback=kengetallen["gelijktijdigheid_cv"],
+        )
 
-        vermogen_warmte_kw_per_woning = warmtevraag_kw_per_woning * gelijktijdigheid_cv
+        vermogen_cv = kengetallen["vermogen_cv_min"]
+        woning_type = "Nieuwer dan 2021 (BENG)"
+        if calculation_input.bouwjaar < 2000 and not calculation_input.dubbel_glas:
+            woning_type = "Ouder dan 2000"
+            vermogen_cv = kengetallen["vermogen_cv_max"]
+
+        elif calculation_input.wtw_aanwezig and calculation_input.bouwjaar < 2021:
+            woning_type = "Nieuwer dan 2000 of voorzien van dubbel glas (met WTW)"
+            vermogen_cv = kengetallen["vermogen_cv_matig"]
+
+        elif calculation_input.bouwjaar < 2021:
+            woning_type = "Nieuwer dan 2000 of voorzien van dubbel glas"
+            vermogen_cv = kengetallen["vermogen_cv_versterkt"]
+
+        vermogen_warmte_kw_per_woning = (
+            vermogen_cv
+            * calculation_input.bruto_vloeroppervlak
+            * gelijktijdigheid_cv
+            / Decimal(calculation_input.aantal_woningen)
+        )
 
         ruimteverwarming_factor = (
             percentage_ruimteverwarming
@@ -292,6 +323,8 @@ class EnergieCalculator:
         )
 
         return {
+            "woning_type": woning_type,
+            "vermogen_cv": vermogen_cv,
             "vermogen_warmte_kw_per_woning": vermogen_warmte_kw_per_woning,
             "gas_m3_per_year": gas_m3_per_year,
             "capaciteit_warmte_kwh_per_year_per_woning": capaciteit_kwh,
@@ -312,7 +345,11 @@ class EnergieCalculator:
                 "koudevraag_capaciteit",
             ],
         )
-        vermogen_warmte_kw_per_woning = kengetallen["warmtevraag_koude"]
+        vermogen_warmte_kw_per_woning = (
+            kengetallen["warmtevraag_koude"]
+            * calculation_input.bruto_vloeroppervlak
+            / Decimal(calculation_input.aantal_woningen)
+        )
         capaciteit_kwh = (
             kengetallen["koudevraag_capaciteit"]
             * calculation_input.bruto_vloeroppervlak
@@ -369,6 +406,21 @@ class EnergieCalculator:
                 f"Missing AlgemeenKengetal for scenario={scenario}: {sorted(missing)}"
             )
         return values
+
+    def _get_gelijktijdigheidcv_factor(
+        self,
+        *,
+        aantal_woningen: int,
+        fallback: Decimal,
+    ) -> Decimal:
+        row = (
+            GelijktijdigheidCV.objects.filter(n_min__lte=aantal_woningen)
+            .filter(Q(n_max__isnull=True) | Q(n_max__gte=aantal_woningen))
+            .order_by("-n_min")
+            .values_list("factor", flat=True)
+            .first()
+        )
+        return fallback if row is None else self._to_decimal(row)
 
 
 class StadsverwarmingCalculator:

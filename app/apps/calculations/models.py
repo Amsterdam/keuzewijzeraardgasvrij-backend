@@ -44,6 +44,8 @@ class GebruikersInvoer(models.Model):
 
     volledig_gasloos = models.BooleanField()
     wens_tot_koelen = models.BooleanField()
+    dubbel_glas = models.BooleanField(default=False)
+    wtw_aanwezig = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Gebruikersinvoer"

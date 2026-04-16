@@ -47,6 +47,7 @@ class HoofdsysteemScenarioResult:
     energiekosten_cv_eur_per_woning_per_jaar: Decimal
     energiekosten_gkw_eur_per_woning_per_jaar: Decimal
     energiekosten_totaal_eur_per_woning_per_jaar: Decimal
+    tco: Decimal
 
 
 @dataclass(frozen=True, slots=True)
@@ -115,7 +116,9 @@ class Hoofdsysteem(models.Model):
             by_scenario[scenario_key] = single
 
         return HoofdsysteemFullResult(
-            energy=energie_calculation, results=results, by_scenario=by_scenario
+            energy=energie_calculation,
+            results=results,
+            by_scenario=by_scenario,
         )
 
     def _calculate_scenario_result(
@@ -177,6 +180,7 @@ class Hoofdsysteem(models.Model):
             energiekosten_cv_eur_per_woning_per_jaar=kosten_cv,
             energiekosten_gkw_eur_per_woning_per_jaar=kosten_gkw,
             energiekosten_totaal_eur_per_woning_per_jaar=kosten_total,
+            tco=kosten_total * 30,
         )
 
     def _select_energy_prices(self) -> tuple[Decimal, Decimal, Decimal]:
