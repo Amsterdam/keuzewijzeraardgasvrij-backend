@@ -25,7 +25,7 @@ from apps.calculations.calculator import (
     EnergieType,
     EnergieTypeValue,
 )
-from apps.calculations.models import EnergiePrijs, GebruikersInvoer
+from apps.calculations.models import Conversie, EnergiePrijs, GebruikersInvoer
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,6 +94,8 @@ class Hoofdsysteem(models.Model):
         results: list[HoofdsysteemScenarioResult] = []
         by_scenario: dict[str, HoofdsysteemScenarioResult] = {}
 
+        jaren_tco = Conversie.objects.get(naam="jaren_tco").waarde
+
         for scenario in scenarios:
             scenario_key = str(scenario)
             by_type = energie_calculation.by_scenario[scenario_key]
@@ -111,6 +113,7 @@ class Hoofdsysteem(models.Model):
                 prijs_tap=prijs_tap,
                 prijs_cv=prijs_cv,
                 prijs_gkw=prijs_gkw,
+                jaren_tco=jaren_tco,
             )
             results.append(single)
             by_scenario[scenario_key] = single
@@ -131,6 +134,7 @@ class Hoofdsysteem(models.Model):
         prijs_tap: Decimal,
         prijs_cv: Decimal,
         prijs_gkw: Decimal,
+        jaren_tco: Decimal,
     ) -> HoofdsysteemScenarioResult:
         capaciteit_kwh_total = sum(
             (
@@ -180,7 +184,7 @@ class Hoofdsysteem(models.Model):
             energiekosten_cv_eur_per_woning_per_jaar=kosten_cv,
             energiekosten_gkw_eur_per_woning_per_jaar=kosten_gkw,
             energiekosten_totaal_eur_per_woning_per_jaar=kosten_total,
-            tco=kosten_total * 30,
+            tco=kosten_total * jaren_tco,
         )
 
     def _select_energy_prices(self) -> tuple[Decimal, Decimal, Decimal]:

@@ -429,7 +429,7 @@ class StadsverwarmingCalculator:
         energie_calculation: EnergieCalculatorFullResult,
         aantal_woningen: int,
     ) -> StadsverwarmingCalculatorFullResult:
-        jaren_tco = Decimal("30")
+        jaren_tco = Conversie.objects.get(naam="jaren_tco").waarde
         conversie_md_j = Decimal("12")
 
         results: list[StadsverwarmingKengetalCalculationResult] = []

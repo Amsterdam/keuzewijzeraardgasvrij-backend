@@ -25,6 +25,11 @@
     "fields": {"naam": "kj_naar_j", "waarde": "1000"}
   },
   {
+    "model": "calculation_inputs.conversie",
+    "pk": 6,
+    "fields": {"naam": "jaren_tco", "waarde": "30"}
+  },
+  {
     "model": "calculation_inputs.energieprijs",
     "pk": 1,
     "fields": {"naam": "Elektriciteit", "prijs_eur_per_gj": "53.00"}

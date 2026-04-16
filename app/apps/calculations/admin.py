@@ -59,12 +59,24 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
 
             input_rows = [
                 {
+                    "field": "bouwjaar",
+                    "value": str(selected_input.bouwjaar),
+                },
+                {
                     "field": "aantal_woningen",
                     "value": str(selected_input.aantal_woningen),
                 },
                 {
-                    "field": "gasverbruik_vve_totaal",
-                    "value": format(selected_input.gasverbruik_vve_totaal),
+                    "field": "bruto_vloeroppervlak",
+                    "value": format(selected_input.bruto_vloeroppervlak),
+                },
+                {
+                    "field": "dubbel_glas",
+                    "value": "true" if selected_input.dubbel_glas else "false",
+                },
+                {
+                    "field": "wtw_aanwezig",
+                    "value": "true" if selected_input.wtw_aanwezig else "false",
                 },
                 {
                     "field": "tapwater_op_gas",
@@ -75,8 +87,8 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                     "value": "true" if selected_input.koken_op_gas else "false",
                 },
                 {
-                    "field": "bruto_vloeroppervlak",
-                    "value": format(selected_input.bruto_vloeroppervlak),
+                    "field": "gasverbruik_vve_totaal",
+                    "value": format(selected_input.gasverbruik_vve_totaal),
                 },
             ]
 
