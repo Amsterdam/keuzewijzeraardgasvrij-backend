@@ -1158,37 +1158,20 @@
     "pk": 15,
     "fields": {"scenario": "hoog", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "26.2"}
   },
-
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 16,
-    "fields": {"scenario": "laag", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "4"}
-  },
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 17,
-    "fields": {"scenario": "midden", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "7"}
-  },
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 18,
-    "fields": {"scenario": "hoog", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "12"}
-  },
-
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 19,
-    "fields": {"scenario": "laag", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+    "fields": {"scenario": "laag", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "0.017"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 20,
-    "fields": {"scenario": "midden", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+    "fields": {"scenario": "midden", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "0.0185"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 21,
-    "fields": {"scenario": "hoog", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+    "fields": {"scenario": "hoog", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "0.02"}
   },
 
   {

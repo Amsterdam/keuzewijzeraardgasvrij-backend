@@ -300,22 +300,53 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                         calculation_input=selected_input,
                     )
 
-                def _sum_tco_for_scenario(scenario_key: str) -> Decimal:
-                    total = full.by_scenario[scenario_key].tco
+                def _subsystemen_tco_for_scenario(scenario_key: str) -> Decimal:
+                    subsysteem_total = Decimal("0")
                     for subsysteem in subsystems:
                         subs_full = subsysteem_results_by_id.get(subsysteem.id)
                         if subs_full is None:
                             continue
-                        total += subs_full.by_scenario[scenario_key].berekening.tco
-                    return total
+                        subsysteem_total += subs_full.by_scenario[
+                            scenario_key
+                        ].berekening.tco
+                    return subsysteem_total
+
+                def _hoofdsysteem_tco_for_scenario(scenario_key: str) -> Decimal:
+                    return full.by_scenario[scenario_key].tco
+
+                def _totaal_tco_for_scenario(scenario_key: str) -> Decimal:
+                    return _hoofdsysteem_tco_for_scenario(
+                        scenario_key
+                    ) + _subsystemen_tco_for_scenario(scenario_key)
 
                 hoofdsysteem_tco_sum_rows.append(
                     {
                         "hoofdsysteem_id": hoofdsysteem.id,
                         "naam": hoofdsysteem.naam,
-                        "tco_laag": format_eur(_sum_tco_for_scenario("laag")),
-                        "tco_midden": format_eur(_sum_tco_for_scenario("midden")),
-                        "tco_hoog": format_eur(_sum_tco_for_scenario("hoog")),
+                        "subsystemen": ", ".join(
+                            s.naam for s in subsystems if s.calculation_method
+                        ),
+                        "hoofdsysteem_tco_laag": format_eur(
+                            _hoofdsysteem_tco_for_scenario("laag")
+                        ),
+                        "subsystemen_tco_laag": format_eur(
+                            _subsystemen_tco_for_scenario("laag")
+                        ),
+                        "tco_laag": format_eur(_totaal_tco_for_scenario("laag")),
+                        "hoofdsysteem_tco_midden": format_eur(
+                            _hoofdsysteem_tco_for_scenario("midden")
+                        ),
+                        "subsystemen_tco_midden": format_eur(
+                            _subsystemen_tco_for_scenario("midden")
+                        ),
+                        "tco_midden": format_eur(_totaal_tco_for_scenario("midden")),
+                        "hoofdsysteem_tco_hoog": format_eur(
+                            _hoofdsysteem_tco_for_scenario("hoog")
+                        ),
+                        "subsystemen_tco_hoog": format_eur(
+                            _subsystemen_tco_for_scenario("hoog")
+                        ),
+                        "tco_hoog": format_eur(_totaal_tco_for_scenario("hoog")),
                     }
                 )
 

@@ -234,8 +234,15 @@
       <thead>
         <tr>
           <th>Hoofdsysteem</th>
+          <th>Subsystemen</th>
+          <th>Hoofdsysteem TCO Laag [€]</th>
+          <th>Subsystemen TCO Laag [€]</th>
           <th>TCO Laag [€]</th>
+          <th>Hoofdsysteem TCO Midden [€]</th>
+          <th>Subsystemen TCO Midden [€]</th>
           <th>TCO Midden [€]</th>
+          <th>Hoofdsysteem TCO Hoog [€]</th>
+          <th>Subsystemen TCO Hoog [€]</th>
           <th>TCO Hoog [€]</th>
         </tr>
       </thead>
@@ -243,8 +250,15 @@
         {% for row in hoofdsysteem_tco_sum_rows %}
           <tr>
             <td>{{ row.naam }}</td>
+            <td>{{ row.subsystemen }}</td>
+            <td>{{ row.hoofdsysteem_tco_laag }}</td>
+            <td>{{ row.subsystemen_tco_laag }}</td>
             <td>{{ row.tco_laag }}</td>
+            <td>{{ row.hoofdsysteem_tco_midden }}</td>
+            <td>{{ row.subsystemen_tco_midden }}</td>
             <td>{{ row.tco_midden }}</td>
+            <td>{{ row.hoofdsysteem_tco_hoog }}</td>
+            <td>{{ row.subsystemen_tco_hoog }}</td>
             <td>{{ row.tco_hoog }}</td>
           </tr>
         {% endfor %}
