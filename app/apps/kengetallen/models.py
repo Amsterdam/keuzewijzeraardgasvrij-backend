@@ -95,6 +95,27 @@ class AlgemeenKengetal(Kengetal):
         verbose_name_plural = "Algemene kengetallen"
 
 
+class GelijktijdigheidCV(models.Model):
+    n_min = models.IntegerField()
+    n_max = models.IntegerField(blank=True, null=True)
+    factor = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "GelijktijdigheidCV"
+        verbose_name_plural = "GelijktijdigheidCV"
+        ordering = ["n_min"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["n_min", "n_max"],
+                name="uniek_n_min_n_max_gelijktijdigheidcv",
+            )
+        ]
+
+    def __str__(self) -> str:
+        max_label = "∞" if self.n_max is None else str(self.n_max)
+        return f"{self.n_min}–{max_label}: {self.factor}"
+
+
 class StadsverwarmingKlantType(models.TextChoices):
     PARTICULIER = "particulier", "Particulier"
     ZAKELIJK = "zakelijk", "Zakelijk"

@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import (
     AlgemeenKengetal,
+    GelijktijdigheidCV,
     Hoofdkengetal,
     StadsverwarmingKengetal,
     Subkengetal,
@@ -27,6 +28,11 @@ class SubkengetalAdmin(admin.ModelAdmin):
 @admin.register(AlgemeenKengetal)
 class AlgemeenKengetalAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(AlgemeenKengetal)
+
+
+@admin.register(GelijktijdigheidCV)
+class GelijktijdigheidCVAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(GelijktijdigheidCV)
 
 
 @admin.register(StadsverwarmingKengetal)

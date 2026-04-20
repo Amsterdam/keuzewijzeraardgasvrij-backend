@@ -1092,52 +1092,86 @@
     "pk": 9,
     "fields": {"scenario": "hoog", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.7"}
   },
+
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 1,
+    "fields": {"n_min": 1, "n_max": 5, "factor": "1"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 2,
+    "fields": {"n_min": 6, "n_max": 13, "factor": "0.95"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 3,
+    "fields": {"n_min": 14, "n_max": 25, "factor": "0.9"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 4,
+    "fields": {"n_min": 26, "n_max": 40, "factor": "0.85"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 5,
+    "fields": {"n_min": 41, "n_max": 60, "factor": "0.8"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 6,
+    "fields": {"n_min": 61, "n_max": 85, "factor": "0.75"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 7,
+    "fields": {"n_min": 86, "n_max": 115, "factor": "0.7"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 8,
+    "fields": {"n_min": 116, "n_max": 155, "factor": "0.65"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 9,
+    "fields": {"n_min": 156, "n_max": 205, "factor": "0.6"}
+  },
+  {
+    "model": "kengetallen.gelijktijdigheidcv",
+    "pk": 10,
+    "fields": {"n_min": 205, "n_max": null, "factor": "0.55"}
+  },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 13,
-    "fields": {"scenario": "laag", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "24"}
+    "fields": {"scenario": "laag", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "26.2"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 14,
-    "fields": {"scenario": "midden", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "24"}
+    "fields": {"scenario": "midden", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "26.2"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 15,
-    "fields": {"scenario": "hoog", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "24"}
+    "fields": {"scenario": "hoog", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "26.2"}
   },
-
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 16,
-    "fields": {"scenario": "laag", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "4"}
-  },
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 17,
-    "fields": {"scenario": "midden", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "7"}
-  },
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 18,
-    "fields": {"scenario": "hoog", "naam": "warmtevraag_cv", "omschrijving": "Warmtevraag vermogen CV [kW/w]", "waarde": "12"}
-  },
-
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 19,
-    "fields": {"scenario": "laag", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+    "fields": {"scenario": "laag", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "0.017"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 20,
-    "fields": {"scenario": "midden", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+    "fields": {"scenario": "midden", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "0.0185"}
   },
   {
     "model": "kengetallen.algemeenkengetal",
     "pk": 21,
-    "fields": {"scenario": "hoog", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "2"}
+    "fields": {"scenario": "hoog", "naam": "warmtevraag_koude", "omschrijving": "Warmtevraag vermogen koude [kW/w]", "waarde": "0.02"}
   },
 
   {
@@ -1169,6 +1203,66 @@
     "model": "kengetallen.algemeenkengetal",
     "pk": 27,
     "fields": {"scenario": "hoog", "naam": "gasvraag_koken", "omschrijving": "Gasvraag koken per woning [m³/j/w]", "waarde": "50"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 28,
+    "fields": {"scenario": "laag", "naam": "vermogen_cv_max", "omschrijving": "Ouder dan 2000", "waarde": "0.049"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 29,
+    "fields": {"scenario": "midden", "naam": "vermogen_cv_max", "omschrijving": "Ouder dan 2000", "waarde": "0.07"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 30,
+    "fields": {"scenario": "hoog", "naam": "vermogen_cv_max", "omschrijving": "Ouder dan 2000", "waarde": "0.091"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 31,
+    "fields": {"scenario": "laag", "naam": "vermogen_cv_versterkt", "omschrijving": "Nieuwer dan 2000 of voorzien van dubbel glas", "waarde": "0.042"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 32,
+    "fields": {"scenario": "midden", "naam": "vermogen_cv_versterkt", "omschrijving": "Nieuwer dan 2000 of voorzien van dubbel glas", "waarde": "0.06"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 33,
+    "fields": {"scenario": "hoog", "naam": "vermogen_cv_versterkt", "omschrijving": "Nieuwer dan 2000 of voorzien van dubbel glas", "waarde": "0.078"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 34,
+    "fields": {"scenario": "laag", "naam": "vermogen_cv_matig", "omschrijving": "Nieuwer dan 2000 of voorzien van dubbel glas (met WTW)", "waarde": "0.0315"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 35,
+    "fields": {"scenario": "midden", "naam": "vermogen_cv_matig", "omschrijving": "Nieuwer dan 2000 of voorzien van dubbel glas (met WTW)", "waarde": "0.045"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 36,
+    "fields": {"scenario": "hoog", "naam": "vermogen_cv_matig", "omschrijving": "Nieuwer dan 2000 of voorzien van dubbel glas (met WTW)", "waarde": "0.0585"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 37,
+    "fields": {"scenario": "laag", "naam": "vermogen_cv_min", "omschrijving": "Nieuwer dan 2021 (BENG)", "waarde": "0.021"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 38,
+    "fields": {"scenario": "midden", "naam": "vermogen_cv_min", "omschrijving": "Nieuwer dan 2021 (BENG)", "waarde": "0.03"}
+  },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 39,
+    "fields": {"scenario": "hoog", "naam": "vermogen_cv_min", "omschrijving": "Nieuwer dan 2021 (BENG)", "waarde": "0.039"}
   },
 
   {
