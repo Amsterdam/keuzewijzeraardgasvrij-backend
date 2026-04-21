@@ -1046,6 +1046,150 @@
     }
   },
   {
+    "model": "kengetallen.subkengetal",
+    "pk": 55,
+    "fields": {
+      "subsysteem": 23,
+      "scenario": "laag",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 56,
+    "fields": {
+      "subsysteem": 23,
+      "scenario": "midden",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 57,
+    "fields": {
+      "subsysteem": 23,
+      "scenario": "hoog",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 58,
+    "fields": {
+      "subsysteem": 24,
+      "scenario": "laag",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 59,
+    "fields": {
+      "subsysteem": 24,
+      "scenario": "midden",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 60,
+    "fields": {
+      "subsysteem": 24,
+      "scenario": "hoog",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 61,
+    "fields": {
+      "subsysteem": 25,
+      "scenario": "laag",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 62,
+    "fields": {
+      "subsysteem": 25,
+      "scenario": "midden",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 63,
+    "fields": {
+      "subsysteem": 25,
+      "scenario": "hoog",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
     "model": "kengetallen.algemeenkengetal",
     "pk": 1,
     "fields": {"scenario": "laag", "naam": "percentage_ruimteverwarming", "omschrijving": "Persentage gas voor ruimteverwarming [bij tapwater op gas]", "waarde": "0.8"}

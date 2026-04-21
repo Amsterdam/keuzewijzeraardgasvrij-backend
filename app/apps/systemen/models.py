@@ -14,6 +14,7 @@ from apps.calculations.subsysteem_calculations import (
     calculate_gbs,
     calculate_investering,
     calculate_openbron_systeem,
+    calculate_warmtepomp,
 )
 
 
@@ -342,4 +343,30 @@ class Subsysteem(models.Model):
                 method=str(self.calculation_method),
                 berekening=berekening,
             )
+
+        if self.calculation_method == SubsysteemCalculationMethod.Warmtepomp:
+            if energie_calculation is None:
+                raise ValueError(
+                    "energie_calculation is required for Warmtepomp calculations"
+                )
+            if calculation_input is None:
+                raise ValueError(
+                    "calculation_input is required for Warmtepomp calculations"
+                )
+
+            cv_result = energie_calculation.by_scenario[str(scenario)][EnergieType.CV]
+            tap_result = energie_calculation.by_scenario[str(scenario)][EnergieType.TAP]
+            berekening = calculate_warmtepomp(
+                self.naam,
+                subkengetal=self.subkengetallen.get(scenario=scenario),
+                cv_energie_calculation=cv_result,
+                tap_energie_calculation=tap_result,
+                aantal_woningen=calculation_input.aantal_woningen,
+            )
+            return SubsysteemScenarioResult(
+                scenario=str(scenario),
+                method=str(self.calculation_method),
+                berekening=berekening,
+            )
+
         raise ValueError(f"Unknown calculation method: {self.calculation_method}")

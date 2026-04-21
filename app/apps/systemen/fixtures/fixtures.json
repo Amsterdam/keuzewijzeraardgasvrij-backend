@@ -74,8 +74,6 @@
       "beschrijving_url": null,
       "naam": "Particulier Externe warmtelevering",
       "subsystemen": [
-        8,
-        9,
         19
       ]
     },
@@ -88,9 +86,6 @@
       "beschrijving_url": null,
       "naam": "Particulier Externe warmtelevering + externe koeling",
       "subsystemen": [
-        8,
-        9,
-        10,
         20
       ]
     },
@@ -103,9 +98,9 @@
       "beschrijving_url": null,
       "naam": "Collectieve Luchtwarmtepomp op Buitenlucht",
       "subsystemen": [
-        13,
+        23,
+        17,
         10,
-        9,
         5
       ]
     },
@@ -119,10 +114,10 @@
       "naam": "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
       "subsystemen": [
         7,
-        14,
-        15,
-        10,
-        9
+        24,
+        25,
+        17,
+        10
       ]
     },
     "model": "systemen.hoofdsysteem",
@@ -134,11 +129,11 @@
       "beschrijving_url": null,
       "naam": "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
       "subsystemen": [
-        12,
-        14,
-        15,
-        10,
-        9
+        18,
+        24,
+        25,
+        17,
+        10
       ]
     },
     "model": "systemen.hoofdsysteem",
@@ -164,10 +159,9 @@
       "beschrijving_url": null,
       "naam": "Zakelijk Collectief Externe warmtelevering + externe koeling",
       "subsystemen": [
-        8,
-        10,
-        9,
-        22
+        22,
+        17,
+        10
       ]
     },
     "model": "systemen.hoofdsysteem",
@@ -370,5 +364,32 @@
     },
     "model": "systemen.subsysteem",
     "pk": 22
+  },
+  {
+    "fields": {
+      "calculation_method": "warmtepomp",
+      "naam": "Collectieve LWP",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 23
+  },
+  {
+    "fields": {
+      "calculation_method": "warmtepomp",
+      "naam": "Collectieve LT-WP",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 24
+  },
+  {
+    "fields": {
+      "calculation_method": "warmtepomp",
+      "naam": "Collectieve HT-WP",
+      "type": "kengetal"
+    },
+    "model": "systemen.subsysteem",
+    "pk": 25
   }
 ]

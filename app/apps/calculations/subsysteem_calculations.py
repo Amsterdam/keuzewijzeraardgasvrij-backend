@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import Decimal
-
+import math
 from django.db import models
 
 from apps.calculations.models import Conversie
@@ -18,6 +18,7 @@ class SubsysteemCalculationMethod(models.TextChoices):
     Openbron = "openbron", "Openbron"
     Gbs = "gbs", "GBS"
     Stadsverwarming = "stadsverwarming", "Stadsverwarming"
+    Warmtepomp = "warmtepomp", "Warmtepomp"
 
 
 @dataclass(frozen=True)
@@ -186,6 +187,47 @@ def calculate_stadsverwarming(
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=Decimal("0"),
         onderhoud_eur_per_woning_per_jaar=Decimal("0"),
+        tco=tco,
+    )
+
+
+def calculate_warmtepomp(
+    subsysteem_naam: str,
+    subkengetal: Subkengetal,
+    tap_energie_calculation: EnergieCalculationResult,
+    cv_energie_calculation: EnergieCalculationResult,
+    aantal_woningen: int | Decimal,
+) -> SubsysteemBerekening:
+    """Calculation method 'Warmtepomp'."""
+
+    P_MAX_LT = Decimal("250")
+    P_MAX_HT = Decimal("250")
+    COEF_LT = Decimal("3822.1")
+    COEF_HT = Decimal("3900.6")
+    EXP_LT = Decimal("-0.417")
+    EXP_HT = Decimal("-0.408")
+
+    P_MAX = P_MAX_LT if subsysteem_naam == "Collectieve LT-WP" else P_MAX_HT
+    benodigd_vermogen = tap_energie_calculation.vermogen_warmte_kw_per_vve
+    if subsysteem_naam == "Collectieve LWP":
+        benodigd_vermogen += cv_energie_calculation.vermogen_warmte_kw_per_vve
+    elif subsysteem_naam == "Collectieve LT-WP":
+        benodigd_vermogen = cv_energie_calculation.vermogen_warmte_kw_per_vve
+
+    aantal_warmtepompen_benodigd = math.ceil(benodigd_vermogen / P_MAX)
+    vermogen_per_Warmtepomp = benodigd_vermogen / aantal_warmtepompen_benodigd
+    formule = COEF_HT * (vermogen_per_Warmtepomp**EXP_HT) * benodigd_vermogen
+    if subsysteem_naam == "Collectieve LT-WP":
+        formule = COEF_LT * (vermogen_per_Warmtepomp**EXP_LT) * benodigd_vermogen
+
+    jaren_tco = get_jaren_tco()
+    afschrijving = formule / subkengetal.levensduur / aantal_woningen
+    onderhoud = formule * subkengetal.beheer_en_onderhoud / aantal_woningen
+    tco = (afschrijving + onderhoud) * jaren_tco
+
+    return SubsysteemBerekening(
+        afschrijving_eur_per_woning_per_jaar=afschrijving,
+        onderhoud_eur_per_woning_per_jaar=onderhoud,
         tco=tco,
     )
 
