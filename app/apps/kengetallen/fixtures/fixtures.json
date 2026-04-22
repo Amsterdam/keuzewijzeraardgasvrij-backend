@@ -1046,6 +1046,150 @@
     }
   },
   {
+    "model": "kengetallen.subkengetal",
+    "pk": 55,
+    "fields": {
+      "subsysteem": 23,
+      "scenario": "laag",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 56,
+    "fields": {
+      "subsysteem": 23,
+      "scenario": "midden",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 57,
+    "fields": {
+      "subsysteem": 23,
+      "scenario": "hoog",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 58,
+    "fields": {
+      "subsysteem": 24,
+      "scenario": "laag",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 59,
+    "fields": {
+      "subsysteem": 24,
+      "scenario": "midden",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 60,
+    "fields": {
+      "subsysteem": 24,
+      "scenario": "hoog",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 61,
+    "fields": {
+      "subsysteem": 25,
+      "scenario": "laag",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 62,
+    "fields": {
+      "subsysteem": 25,
+      "scenario": "midden",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
+    "model": "kengetallen.subkengetal",
+    "pk": 63,
+    "fields": {
+      "subsysteem": 25,
+      "scenario": "hoog",
+      "investeringskosten": 0,
+      "levensduur": 15,
+      "beheer_en_onderhoud": 0.02,
+      "verhouding_vermogen_bron": null,
+      "debiet_bron": null,
+      "energie_bron": null,
+      "delta_temperatuur_retour": null,
+      "onttrekkingsvermogen": null
+    }
+  },
+  {
     "model": "kengetallen.algemeenkengetal",
     "pk": 1,
     "fields": {"scenario": "laag", "naam": "percentage_ruimteverwarming", "omschrijving": "Persentage gas voor ruimteverwarming [bij tapwater op gas]", "waarde": "0.8"}
@@ -1142,6 +1286,36 @@
     "model": "kengetallen.gelijktijdigheidcv",
     "pk": 10,
     "fields": {"n_min": 205, "n_max": null, "factor": "0.55"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 1,
+    "fields": {"naam": "COEF_LT", "omschrijving": "De coëfficient voor LT", "waarde": "3822.1"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 2,
+    "fields": {"naam": "COEF_HT", "omschrijving": "De coëfficient voor HT", "waarde": "3900.6"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 3,
+    "fields": {"naam": "EXP_LT", "omschrijving": "De exponent voor LT", "waarde": "-0.417"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 4,
+    "fields": {"naam": "EXP_HT", "omschrijving": "De exponent voor HT", "waarde": "-0.408"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 5,
+    "fields": {"naam": "P_MAX_LT", "omschrijving": "Maximaal vermogen LT [kW]", "waarde": "250"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 6,
+    "fields": {"naam": "P_MAX_HT", "omschrijving": "Maximaal vermogen HT [kW]", "waarde": "250"}
   },
   {
     "model": "kengetallen.algemeenkengetal",

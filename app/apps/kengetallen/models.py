@@ -116,6 +116,21 @@ class GelijktijdigheidCV(models.Model):
         return f"{self.n_min}–{max_label}: {self.factor}"
 
 
+class CollectieveWarmtepompKengetal(models.Model):
+    """Kengetallen for the collective warmtepomp sizing/cost formula."""
+
+    naam = models.CharField(max_length=64, unique=True)
+    omschrijving = models.CharField(max_length=255, blank=True, default="")
+    waarde = models.DecimalField(max_digits=18, decimal_places=9, default=0)
+
+    class Meta:
+        verbose_name = "Collectieve warmtepomp kengetal"
+        verbose_name_plural = "Collectieve warmtepomp kengetallen"
+
+    def __str__(self) -> str:
+        return f"{self.naam}={self.waarde}"
+
+
 class StadsverwarmingKlantType(models.TextChoices):
     PARTICULIER = "particulier", "Particulier"
     ZAKELIJK = "zakelijk", "Zakelijk"
