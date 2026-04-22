@@ -6,7 +6,7 @@ import math
 from django.db import models
 
 from apps.calculations.models import Conversie
-from apps.kengetallen.models import Subkengetal
+from apps.kengetallen.models import CollectieveWarmtepompKengetal, Subkengetal
 from apps.calculations.calculator import (
     EnergieCalculationResult,
     StadsverwarmingCalculatorFullResult,
@@ -200,25 +200,44 @@ def calculate_warmtepomp(
 ) -> SubsysteemBerekening:
     """Calculation method 'Warmtepomp'."""
 
-    P_MAX_LT = Decimal("250")
-    P_MAX_HT = Decimal("250")
-    COEF_LT = Decimal("3822.1")
-    COEF_HT = Decimal("3900.6")
-    EXP_LT = Decimal("-0.417")
-    EXP_HT = Decimal("-0.408")
+    warmtepomp_formule_waarden = {
+        k.naam: k.waarde
+        for k in CollectieveWarmtepompKengetal.objects.filter(
+            naam__in=(
+                "COEF_LT",
+                "COEF_HT",
+                "EXP_LT",
+                "EXP_HT",
+                "P_MAX_LT",
+                "P_MAX_HT",
+            )
+        )
+    }
 
-    P_MAX = P_MAX_LT if subsysteem_naam == "Collectieve LT-WP" else P_MAX_HT
+    p_max = (
+        warmtepomp_formule_waarden["P_MAX_LT"]
+        if subsysteem_naam == "Collectieve LT-WP"
+        else warmtepomp_formule_waarden["P_MAX_HT"]
+    )
     benodigd_vermogen = tap_energie_calculation.vermogen_warmte_kw_per_vve
     if subsysteem_naam == "Collectieve LWP":
         benodigd_vermogen += cv_energie_calculation.vermogen_warmte_kw_per_vve
     elif subsysteem_naam == "Collectieve LT-WP":
         benodigd_vermogen = cv_energie_calculation.vermogen_warmte_kw_per_vve
 
-    aantal_warmtepompen_benodigd = math.ceil(benodigd_vermogen / P_MAX)
-    vermogen_per_Warmtepomp = benodigd_vermogen / aantal_warmtepompen_benodigd
-    formule = COEF_HT * (vermogen_per_Warmtepomp**EXP_HT) * benodigd_vermogen
+    aantal_warmtepompen_benodigd = math.ceil(benodigd_vermogen / p_max)
+    vermogen_per_warmtepomp = benodigd_vermogen / aantal_warmtepompen_benodigd
+    formule = (
+        warmtepomp_formule_waarden["COEF_HT"]
+        * (vermogen_per_warmtepomp ** warmtepomp_formule_waarden["EXP_HT"])
+        * benodigd_vermogen
+    )
     if subsysteem_naam == "Collectieve LT-WP":
-        formule = COEF_LT * (vermogen_per_Warmtepomp**EXP_LT) * benodigd_vermogen
+        formule = (
+            warmtepomp_formule_waarden["COEF_LT"]
+            * (vermogen_per_warmtepomp ** warmtepomp_formule_waarden["EXP_LT"])
+            * benodigd_vermogen
+        )
 
     jaren_tco = get_jaren_tco()
     afschrijving = formule / subkengetal.levensduur / aantal_woningen

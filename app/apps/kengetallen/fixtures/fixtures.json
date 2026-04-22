@@ -1288,6 +1288,36 @@
     "fields": {"n_min": 205, "n_max": null, "factor": "0.55"}
   },
   {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 1,
+    "fields": {"naam": "COEF_LT", "omschrijving": "De coëfficient voor LT", "waarde": "3822.1"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 2,
+    "fields": {"naam": "COEF_HT", "omschrijving": "De coëfficient voor HT", "waarde": "3900.6"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 3,
+    "fields": {"naam": "EXP_LT", "omschrijving": "De exponent voor LT", "waarde": "-0.417"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 4,
+    "fields": {"naam": "EXP_HT", "omschrijving": "De exponent voor HT", "waarde": "-0.408"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 5,
+    "fields": {"naam": "P_MAX_LT", "omschrijving": "Maximaal vermogen LT [kW]", "waarde": "250"}
+  },
+  {
+    "model": "kengetallen.collectievewarmtepompkengetal",
+    "pk": 6,
+    "fields": {"naam": "P_MAX_HT", "omschrijving": "Maximaal vermogen HT [kW]", "waarde": "250"}
+  },
+  {
     "model": "kengetallen.algemeenkengetal",
     "pk": 13,
     "fields": {"scenario": "laag", "naam": "warmtevraag_tap", "omschrijving": "Warmtevraag vermogen tap [kW/w]", "waarde": "26.2"}
