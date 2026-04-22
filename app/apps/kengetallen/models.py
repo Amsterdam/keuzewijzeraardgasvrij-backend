@@ -58,6 +58,13 @@ class Subkengetal(Kengetal):
     investeringskosten = models.DecimalField(max_digits=18, decimal_places=9)
     levensduur = models.IntegerField()
     beheer_en_onderhoud = models.DecimalField(max_digits=18, decimal_places=9)
+    staffel = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        blank=True,
+        null=True,
+        default=None,
+    )
     verhouding_vermogen_bron = models.DecimalField(
         max_digits=18, decimal_places=9, blank=True, null=True
     )
