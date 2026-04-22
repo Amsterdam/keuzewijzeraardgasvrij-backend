@@ -19,6 +19,7 @@ class SubsysteemCalculationMethod(models.TextChoices):
     Gbs = "gbs", "GBS"
     Stadsverwarming = "stadsverwarming", "Stadsverwarming"
     Warmtepomp = "warmtepomp", "Warmtepomp"
+    Staffel = "staffel", "Staffel"
 
 
 @dataclass(frozen=True)
@@ -244,6 +245,33 @@ def calculate_warmtepomp(
     onderhoud = formule * subkengetal.beheer_en_onderhoud / aantal_woningen
     tco = (afschrijving + onderhoud) * jaren_tco
 
+    return SubsysteemBerekening(
+        afschrijving_eur_per_woning_per_jaar=afschrijving,
+        onderhoud_eur_per_woning_per_jaar=onderhoud,
+        tco=tco,
+    )
+
+
+def calculate_staffel(
+    subkengetal: Subkengetal,
+    aantal_woningen: int | Decimal,
+) -> SubsysteemBerekening:
+    """Calculation method 'Staffel'.
+    Based on the `Subkengetal` connected to the subsysteem + scenario:
+    - Aantal staffels: `aantal_staffels = math.ceil(aantal_woningen / subkengetal.staffel)`
+    - Investering VvE: `investering_vve = subkengetal.investeringskosten * aantal_staffels`
+    - Investering per woning: `investering_eur_per_woning = investering_vve / aantal_woningen`
+    - Afschrijving [€/w/j]: `afschrijving_woning_per_jaar = investering_eur_per_woning / Decimal(subkengetal.levensduur)`
+    - Onderhoud [€/w/j]: `onderhoud_woning_per_jaar = investering_eur_per_woning * subkengetal.beheer_en_onderhoud`
+    """
+    jaren_tco = get_jaren_tco()
+    aantal_staffels = math.ceil(aantal_woningen / subkengetal.staffel)
+    investerings_kosten = subkengetal.investeringskosten * Decimal(aantal_staffels)
+    afschrijving = (
+        investerings_kosten / Decimal(subkengetal.levensduur) / aantal_woningen
+    )
+    onderhoud = investerings_kosten * subkengetal.beheer_en_onderhoud / aantal_woningen
+    tco = (afschrijving + onderhoud) * jaren_tco
     return SubsysteemBerekening(
         afschrijving_eur_per_woning_per_jaar=afschrijving,
         onderhoud_eur_per_woning_per_jaar=onderhoud,

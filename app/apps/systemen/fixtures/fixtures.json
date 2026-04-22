@@ -214,7 +214,7 @@
   },
   {
     "fields": {
-      "calculation_method": "openbron",
+      "calculation_method": "staffel",
       "naam": "Regeneratie",
       "type": "kengetal"
     },

@@ -15,6 +15,7 @@ from apps.calculations.subsysteem_calculations import (
     calculate_investering,
     calculate_openbron_systeem,
     calculate_warmtepomp,
+    calculate_staffel,
 )
 
 
@@ -361,6 +362,22 @@ class Subsysteem(models.Model):
                 subkengetal=self.subkengetallen.get(scenario=scenario),
                 cv_energie_calculation=cv_result,
                 tap_energie_calculation=tap_result,
+                aantal_woningen=calculation_input.aantal_woningen,
+            )
+            return SubsysteemScenarioResult(
+                scenario=str(scenario),
+                method=str(self.calculation_method),
+                berekening=berekening,
+            )
+
+        if self.calculation_method == SubsysteemCalculationMethod.Staffel:
+            if calculation_input is None:
+                raise ValueError(
+                    "calculation_input is required for Staffel calculations"
+                )
+
+            berekening = calculate_staffel(
+                self.subkengetallen.get(scenario=scenario),
                 aantal_woningen=calculation_input.aantal_woningen,
             )
             return SubsysteemScenarioResult(
