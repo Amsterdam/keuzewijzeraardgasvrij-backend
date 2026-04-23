@@ -2,11 +2,13 @@ from django.contrib import admin
 
 from .models import (
     AlgemeenKengetal,
+    BuurtcodeWarmteprogramma,
     CollectieveWarmtepompKengetal,
     GelijktijdigheidCV,
     Hoofdkengetal,
     StadsverwarmingKengetal,
     Subkengetal,
+    Warmteprogramma,
 )
 
 
@@ -39,6 +41,17 @@ class GelijktijdigheidCVAdmin(admin.ModelAdmin):
 @admin.register(CollectieveWarmtepompKengetal)
 class CollectieveWarmtepompKengetalAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(CollectieveWarmtepompKengetal)
+
+
+@admin.register(Warmteprogramma)
+class WarmteprogrammaAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(Warmteprogramma)
+
+
+@admin.register(BuurtcodeWarmteprogramma)
+class BuurtcodeWarmteprogrammaAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(BuurtcodeWarmteprogramma)
+    list_select_related = True
 
 
 @admin.register(StadsverwarmingKengetal)
