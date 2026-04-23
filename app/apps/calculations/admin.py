@@ -7,6 +7,7 @@ from django.urls import path, reverse
 
 from .models import CalculationDashboard, Conversie, EnergiePrijs, GebruikersInvoer
 from .calculator import EnergieCalculator, EnergieType, StadsverwarmingCalculator
+from apps.kengetallen.models import BuurtcodeWarmteprogramma
 from apps.systemen.models import Hoofdsysteem, Subsysteem
 
 
@@ -47,6 +48,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         hoofdsysteem_tco_sum_rows = []
         stadsverwarming_rows = []
         stadsverwarming_totals_rows = []
+        warmteprogramma_row = None
         if selected_input is not None:
 
             def format(value: Decimal) -> str:
@@ -61,6 +63,22 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                 {
                     "field": "bouwjaar",
                     "value": str(selected_input.bouwjaar),
+                },
+                {
+                    "field": "buurtcode",
+                    "value": (
+                        ""
+                        if selected_input.buurtcode is None
+                        else str(selected_input.buurtcode)
+                    ),
+                },
+                {
+                    "field": "jaar_vervangen",
+                    "value": (
+                        ""
+                        if selected_input.jaar_vervangen is None
+                        else str(selected_input.jaar_vervangen)
+                    ),
                 },
                 {
                     "field": "aantal_woningen",
@@ -91,6 +109,43 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                     "value": format(selected_input.gasverbruik_vve_totaal),
                 },
             ]
+
+            warmteprogramma_row = {
+                "categorie": "",
+                "warmtenet_start": "",
+                "warmtenet_stop": "",
+                "warmtenet_mogelijk": "false",
+            }
+
+            if selected_input.buurtcode:
+                mapping = (
+                    BuurtcodeWarmteprogramma.objects.select_related("warmteprogramma")
+                    .filter(buurtcode=selected_input.buurtcode)
+                    .first()
+                )
+                if mapping is not None and mapping.warmteprogramma is not None:
+                    wp = mapping.warmteprogramma
+                    warmteprogramma_row["categorie"] = (
+                        "" if wp.categorie is None else str(wp.categorie)
+                    )
+                    warmteprogramma_row["warmtenet_start"] = (
+                        "" if wp.warmtenet_start is None else str(wp.warmtenet_start)
+                    )
+                    warmteprogramma_row["warmtenet_stop"] = (
+                        "" if wp.warmtenet_stop is None else str(wp.warmtenet_stop)
+                    )
+
+                    jaar_vervangen = selected_input.jaar_vervangen
+                    warmtenet_stop = wp.warmtenet_stop
+                    warmteprogramma_row["warmtenet_mogelijk"] = (
+                        "true"
+                        if (
+                            jaar_vervangen is not None
+                            and warmtenet_stop is not None
+                            and jaar_vervangen >= warmtenet_stop
+                        )
+                        else "false"
+                    )
 
             calculator = EnergieCalculator()
             energie = calculator.calculate(selected_input)
@@ -375,6 +430,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "hoofdsysteem_tco_sum_rows": hoofdsysteem_tco_sum_rows,
             "stadsverwarming_rows": stadsverwarming_rows,
             "stadsverwarming_totals_rows": stadsverwarming_totals_rows,
+            "warmteprogramma_row": warmteprogramma_row,
             "title": "Berekeningen",
         }
         return TemplateResponse(

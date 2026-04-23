@@ -138,6 +138,38 @@ class CollectieveWarmtepompKengetal(models.Model):
         return f"{self.naam}={self.waarde}"
 
 
+class Warmteprogramma(models.Model):
+    categorie = models.CharField(max_length=255, unique=True, blank=True, null=True)
+    warmtenet_start = models.IntegerField(blank=True, null=True)
+    warmtenet_stop = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Warmteprogramma kengetal"
+        verbose_name_plural = "Warmteprogramma kengetallen"
+        indexes = [models.Index(fields=["categorie"])]
+
+    def __str__(self) -> str:
+        categorie = self.categorie or "<null>"
+        return f"{categorie} ({self.warmtenet_start}–{self.warmtenet_stop})"
+
+
+class BuurtcodeWarmteprogramma(models.Model):
+    buurtcode = models.CharField(max_length=16, unique=True)
+    warmteprogramma = models.ForeignKey(
+        Warmteprogramma,
+        on_delete=models.PROTECT,
+        related_name="buurtcodes",
+    )
+
+    class Meta:
+        verbose_name = "Buurtcode warmteprogramma"
+        verbose_name_plural = "Buurtcode warmteprogramma"
+        indexes = [models.Index(fields=["buurtcode"])]
+
+    def __str__(self) -> str:
+        return f"{self.buurtcode}→{self.warmteprogramma}"
+
+
 class StadsverwarmingKlantType(models.TextChoices):
     PARTICULIER = "particulier", "Particulier"
     ZAKELIJK = "zakelijk", "Zakelijk"

@@ -46,6 +46,8 @@ class GebruikersInvoer(models.Model):
     wens_tot_koelen = models.BooleanField()
     dubbel_glas = models.BooleanField(default=False)
     wtw_aanwezig = models.BooleanField(default=False)
+    buurtcode = models.CharField(max_length=20, blank=True, null=True)
+    jaar_vervangen = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Gebruikersinvoer"
