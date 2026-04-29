@@ -7,6 +7,10 @@ from typing import Final, Iterable, Literal
 from django.db.models import Q
 from apps.kengetallen.models import (
     AlgemeenKengetal,
+    BuurtcodeWarmteprogramma,
+    CollectieveRuimteBinnen,
+    CollectieveRuimteBuiten,
+    EliminatieKengetal,
     GelijktijdigheidCV,
     ScenarioKeuze,
     StadsverwarmingEenheid,
@@ -18,7 +22,6 @@ from apps.kengetallen.models import (
 )
 
 from .models import Conversie, GebruikersInvoer
-
 
 EnergieTypeValue = Literal["tapwater", "cv", "gkw"]
 
@@ -100,6 +103,14 @@ class StadsverwarmingCalculatorFullResult:
     results: list[StadsverwarmingKengetalCalculationResult]
     by_scenario: dict[str, list[StadsverwarmingKengetalCalculationResult]]
     kosten_totals_by_scenario: dict[str, StadsverwarmingScenarioKostenTotals]
+
+
+@dataclass(frozen=True, slots=True)
+class WarmtenetCalculatorResult:
+    categorie: str
+    warmtenet_start: int | None
+    warmtenet_stop: int | None
+    warmtenet_mogelijk: bool
 
 
 class EnergieCalculator:
@@ -724,3 +735,174 @@ class StadsverwarmingCalculator:
             kosten_zakelijk_warmte,
             kosten_zakelijk_warmte_koude,
         )
+
+
+class WarmtenetCalculator:
+    def calculate(
+        self, calculation_input: GebruikersInvoer
+    ) -> WarmtenetCalculatorResult:
+        buurtcode = calculation_input.buurtcode
+        if not buurtcode:
+            return WarmtenetCalculatorResult(
+                categorie="",
+                warmtenet_start=None,
+                warmtenet_stop=None,
+                warmtenet_mogelijk=False,
+            )
+
+        mapping = (
+            BuurtcodeWarmteprogramma.objects.select_related("warmteprogramma")
+            .filter(buurtcode=buurtcode)
+            .first()
+        )
+        if mapping is None or mapping.warmteprogramma is None:
+            return WarmtenetCalculatorResult(
+                categorie="",
+                warmtenet_start=None,
+                warmtenet_stop=None,
+                warmtenet_mogelijk=False,
+            )
+
+        wp = mapping.warmteprogramma
+        jaar_vervangen = calculation_input.jaar_vervangen
+        warmtenet_stop = wp.warmtenet_stop
+        warmtenet_mogelijk = bool(
+            jaar_vervangen is not None
+            and warmtenet_stop is not None
+            and jaar_vervangen >= warmtenet_stop
+        )
+        return WarmtenetCalculatorResult(
+            categorie="" if wp.categorie is None else str(wp.categorie),
+            warmtenet_start=wp.warmtenet_start,
+            warmtenet_stop=wp.warmtenet_stop,
+            warmtenet_mogelijk=warmtenet_mogelijk,
+        )
+
+
+class Eliminatie:
+    def calculate(
+        self,
+        calculation_input: GebruikersInvoer,
+        hoofdsysteem_naam: str,
+    ) -> dict[str, object]:
+        hoofdsysteem_naam = hoofdsysteem_naam
+        aantal_woningen = calculation_input.aantal_woningen
+        collectief_ruimte_binnen_benodigd = self._get_collectieve_ruimte(
+            CollectieveRuimteBinnen,
+            hoofdsysteem_naam=hoofdsysteem_naam,
+            aantal_woningen=aantal_woningen,
+        )
+        collectief_ruimte_buiten_benodigd = self._get_collectieve_ruimte(
+            CollectieveRuimteBuiten,
+            hoofdsysteem_naam=hoofdsysteem_naam,
+            aantal_woningen=aantal_woningen,
+        )
+
+        eliminatie_kengetal = EliminatieKengetal.objects.get(naam=hoofdsysteem_naam)
+
+        redenen: list[str] = []
+
+        max_label = (
+            "∞"
+            if eliminatie_kengetal.woningen_max is None
+            else str(eliminatie_kengetal.woningen_max)
+        )
+        if not (
+            aantal_woningen >= eliminatie_kengetal.woningen_min
+            and (
+                eliminatie_kengetal.woningen_max is None
+                or aantal_woningen <= eliminatie_kengetal.woningen_max
+            )
+        ):
+            redenen.append(
+                f"Aantal woningen {aantal_woningen} voldoet niet aan range {eliminatie_kengetal.woningen_min}–{max_label} van {hoofdsysteem_naam}."
+            )
+
+        if (
+            calculation_input.beschikbare_ruimte_in_woning_m2 is not None
+            and calculation_input.beschikbare_ruimte_in_woning_m2
+            < eliminatie_kengetal.benodigde_ruimte_in_woning_m2
+        ):
+            redenen.append(
+                "Ruimte in woning "
+                f"{calculation_input.beschikbare_ruimte_in_woning_m2} m² is onvoldoende voor {hoofdsysteem_naam} "
+                f"(benodigd {eliminatie_kengetal.benodigde_ruimte_in_woning_m2} m²)."
+            )
+
+        if (
+            calculation_input.beschikbare_collectieve_ruimte_binnen_m2 is not None
+            and calculation_input.beschikbare_collectieve_ruimte_binnen_m2
+            < collectief_ruimte_binnen_benodigd
+        ):
+            redenen.append(
+                "Collectieve ruimte binnen "
+                f"{calculation_input.beschikbare_collectieve_ruimte_binnen_m2} m² is onvoldoende voor {hoofdsysteem_naam} "
+                f"(benodigd {collectief_ruimte_binnen_benodigd} m²)."
+            )
+
+        if (
+            calculation_input.beschikbare_collectieve_ruimte_buiten_m2 is not None
+            and calculation_input.beschikbare_collectieve_ruimte_buiten_m2
+            < collectief_ruimte_buiten_benodigd
+        ):
+            redenen.append(
+                "Collectieve ruimte buiten "
+                f"{calculation_input.beschikbare_collectieve_ruimte_buiten_m2} m² is onvoldoende voor {hoofdsysteem_naam} "
+                f"(benodigd {collectief_ruimte_buiten_benodigd} m²)."
+            )
+
+        if (
+            eliminatie_kengetal.mechanische_ventilatie_nodig
+            and not calculation_input.mechanische_ventilatie_aanwezig
+        ):
+            redenen.append(
+                f"Mechanische ventilatie is vereist voor {hoofdsysteem_naam}, maar mechanische ventilatie is niet aanwezig."
+            )
+
+        if calculation_input.wens_tot_koelen and not eliminatie_kengetal.kan_koelen:
+            redenen.append(
+                f"Koeling is gewenst, maar {hoofdsysteem_naam} kan niet koelen."
+            )
+
+        if eliminatie_kengetal.stadsverwarming_nodig:
+            if (
+                calculation_input.buurtcode
+                and calculation_input.jaar_vervangen is not None
+            ):
+                warmtenet_berekening = WarmtenetCalculator().calculate(
+                    calculation_input
+                )
+                if not warmtenet_berekening.warmtenet_mogelijk:
+                    redenen.append(
+                        "Warmtenet is niet mogelijk vanwege de buurtcode en/of het jaar van vervangen."
+                    )
+
+        meenemen = len(redenen) == 0
+
+        return {
+            "meenemen": meenemen,
+            "redenen": redenen,
+        }
+
+    @staticmethod
+    def _get_collectieve_ruimte(
+        model,
+        *,
+        hoofdsysteem_naam: str,
+        aantal_woningen: int,
+    ) -> Decimal:
+        value = (
+            model.objects.filter(
+                hoofdsysteem__naam=hoofdsysteem_naam,
+                n_min__lte=aantal_woningen,
+            )
+            .filter(Q(n_max__isnull=True) | Q(n_max__gte=aantal_woningen))
+            .order_by("-n_min")
+            .values_list("vereiste_m2", flat=True)
+            .first()
+        )
+        if value is None:
+            raise model.DoesNotExist(
+                f"Missing {model.__name__} for hoofdsysteem={hoofdsysteem_naam!r}, aantal_woningen={aantal_woningen}"
+            )
+        return value

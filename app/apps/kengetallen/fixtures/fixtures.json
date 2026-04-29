@@ -5600,5 +5600,2248 @@
       "buurtcode": "BU03636602",
       "warmteprogramma": 2
     }
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 1,
+    "fields": {"hoofdsysteem": 1, "n_min": 1, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 2,
+    "fields": {"hoofdsysteem": 2, "n_min": 1, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 3,
+    "fields": {"hoofdsysteem": 3, "n_min": 1, "n_max": 40, "vereiste_m2": "5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 4,
+    "fields": {"hoofdsysteem": 4, "n_min": 1, "n_max": 40, "vereiste_m2": "5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 5,
+    "fields": {"hoofdsysteem": 5, "n_min": 1, "n_max": 40, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 6,
+    "fields": {"hoofdsysteem": 6, "n_min": 1, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 7,
+    "fields": {"hoofdsysteem": 7, "n_min": 1, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 8,
+    "fields": {"hoofdsysteem": 8, "n_min": 1, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 9,
+    "fields": {"hoofdsysteem": 9, "n_min": 1, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 10,
+    "fields": {"hoofdsysteem": 10, "n_min": 1, "n_max": 40, "vereiste_m2": "70"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 11,
+    "fields": {"hoofdsysteem": 11, "n_min": 1, "n_max": 40, "vereiste_m2": "12"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 12,
+    "fields": {"hoofdsysteem": 12, "n_min": 1, "n_max": 40, "vereiste_m2": "12"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 13,
+    "fields": {"hoofdsysteem": 1, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 14,
+    "fields": {"hoofdsysteem": 2, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 15,
+    "fields": {"hoofdsysteem": 3, "n_min": 41, "n_max": 50, "vereiste_m2": "5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 16,
+    "fields": {"hoofdsysteem": 4, "n_min": 41, "n_max": 50, "vereiste_m2": "5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 17,
+    "fields": {"hoofdsysteem": 5, "n_min": 41, "n_max": 50, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 18,
+    "fields": {"hoofdsysteem": 6, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 19,
+    "fields": {"hoofdsysteem": 7, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 20,
+    "fields": {"hoofdsysteem": 8, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 21,
+    "fields": {"hoofdsysteem": 9, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 22,
+    "fields": {"hoofdsysteem": 10, "n_min": 41, "n_max": 50, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 23,
+    "fields": {"hoofdsysteem": 11, "n_min": 41, "n_max": 50, "vereiste_m2": "12"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 24,
+    "fields": {"hoofdsysteem": 12, "n_min": 41, "n_max": 50, "vereiste_m2": "12"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 25,
+    "fields": {"hoofdsysteem": 1, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 26,
+    "fields": {"hoofdsysteem": 2, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 27,
+    "fields": {"hoofdsysteem": 3, "n_min": 51, "n_max": 100, "vereiste_m2": "5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 28,
+    "fields": {"hoofdsysteem": 4, "n_min": 51, "n_max": 100, "vereiste_m2": "5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 29,
+    "fields": {"hoofdsysteem": 5, "n_min": 51, "n_max": 100, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 30,
+    "fields": {"hoofdsysteem": 6, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 31,
+    "fields": {"hoofdsysteem": 7, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 32,
+    "fields": {"hoofdsysteem": 8, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 33,
+    "fields": {"hoofdsysteem": 9, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 34,
+    "fields": {"hoofdsysteem": 10, "n_min": 51, "n_max": 100, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 35,
+    "fields": {"hoofdsysteem": 11, "n_min": 51, "n_max": 100, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 36,
+    "fields": {"hoofdsysteem": 12, "n_min": 51, "n_max": 100, "vereiste_m2": "18"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 37,
+    "fields": {"hoofdsysteem": 1, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 38,
+    "fields": {"hoofdsysteem": 2, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 39,
+    "fields": {"hoofdsysteem": 3, "n_min": 101, "n_max": 125, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 40,
+    "fields": {"hoofdsysteem": 4, "n_min": 101, "n_max": 125, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 41,
+    "fields": {"hoofdsysteem": 5, "n_min": 101, "n_max": 125, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 42,
+    "fields": {"hoofdsysteem": 6, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 43,
+    "fields": {"hoofdsysteem": 7, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 44,
+    "fields": {"hoofdsysteem": 8, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 45,
+    "fields": {"hoofdsysteem": 9, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 46,
+    "fields": {"hoofdsysteem": 10, "n_min": 101, "n_max": 125, "vereiste_m2": "135"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 47,
+    "fields": {"hoofdsysteem": 11, "n_min": 101, "n_max": 125, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 48,
+    "fields": {"hoofdsysteem": 12, "n_min": 101, "n_max": 125, "vereiste_m2": "18"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 49,
+    "fields": {"hoofdsysteem": 1, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 50,
+    "fields": {"hoofdsysteem": 2, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 51,
+    "fields": {"hoofdsysteem": 3, "n_min": 126, "n_max": 150, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 52,
+    "fields": {"hoofdsysteem": 4, "n_min": 126, "n_max": 150, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 53,
+    "fields": {"hoofdsysteem": 5, "n_min": 126, "n_max": 150, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 54,
+    "fields": {"hoofdsysteem": 6, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 55,
+    "fields": {"hoofdsysteem": 7, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 56,
+    "fields": {"hoofdsysteem": 8, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 57,
+    "fields": {"hoofdsysteem": 9, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 58,
+    "fields": {"hoofdsysteem": 10, "n_min": 126, "n_max": 150, "vereiste_m2": "135"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 59,
+    "fields": {"hoofdsysteem": 11, "n_min": 126, "n_max": 150, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 60,
+    "fields": {"hoofdsysteem": 12, "n_min": 126, "n_max": 150, "vereiste_m2": "20"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 61,
+    "fields": {"hoofdsysteem": 1, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 62,
+    "fields": {"hoofdsysteem": 2, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 63,
+    "fields": {"hoofdsysteem": 3, "n_min": 151, "n_max": 200, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 64,
+    "fields": {"hoofdsysteem": 4, "n_min": 151, "n_max": 200, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 65,
+    "fields": {"hoofdsysteem": 5, "n_min": 151, "n_max": 200, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 66,
+    "fields": {"hoofdsysteem": 6, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 67,
+    "fields": {"hoofdsysteem": 7, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 68,
+    "fields": {"hoofdsysteem": 8, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 69,
+    "fields": {"hoofdsysteem": 9, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 70,
+    "fields": {"hoofdsysteem": 10, "n_min": 151, "n_max": 200, "vereiste_m2": "175"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 71,
+    "fields": {"hoofdsysteem": 11, "n_min": 151, "n_max": 200, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 72,
+    "fields": {"hoofdsysteem": 12, "n_min": 151, "n_max": 200, "vereiste_m2": "20"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 73,
+    "fields": {"hoofdsysteem": 1, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 74,
+    "fields": {"hoofdsysteem": 2, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 75,
+    "fields": {"hoofdsysteem": 3, "n_min": 201, "n_max": 300, "vereiste_m2": "15"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 76,
+    "fields": {"hoofdsysteem": 4, "n_min": 201, "n_max": 300, "vereiste_m2": "15"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 77,
+    "fields": {"hoofdsysteem": 5, "n_min": 201, "n_max": 300, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 78,
+    "fields": {"hoofdsysteem": 6, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 79,
+    "fields": {"hoofdsysteem": 7, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 80,
+    "fields": {"hoofdsysteem": 8, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 81,
+    "fields": {"hoofdsysteem": 9, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 82,
+    "fields": {"hoofdsysteem": 10, "n_min": 201, "n_max": 300, "vereiste_m2": "275"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 83,
+    "fields": {"hoofdsysteem": 11, "n_min": 201, "n_max": 300, "vereiste_m2": "27"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 84,
+    "fields": {"hoofdsysteem": 12, "n_min": 201, "n_max": 300, "vereiste_m2": "27"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 85,
+    "fields": {"hoofdsysteem": 1, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 86,
+    "fields": {"hoofdsysteem": 2, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 87,
+    "fields": {"hoofdsysteem": 3, "n_min": 301, "n_max": 400, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 88,
+    "fields": {"hoofdsysteem": 4, "n_min": 301, "n_max": 400, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 89,
+    "fields": {"hoofdsysteem": 5, "n_min": 301, "n_max": 400, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 90,
+    "fields": {"hoofdsysteem": 6, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 91,
+    "fields": {"hoofdsysteem": 7, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 92,
+    "fields": {"hoofdsysteem": 8, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 93,
+    "fields": {"hoofdsysteem": 9, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 94,
+    "fields": {"hoofdsysteem": 10, "n_min": 301, "n_max": 400, "vereiste_m2": "275"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 95,
+    "fields": {"hoofdsysteem": 11, "n_min": 301, "n_max": 400, "vereiste_m2": "27"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 96,
+    "fields": {"hoofdsysteem": 12, "n_min": 301, "n_max": 400, "vereiste_m2": "27"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 97,
+    "fields": {"hoofdsysteem": 1, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 98,
+    "fields": {"hoofdsysteem": 2, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 99,
+    "fields": {"hoofdsysteem": 3, "n_min": 401, "n_max": 500, "vereiste_m2": "25"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 100,
+    "fields": {"hoofdsysteem": 4, "n_min": 401, "n_max": 500, "vereiste_m2": "25"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 101,
+    "fields": {"hoofdsysteem": 5, "n_min": 401, "n_max": 500, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 102,
+    "fields": {"hoofdsysteem": 6, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 103,
+    "fields": {"hoofdsysteem": 7, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 104,
+    "fields": {"hoofdsysteem": 8, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 105,
+    "fields": {"hoofdsysteem": 9, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 106,
+    "fields": {"hoofdsysteem": 10, "n_min": 401, "n_max": 500, "vereiste_m2": "275"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 107,
+    "fields": {"hoofdsysteem": 11, "n_min": 401, "n_max": 500, "vereiste_m2": "27"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 108,
+    "fields": {"hoofdsysteem": 12, "n_min": 401, "n_max": 500, "vereiste_m2": "27"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 109,
+    "fields": {"hoofdsysteem": 1, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 110,
+    "fields": {"hoofdsysteem": 2, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 111,
+    "fields": {"hoofdsysteem": 3, "n_min": 501, "n_max": 600, "vereiste_m2": "30"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 112,
+    "fields": {"hoofdsysteem": 4, "n_min": 501, "n_max": 600, "vereiste_m2": "30"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 113,
+    "fields": {"hoofdsysteem": 5, "n_min": 501, "n_max": 600, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 114,
+    "fields": {"hoofdsysteem": 6, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 115,
+    "fields": {"hoofdsysteem": 7, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 116,
+    "fields": {"hoofdsysteem": 8, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 117,
+    "fields": {"hoofdsysteem": 9, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 118,
+    "fields": {"hoofdsysteem": 10, "n_min": 501, "n_max": 600, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 119,
+    "fields": {"hoofdsysteem": 11, "n_min": 501, "n_max": 600, "vereiste_m2": "32"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 120,
+    "fields": {"hoofdsysteem": 12, "n_min": 501, "n_max": 600, "vereiste_m2": "32"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 121,
+    "fields": {"hoofdsysteem": 1, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 122,
+    "fields": {"hoofdsysteem": 2, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 123,
+    "fields": {"hoofdsysteem": 3, "n_min": 601, "n_max": 700, "vereiste_m2": "35"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 124,
+    "fields": {"hoofdsysteem": 4, "n_min": 601, "n_max": 700, "vereiste_m2": "35"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 125,
+    "fields": {"hoofdsysteem": 5, "n_min": 601, "n_max": 700, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 126,
+    "fields": {"hoofdsysteem": 6, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 127,
+    "fields": {"hoofdsysteem": 7, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 128,
+    "fields": {"hoofdsysteem": 8, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 129,
+    "fields": {"hoofdsysteem": 9, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 130,
+    "fields": {"hoofdsysteem": 10, "n_min": 601, "n_max": 700, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 131,
+    "fields": {"hoofdsysteem": 11, "n_min": 601, "n_max": 700, "vereiste_m2": "32"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 132,
+    "fields": {"hoofdsysteem": 12, "n_min": 601, "n_max": 700, "vereiste_m2": "32"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 133,
+    "fields": {"hoofdsysteem": 1, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 134,
+    "fields": {"hoofdsysteem": 2, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 135,
+    "fields": {"hoofdsysteem": 3, "n_min": 701, "n_max": 800, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 136,
+    "fields": {"hoofdsysteem": 4, "n_min": 701, "n_max": 800, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 137,
+    "fields": {"hoofdsysteem": 5, "n_min": 701, "n_max": 800, "vereiste_m2": "30"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 138,
+    "fields": {"hoofdsysteem": 6, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 139,
+    "fields": {"hoofdsysteem": 7, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 140,
+    "fields": {"hoofdsysteem": 8, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 141,
+    "fields": {"hoofdsysteem": 9, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 142,
+    "fields": {"hoofdsysteem": 10, "n_min": 701, "n_max": 800, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 143,
+    "fields": {"hoofdsysteem": 11, "n_min": 701, "n_max": 800, "vereiste_m2": "32"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 144,
+    "fields": {"hoofdsysteem": 12, "n_min": 701, "n_max": 800, "vereiste_m2": "32"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 145,
+    "fields": {"hoofdsysteem": 1, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 146,
+    "fields": {"hoofdsysteem": 2, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 147,
+    "fields": {"hoofdsysteem": 3, "n_min": 801, "n_max": 900, "vereiste_m2": "45"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 148,
+    "fields": {"hoofdsysteem": 4, "n_min": 801, "n_max": 900, "vereiste_m2": "45"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 149,
+    "fields": {"hoofdsysteem": 5, "n_min": 801, "n_max": 900, "vereiste_m2": "30"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 150,
+    "fields": {"hoofdsysteem": 6, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 151,
+    "fields": {"hoofdsysteem": 7, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 152,
+    "fields": {"hoofdsysteem": 8, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 153,
+    "fields": {"hoofdsysteem": 9, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 154,
+    "fields": {"hoofdsysteem": 10, "n_min": 801, "n_max": 900, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 155,
+    "fields": {"hoofdsysteem": 11, "n_min": 801, "n_max": 900, "vereiste_m2": "32"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 156,
+    "fields": {"hoofdsysteem": 12, "n_min": 801, "n_max": 900, "vereiste_m2": "32"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 157,
+    "fields": {"hoofdsysteem": 1, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 158,
+    "fields": {"hoofdsysteem": 2, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 159,
+    "fields": {"hoofdsysteem": 3, "n_min": 901, "n_max": 1000, "vereiste_m2": "50"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 160,
+    "fields": {"hoofdsysteem": 4, "n_min": 901, "n_max": 1000, "vereiste_m2": "50"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 161,
+    "fields": {"hoofdsysteem": 5, "n_min": 901, "n_max": 1000, "vereiste_m2": "30"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 162,
+    "fields": {"hoofdsysteem": 6, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 163,
+    "fields": {"hoofdsysteem": 7, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 164,
+    "fields": {"hoofdsysteem": 8, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 165,
+    "fields": {"hoofdsysteem": 9, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 166,
+    "fields": {"hoofdsysteem": 10, "n_min": 901, "n_max": 1000, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 167,
+    "fields": {"hoofdsysteem": 11, "n_min": 901, "n_max": 1000, "vereiste_m2": "32"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 168,
+    "fields": {"hoofdsysteem": 12, "n_min": 901, "n_max": 1000, "vereiste_m2": "32"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 169,
+    "fields": {"hoofdsysteem": 1, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 170,
+    "fields": {"hoofdsysteem": 2, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 171,
+    "fields": {"hoofdsysteem": 3, "n_min": 1001, "n_max": null, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 172,
+    "fields": {"hoofdsysteem": 4, "n_min": 1001, "n_max": null, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 173,
+    "fields": {"hoofdsysteem": 5, "n_min": 1001, "n_max": null, "vereiste_m2": "50"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 174,
+    "fields": {"hoofdsysteem": 6, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 175,
+    "fields": {"hoofdsysteem": 7, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 176,
+    "fields": {"hoofdsysteem": 8, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 177,
+    "fields": {"hoofdsysteem": 9, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 178,
+    "fields": {"hoofdsysteem": 10, "n_min": 1001, "n_max": null, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 179,
+    "fields": {"hoofdsysteem": 11, "n_min": 1001, "n_max": null, "vereiste_m2": "50"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebinnen",
+    "pk": 180,
+    "fields": {"hoofdsysteem": 12, "n_min": 1001, "n_max": null, "vereiste_m2": "50"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 1,
+    "fields": {"hoofdsysteem": 1, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 2,
+    "fields": {"hoofdsysteem": 2, "n_min": 1, "n_max": 5, "vereiste_m2": "2.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 3,
+    "fields": {"hoofdsysteem": 3, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 4,
+    "fields": {"hoofdsysteem": 4, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 5,
+    "fields": {"hoofdsysteem": 5, "n_min": 1, "n_max": 5, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 6,
+    "fields": {"hoofdsysteem": 6, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 7,
+    "fields": {"hoofdsysteem": 7, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 8,
+    "fields": {"hoofdsysteem": 8, "n_min": 1, "n_max": 5, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 9,
+    "fields": {"hoofdsysteem": 9, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 10,
+    "fields": {"hoofdsysteem": 10, "n_min": 1, "n_max": 5, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 11,
+    "fields": {"hoofdsysteem": 11, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 12,
+    "fields": {"hoofdsysteem": 12, "n_min": 1, "n_max": 5, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 13,
+    "fields": {"hoofdsysteem": 1, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 14,
+    "fields": {"hoofdsysteem": 2, "n_min": 6, "n_max": 10, "vereiste_m2": "5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 15,
+    "fields": {"hoofdsysteem": 3, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 16,
+    "fields": {"hoofdsysteem": 4, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 17,
+    "fields": {"hoofdsysteem": 5, "n_min": 6, "n_max": 10, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 18,
+    "fields": {"hoofdsysteem": 6, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 19,
+    "fields": {"hoofdsysteem": 7, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 20,
+    "fields": {"hoofdsysteem": 8, "n_min": 6, "n_max": 10, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 21,
+    "fields": {"hoofdsysteem": 9, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 22,
+    "fields": {"hoofdsysteem": 10, "n_min": 6, "n_max": 10, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 23,
+    "fields": {"hoofdsysteem": 11, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 24,
+    "fields": {"hoofdsysteem": 12, "n_min": 6, "n_max": 10, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 25,
+    "fields": {"hoofdsysteem": 1, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 26,
+    "fields": {"hoofdsysteem": 2, "n_min": 11, "n_max": 20, "vereiste_m2": "10"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 27,
+    "fields": {"hoofdsysteem": 3, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 28,
+    "fields": {"hoofdsysteem": 4, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 29,
+    "fields": {"hoofdsysteem": 5, "n_min": 11, "n_max": 20, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 30,
+    "fields": {"hoofdsysteem": 6, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 31,
+    "fields": {"hoofdsysteem": 7, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 32,
+    "fields": {"hoofdsysteem": 8, "n_min": 11, "n_max": 20, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 33,
+    "fields": {"hoofdsysteem": 9, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 34,
+    "fields": {"hoofdsysteem": 10, "n_min": 11, "n_max": 20, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 35,
+    "fields": {"hoofdsysteem": 11, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 36,
+    "fields": {"hoofdsysteem": 12, "n_min": 11, "n_max": 20, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 37,
+    "fields": {"hoofdsysteem": 1, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 38,
+    "fields": {"hoofdsysteem": 2, "n_min": 21, "n_max": 30, "vereiste_m2": "15"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 39,
+    "fields": {"hoofdsysteem": 3, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 40,
+    "fields": {"hoofdsysteem": 4, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 41,
+    "fields": {"hoofdsysteem": 5, "n_min": 21, "n_max": 30, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 42,
+    "fields": {"hoofdsysteem": 6, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 43,
+    "fields": {"hoofdsysteem": 7, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 44,
+    "fields": {"hoofdsysteem": 8, "n_min": 21, "n_max": 30, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 45,
+    "fields": {"hoofdsysteem": 9, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 46,
+    "fields": {"hoofdsysteem": 10, "n_min": 21, "n_max": 30, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 47,
+    "fields": {"hoofdsysteem": 11, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 48,
+    "fields": {"hoofdsysteem": 12, "n_min": 21, "n_max": 30, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 49,
+    "fields": {"hoofdsysteem": 1, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 50,
+    "fields": {"hoofdsysteem": 2, "n_min": 31, "n_max": 40, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 51,
+    "fields": {"hoofdsysteem": 3, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 52,
+    "fields": {"hoofdsysteem": 4, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 53,
+    "fields": {"hoofdsysteem": 5, "n_min": 31, "n_max": 40, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 54,
+    "fields": {"hoofdsysteem": 6, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 55,
+    "fields": {"hoofdsysteem": 7, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 56,
+    "fields": {"hoofdsysteem": 8, "n_min": 31, "n_max": 40, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 57,
+    "fields": {"hoofdsysteem": 9, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 58,
+    "fields": {"hoofdsysteem": 10, "n_min": 31, "n_max": 40, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 59,
+    "fields": {"hoofdsysteem": 11, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 60,
+    "fields": {"hoofdsysteem": 12, "n_min": 31, "n_max": 40, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 61,
+    "fields": {"hoofdsysteem": 1, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 62,
+    "fields": {"hoofdsysteem": 2, "n_min": 41, "n_max": 50, "vereiste_m2": "25"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 63,
+    "fields": {"hoofdsysteem": 3, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 64,
+    "fields": {"hoofdsysteem": 4, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 65,
+    "fields": {"hoofdsysteem": 5, "n_min": 41, "n_max": 50, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 66,
+    "fields": {"hoofdsysteem": 6, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 67,
+    "fields": {"hoofdsysteem": 7, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 68,
+    "fields": {"hoofdsysteem": 8, "n_min": 41, "n_max": 50, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 69,
+    "fields": {"hoofdsysteem": 9, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 70,
+    "fields": {"hoofdsysteem": 10, "n_min": 41, "n_max": 50, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 71,
+    "fields": {"hoofdsysteem": 11, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 72,
+    "fields": {"hoofdsysteem": 12, "n_min": 41, "n_max": 50, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 73,
+    "fields": {"hoofdsysteem": 1, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 74,
+    "fields": {"hoofdsysteem": 2, "n_min": 51, "n_max": 100, "vereiste_m2": "50"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 75,
+    "fields": {"hoofdsysteem": 3, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 76,
+    "fields": {"hoofdsysteem": 4, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 77,
+    "fields": {"hoofdsysteem": 5, "n_min": 51, "n_max": 100, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 78,
+    "fields": {"hoofdsysteem": 6, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 79,
+    "fields": {"hoofdsysteem": 7, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 80,
+    "fields": {"hoofdsysteem": 8, "n_min": 51, "n_max": 100, "vereiste_m2": "18"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 81,
+    "fields": {"hoofdsysteem": 9, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 82,
+    "fields": {"hoofdsysteem": 10, "n_min": 51, "n_max": 100, "vereiste_m2": "20"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 83,
+    "fields": {"hoofdsysteem": 11, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 84,
+    "fields": {"hoofdsysteem": 12, "n_min": 51, "n_max": 100, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 85,
+    "fields": {"hoofdsysteem": 1, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 86,
+    "fields": {"hoofdsysteem": 2, "n_min": 101, "n_max": 125, "vereiste_m2": "62.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 87,
+    "fields": {"hoofdsysteem": 3, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 88,
+    "fields": {"hoofdsysteem": 4, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 89,
+    "fields": {"hoofdsysteem": 5, "n_min": 101, "n_max": 125, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 90,
+    "fields": {"hoofdsysteem": 6, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 91,
+    "fields": {"hoofdsysteem": 7, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 92,
+    "fields": {"hoofdsysteem": 8, "n_min": 101, "n_max": 125, "vereiste_m2": "36"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 93,
+    "fields": {"hoofdsysteem": 9, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 94,
+    "fields": {"hoofdsysteem": 10, "n_min": 101, "n_max": 125, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 95,
+    "fields": {"hoofdsysteem": 11, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 96,
+    "fields": {"hoofdsysteem": 12, "n_min": 101, "n_max": 125, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 97,
+    "fields": {"hoofdsysteem": 1, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 98,
+    "fields": {"hoofdsysteem": 2, "n_min": 126, "n_max": 150, "vereiste_m2": "75"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 99,
+    "fields": {"hoofdsysteem": 3, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 100,
+    "fields": {"hoofdsysteem": 4, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 101,
+    "fields": {"hoofdsysteem": 5, "n_min": 126, "n_max": 150, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 102,
+    "fields": {"hoofdsysteem": 6, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 103,
+    "fields": {"hoofdsysteem": 7, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 104,
+    "fields": {"hoofdsysteem": 8, "n_min": 126, "n_max": 150, "vereiste_m2": "36"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 105,
+    "fields": {"hoofdsysteem": 9, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 106,
+    "fields": {"hoofdsysteem": 10, "n_min": 126, "n_max": 150, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 107,
+    "fields": {"hoofdsysteem": 11, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 108,
+    "fields": {"hoofdsysteem": 12, "n_min": 126, "n_max": 150, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 109,
+    "fields": {"hoofdsysteem": 1, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 110,
+    "fields": {"hoofdsysteem": 2, "n_min": 151, "n_max": 200, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 111,
+    "fields": {"hoofdsysteem": 3, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 112,
+    "fields": {"hoofdsysteem": 4, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 113,
+    "fields": {"hoofdsysteem": 5, "n_min": 151, "n_max": 200, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 114,
+    "fields": {"hoofdsysteem": 6, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 115,
+    "fields": {"hoofdsysteem": 7, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 116,
+    "fields": {"hoofdsysteem": 8, "n_min": 151, "n_max": 200, "vereiste_m2": "36"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 117,
+    "fields": {"hoofdsysteem": 9, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 118,
+    "fields": {"hoofdsysteem": 10, "n_min": 151, "n_max": 200, "vereiste_m2": "40"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 119,
+    "fields": {"hoofdsysteem": 11, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 120,
+    "fields": {"hoofdsysteem": 12, "n_min": 151, "n_max": 200, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 121,
+    "fields": {"hoofdsysteem": 1, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 122,
+    "fields": {"hoofdsysteem": 2, "n_min": 201, "n_max": 300, "vereiste_m2": "150"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 123,
+    "fields": {"hoofdsysteem": 3, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 124,
+    "fields": {"hoofdsysteem": 4, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 125,
+    "fields": {"hoofdsysteem": 5, "n_min": 201, "n_max": 300, "vereiste_m2": "60"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 126,
+    "fields": {"hoofdsysteem": 6, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 127,
+    "fields": {"hoofdsysteem": 7, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 128,
+    "fields": {"hoofdsysteem": 8, "n_min": 201, "n_max": 300, "vereiste_m2": "54"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 129,
+    "fields": {"hoofdsysteem": 9, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 130,
+    "fields": {"hoofdsysteem": 10, "n_min": 201, "n_max": 300, "vereiste_m2": "60"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 131,
+    "fields": {"hoofdsysteem": 11, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 132,
+    "fields": {"hoofdsysteem": 12, "n_min": 201, "n_max": 300, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 133,
+    "fields": {"hoofdsysteem": 1, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 134,
+    "fields": {"hoofdsysteem": 2, "n_min": 301, "n_max": 400, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 135,
+    "fields": {"hoofdsysteem": 3, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 136,
+    "fields": {"hoofdsysteem": 4, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 137,
+    "fields": {"hoofdsysteem": 5, "n_min": 301, "n_max": 400, "vereiste_m2": "80"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 138,
+    "fields": {"hoofdsysteem": 6, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 139,
+    "fields": {"hoofdsysteem": 7, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 140,
+    "fields": {"hoofdsysteem": 8, "n_min": 301, "n_max": 400, "vereiste_m2": "72"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 141,
+    "fields": {"hoofdsysteem": 9, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 142,
+    "fields": {"hoofdsysteem": 10, "n_min": 301, "n_max": 400, "vereiste_m2": "80"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 143,
+    "fields": {"hoofdsysteem": 11, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 144,
+    "fields": {"hoofdsysteem": 12, "n_min": 301, "n_max": 400, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 145,
+    "fields": {"hoofdsysteem": 1, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 146,
+    "fields": {"hoofdsysteem": 2, "n_min": 401, "n_max": 500, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 147,
+    "fields": {"hoofdsysteem": 3, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 148,
+    "fields": {"hoofdsysteem": 4, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 149,
+    "fields": {"hoofdsysteem": 5, "n_min": 401, "n_max": 500, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 150,
+    "fields": {"hoofdsysteem": 6, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 151,
+    "fields": {"hoofdsysteem": 7, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 152,
+    "fields": {"hoofdsysteem": 8, "n_min": 401, "n_max": 500, "vereiste_m2": "90"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 153,
+    "fields": {"hoofdsysteem": 9, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 154,
+    "fields": {"hoofdsysteem": 10, "n_min": 401, "n_max": 500, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 155,
+    "fields": {"hoofdsysteem": 11, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 156,
+    "fields": {"hoofdsysteem": 12, "n_min": 401, "n_max": 500, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 157,
+    "fields": {"hoofdsysteem": 1, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 158,
+    "fields": {"hoofdsysteem": 2, "n_min": 501, "n_max": 600, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 159,
+    "fields": {"hoofdsysteem": 3, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 160,
+    "fields": {"hoofdsysteem": 4, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 161,
+    "fields": {"hoofdsysteem": 5, "n_min": 501, "n_max": 600, "vereiste_m2": "120"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 162,
+    "fields": {"hoofdsysteem": 6, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 163,
+    "fields": {"hoofdsysteem": 7, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 164,
+    "fields": {"hoofdsysteem": 8, "n_min": 501, "n_max": 600, "vereiste_m2": "108"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 165,
+    "fields": {"hoofdsysteem": 9, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 166,
+    "fields": {"hoofdsysteem": 10, "n_min": 501, "n_max": 600, "vereiste_m2": "120"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 167,
+    "fields": {"hoofdsysteem": 11, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 168,
+    "fields": {"hoofdsysteem": 12, "n_min": 501, "n_max": 600, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 169,
+    "fields": {"hoofdsysteem": 1, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 170,
+    "fields": {"hoofdsysteem": 2, "n_min": 601, "n_max": 700, "vereiste_m2": "350"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 171,
+    "fields": {"hoofdsysteem": 3, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 172,
+    "fields": {"hoofdsysteem": 4, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 173,
+    "fields": {"hoofdsysteem": 5, "n_min": 601, "n_max": 700, "vereiste_m2": "140"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 174,
+    "fields": {"hoofdsysteem": 6, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 175,
+    "fields": {"hoofdsysteem": 7, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 176,
+    "fields": {"hoofdsysteem": 8, "n_min": 601, "n_max": 700, "vereiste_m2": "126"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 177,
+    "fields": {"hoofdsysteem": 9, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 178,
+    "fields": {"hoofdsysteem": 10, "n_min": 601, "n_max": 700, "vereiste_m2": "140"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 179,
+    "fields": {"hoofdsysteem": 11, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 180,
+    "fields": {"hoofdsysteem": 12, "n_min": 601, "n_max": 700, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 181,
+    "fields": {"hoofdsysteem": 1, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 182,
+    "fields": {"hoofdsysteem": 2, "n_min": 701, "n_max": 800, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 183,
+    "fields": {"hoofdsysteem": 3, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 184,
+    "fields": {"hoofdsysteem": 4, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 185,
+    "fields": {"hoofdsysteem": 5, "n_min": 701, "n_max": 800, "vereiste_m2": "160"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 186,
+    "fields": {"hoofdsysteem": 6, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 187,
+    "fields": {"hoofdsysteem": 7, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 188,
+    "fields": {"hoofdsysteem": 8, "n_min": 701, "n_max": 800, "vereiste_m2": "144"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 189,
+    "fields": {"hoofdsysteem": 9, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 190,
+    "fields": {"hoofdsysteem": 10, "n_min": 701, "n_max": 800, "vereiste_m2": "160"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 191,
+    "fields": {"hoofdsysteem": 11, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 192,
+    "fields": {"hoofdsysteem": 12, "n_min": 701, "n_max": 800, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 193,
+    "fields": {"hoofdsysteem": 1, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 194,
+    "fields": {"hoofdsysteem": 2, "n_min": 801, "n_max": 900, "vereiste_m2": "450"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 195,
+    "fields": {"hoofdsysteem": 3, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 196,
+    "fields": {"hoofdsysteem": 4, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 197,
+    "fields": {"hoofdsysteem": 5, "n_min": 801, "n_max": 900, "vereiste_m2": "180"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 198,
+    "fields": {"hoofdsysteem": 6, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 199,
+    "fields": {"hoofdsysteem": 7, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 200,
+    "fields": {"hoofdsysteem": 8, "n_min": 801, "n_max": 900, "vereiste_m2": "162"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 201,
+    "fields": {"hoofdsysteem": 9, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 202,
+    "fields": {"hoofdsysteem": 10, "n_min": 801, "n_max": 900, "vereiste_m2": "180"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 203,
+    "fields": {"hoofdsysteem": 11, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 204,
+    "fields": {"hoofdsysteem": 12, "n_min": 801, "n_max": 900, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 205,
+    "fields": {"hoofdsysteem": 1, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 206,
+    "fields": {"hoofdsysteem": 2, "n_min": 901, "n_max": 1000, "vereiste_m2": "500"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 207,
+    "fields": {"hoofdsysteem": 3, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 208,
+    "fields": {"hoofdsysteem": 4, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 209,
+    "fields": {"hoofdsysteem": 5, "n_min": 901, "n_max": 1000, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 210,
+    "fields": {"hoofdsysteem": 6, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 211,
+    "fields": {"hoofdsysteem": 7, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 212,
+    "fields": {"hoofdsysteem": 8, "n_min": 901, "n_max": 1000, "vereiste_m2": "180"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 213,
+    "fields": {"hoofdsysteem": 9, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 214,
+    "fields": {"hoofdsysteem": 10, "n_min": 901, "n_max": 1000, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 215,
+    "fields": {"hoofdsysteem": 11, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 216,
+    "fields": {"hoofdsysteem": 12, "n_min": 901, "n_max": 1000, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 217,
+    "fields": {"hoofdsysteem": 1, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 218,
+    "fields": {"hoofdsysteem": 2, "n_min": 1001, "n_max": null, "vereiste_m2": "1000"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 219,
+    "fields": {"hoofdsysteem": 3, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 220,
+    "fields": {"hoofdsysteem": 4, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 221,
+    "fields": {"hoofdsysteem": 5, "n_min": 1001, "n_max": null, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 222,
+    "fields": {"hoofdsysteem": 6, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 223,
+    "fields": {"hoofdsysteem": 7, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 224,
+    "fields": {"hoofdsysteem": 8, "n_min": 1001, "n_max": null, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 225,
+    "fields": {"hoofdsysteem": 9, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 226,
+    "fields": {"hoofdsysteem": 10, "n_min": 1001, "n_max": null, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 227,
+    "fields": {"hoofdsysteem": 11, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtebuiten",
+    "pk": 228,
+    "fields": {"hoofdsysteem": 12, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 1,
+    "fields": {
+      "naam": "Individuele Luchtwarmtepomp op Ventilatie",
+      "woningen_min": 1,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "1",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": true,
+      "kan_koelen": true,
+      "laag_energieverbruik": false
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 2,
+    "fields": {
+      "naam": "Individuele Luchtwarmtepomp op Buitenlucht",
+      "woningen_min": 1,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "1",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": false
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 3,
+    "fields": {
+      "naam": "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "woningen_min": 1,
+      "woningen_max": 20,
+      "benodigde_ruimte_in_woning_m2": "1",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": true
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 4,
+    "fields": {
+      "naam": "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "woningen_min": 20,
+      "woningen_max": 150,
+      "benodigde_ruimte_in_woning_m2": "1",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": true
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 5,
+    "fields": {
+      "naam": "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "woningen_min": 120,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "1",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": true
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 6,
+    "fields": {
+      "naam": "Particulier Externe warmtelevering",
+      "woningen_min": 1,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "0.5",
+      "stadsverwarming_nodig": true,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": false,
+      "laag_energieverbruik": false
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 7,
+    "fields": {
+      "naam": "Particulier Externe warmtelevering + externe koeling",
+      "woningen_min": 1,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "0.5",
+      "stadsverwarming_nodig": true,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": false
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 8,
+    "fields": {
+      "naam": "Collectieve Luchtwarmtepomp op Buitenlucht",
+      "woningen_min": 10,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "0.5",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": false
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 9,
+    "fields": {
+      "naam": "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
+      "woningen_min": 20,
+      "woningen_max": 150,
+      "benodigde_ruimte_in_woning_m2": "0.5",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": true
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 10,
+    "fields": {
+      "naam": "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
+      "woningen_min": 120,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "0.5",
+      "stadsverwarming_nodig": false,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": true
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 11,
+    "fields": {
+      "naam": "Zakelijk Collectief Externe warmtelevering",
+      "woningen_min": 1,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "0.5",
+      "stadsverwarming_nodig": true,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": false,
+      "laag_energieverbruik": false
+    }
+  },
+  {
+    "model": "kengetallen.eliminatiekengetal",
+    "pk": 12,
+    "fields": {
+      "naam": "Zakelijk Collectief Externe warmtelevering + externe koeling",
+      "woningen_min": 1,
+      "woningen_max": null,
+      "benodigde_ruimte_in_woning_m2": "0.5",
+      "stadsverwarming_nodig": true,
+      "mechanische_ventilatie_nodig": false,
+      "kan_koelen": true,
+      "laag_energieverbruik": false
+    }
   }
 ]

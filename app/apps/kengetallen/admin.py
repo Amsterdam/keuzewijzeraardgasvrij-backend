@@ -3,7 +3,10 @@ from django.contrib import admin
 from .models import (
     AlgemeenKengetal,
     BuurtcodeWarmteprogramma,
+    CollectieveRuimteBinnen,
+    CollectieveRuimteBuiten,
     CollectieveWarmtepompKengetal,
+    EliminatieKengetal,
     GelijktijdigheidCV,
     Hoofdkengetal,
     StadsverwarmingKengetal,
@@ -41,6 +44,23 @@ class GelijktijdigheidCVAdmin(admin.ModelAdmin):
 @admin.register(CollectieveWarmtepompKengetal)
 class CollectieveWarmtepompKengetalAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(CollectieveWarmtepompKengetal)
+
+
+@admin.register(CollectieveRuimteBinnen)
+class CollectieveRuimteBinnenAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(CollectieveRuimteBinnen)
+    list_select_related = True
+
+
+@admin.register(CollectieveRuimteBuiten)
+class CollectieveRuimteBuitenAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(CollectieveRuimteBuiten)
+    list_select_related = True
+
+
+@admin.register(EliminatieKengetal)
+class EliminatieKengetalAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(EliminatieKengetal)
 
 
 @admin.register(Warmteprogramma)

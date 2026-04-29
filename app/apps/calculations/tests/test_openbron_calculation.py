@@ -46,7 +46,7 @@ class OpenbronCalculationTest(TestCase):
         return Conversie.objects.get(naam=naam).waarde
 
     def test_calculate_openbron_systeem_matches_formula_all_scenarios(self):
-        subsysteem = Subsysteem.objects.get(pk=4)
+        subsysteem = Subsysteem.objects.get(naam="Open bron (mono 35m³/h)")
         self.assertEqual(
             subsysteem.calculation_method, SubsysteemCalculationMethod.Openbron
         )
@@ -108,7 +108,7 @@ class OpenbronCalculationTest(TestCase):
             )
 
     def test_subsysteem_calculate_openbron_uses_cv_energy_result(self):
-        subsysteem = Subsysteem.objects.get(pk=4)
+        subsysteem = Subsysteem.objects.get(naam="Open bron (mono 35m³/h)")
         self.assertEqual(
             subsysteem.calculation_method, SubsysteemCalculationMethod.Openbron
         )

@@ -284,5 +284,35 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <h2>Eliminatie</h2>
+    <table class="adminlist" style="margin-bottom: 16px;">
+      <thead>
+        <tr>
+          <th>Hoofdsysteem</th>
+          <th>Meenemen</th>
+          <th>Redenen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in eliminatie_rows %}
+          <tr>
+            <td>{{ row.hoofdsysteem }}</td>
+            <td>{{ row.meenemen }}</td>
+            <td>
+              {% if row.redenen %}
+                <ul style="margin: 0; padding-left: 16px;">
+                  {% for r in row.redenen %}
+                    <li>{{ r }}</li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   {% endif %}
 {% endblock %}

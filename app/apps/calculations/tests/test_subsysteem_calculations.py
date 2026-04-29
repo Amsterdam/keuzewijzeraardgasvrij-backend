@@ -13,7 +13,7 @@ class SubsysteemCalculateTest(TestCase):
     fixtures = ["fixtures"]
 
     def test_calculate_investering_all_scenarios(self):
-        subsysteem = Subsysteem.objects.get(pk=2)
+        subsysteem = Subsysteem.objects.get(naam="Itho HPS 55 (split)")
         self.assertEqual(
             subsysteem.calculation_method, SubsysteemCalculationMethod.Investering
         )

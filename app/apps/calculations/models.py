@@ -49,6 +49,22 @@ class GebruikersInvoer(models.Model):
     buurtcode = models.CharField(max_length=20, blank=True, null=True)
     jaar_vervangen = models.PositiveIntegerField(blank=True, null=True)
 
+    beschikbare_ruimte_in_woning_m2 = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        default=1,
+    )
+    beschikbare_collectieve_ruimte_binnen_m2 = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        default=20,
+    )
+    beschikbare_collectieve_ruimte_buiten_m2 = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        default=100,
+    )
+
     class Meta:
         verbose_name = "Gebruikersinvoer"
         verbose_name_plural = "Gebruikersinvoer"

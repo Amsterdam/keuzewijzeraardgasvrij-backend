@@ -42,7 +42,7 @@ class GbsCalculationTest(TestCase):
     fixtures = ["fixtures"]
 
     def test_subsysteem_calculate_gbs_requires_calculation_input(self):
-        subsysteem = Subsysteem.objects.get(pk=7)
+        subsysteem = Subsysteem.objects.get(naam="Bodemlus Collectief")
         self.assertEqual(subsysteem.calculation_method, SubsysteemCalculationMethod.Gbs)
 
         energie = EnergieCalculator().calculate(_calculation_input(aantal_woningen=150))
@@ -57,7 +57,7 @@ class GbsCalculationTest(TestCase):
             )
 
     def test_subsysteem_calculate_gbs_matches_direct_calculate_gbs(self):
-        subsysteem = Subsysteem.objects.get(pk=7)
+        subsysteem = Subsysteem.objects.get(naam="Bodemlus Collectief")
         self.assertEqual(subsysteem.calculation_method, SubsysteemCalculationMethod.Gbs)
 
         subkengetal = Subkengetal.objects.get(

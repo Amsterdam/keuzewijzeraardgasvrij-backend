@@ -48,6 +48,94 @@ class Hoofdkengetal(Kengetal):
         return f"{self.hoofdsysteem.naam} - {self.scenario}"
 
 
+def _collectieve_ruimte_constraints(*, scope: str) -> list[models.BaseConstraint]:
+    return [
+        models.UniqueConstraint(
+            fields=["hoofdsysteem", "n_min", "n_max"],
+            name=f"uniek_hoofdsysteem_n_min_n_max_collectieve_ruimte_{scope}",
+        ),
+        models.CheckConstraint(
+            condition=models.Q(n_max__isnull=True)
+            | models.Q(n_max__gte=models.F("n_min")),
+            name=f"collectieve_ruimte_{scope}_n_max_gte_n_min_or_null",
+        ),
+    ]
+
+
+class CollectieveRuimteBinnen(models.Model):
+    hoofdsysteem = models.ForeignKey(
+        "systemen.Hoofdsysteem",
+        on_delete=models.CASCADE,
+        related_name="collectieve_ruimte_binnen",
+    )
+
+    n_min = models.IntegerField()
+    n_max = models.IntegerField(blank=True, null=True)
+    vereiste_m2 = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "Collectieve ruimte binnen"
+        verbose_name_plural = "Collectieve ruimte binnen"
+        ordering = ["hoofdsysteem", "n_min"]
+        constraints = _collectieve_ruimte_constraints(scope="binnen")
+
+    def __str__(self) -> str:
+        max_label = "∞" if self.n_max is None else str(self.n_max)
+        return f"{self.hoofdsysteem.naam}: {self.n_min}–{max_label} woningen → {self.vereiste_m2} m²"
+
+
+class CollectieveRuimteBuiten(models.Model):
+    hoofdsysteem = models.ForeignKey(
+        "systemen.Hoofdsysteem",
+        on_delete=models.CASCADE,
+        related_name="collectieve_ruimte_buiten",
+    )
+
+    n_min = models.IntegerField()
+    n_max = models.IntegerField(blank=True, null=True)
+    vereiste_m2 = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "Collectieve ruimte buiten"
+        verbose_name_plural = "Collectieve ruimte buiten"
+        ordering = ["hoofdsysteem", "n_min"]
+        constraints = _collectieve_ruimte_constraints(scope="buiten")
+
+    def __str__(self) -> str:
+        max_label = "∞" if self.n_max is None else str(self.n_max)
+        return f"{self.hoofdsysteem.naam}: {self.n_min}–{max_label} woningen → {self.vereiste_m2} m²"
+
+
+class EliminatieKengetal(models.Model):
+    naam = models.CharField(max_length=255, unique=True)
+
+    woningen_min = models.IntegerField()
+    woningen_max = models.IntegerField(blank=True, null=True)
+
+    benodigde_ruimte_in_woning_m2 = models.DecimalField(max_digits=18, decimal_places=9)
+
+    stadsverwarming_nodig = models.BooleanField(default=False)
+    mechanische_ventilatie_nodig = models.BooleanField(default=False)
+    kan_koelen = models.BooleanField(default=False)
+    laag_energieverbruik = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Eliminatie kengetal"
+        verbose_name_plural = "Eliminatie kengetallen"
+        ordering = ["naam", "woningen_min"]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(woningen_max__isnull=True)
+                | models.Q(woningen_max__gte=models.F("woningen_min")),
+                name="eliminatiekengetal_woningen_max_gte_min_or_null",
+            )
+        ]
+
+    def __str__(self) -> str:
+        max_label = "∞" if self.woningen_max is None else str(self.woningen_max)
+        return f"{self.naam}: {self.woningen_min}–{max_label} woningen"
+
+
 class Subkengetal(Kengetal):
     subsysteem = models.ForeignKey(
         "systemen.Subsysteem",
