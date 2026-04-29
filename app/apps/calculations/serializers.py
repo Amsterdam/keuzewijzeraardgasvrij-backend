@@ -55,6 +55,28 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
         max_value=Decimal("1000000"),
     )
 
+    beschikbare_ruimte_in_woning_m2 = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("1000000"),
+        required=False,
+    )
+    beschikbare_collectieve_ruimte_binnen_m2 = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("1000000"),
+        required=False,
+    )
+    beschikbare_collectieve_ruimte_buiten_m2 = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("1000000"),
+        required=False,
+    )
+
     class Meta:
         model = GebruikersInvoer
         fields = [
@@ -72,6 +94,9 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
             "elektriciteitsverbruik_per_woning",
             "elektriciteitsverbruik_vve_totaal",
             "gecontracteerd_vermogen",
+            "beschikbare_ruimte_in_woning_m2",
+            "beschikbare_collectieve_ruimte_binnen_m2",
+            "beschikbare_collectieve_ruimte_buiten_m2",
             "huidige_warmtesysteem",
             "volledig_gasloos",
             "wens_tot_koelen",

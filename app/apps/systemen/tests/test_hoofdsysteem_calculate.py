@@ -41,7 +41,9 @@ class HoofdsysteemCalculateTest(TestCase):
 
     def test_calculate_returns_capacity_totals_from_energy_rows(self):
         # Use a hoofdsysteem from fixtures; the current calculation is energy-based only.
-        hoofdsysteem = Hoofdsysteem.objects.get(pk=1)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Individuele Luchtwarmtepomp op Ventilatie"
+        )
         calc_input = _calculation_input()
 
         energie = EnergieCalculator().calculate(calc_input)
@@ -142,7 +144,9 @@ class HoofdsysteemCalculateTest(TestCase):
             )
 
     def test_calculate_uses_zakelijk_stadswarmte_met_koude_prices(self):
-        hoofdsysteem = Hoofdsysteem.objects.get(pk=1)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Individuele Luchtwarmtepomp op Ventilatie"
+        )
         hoofdsysteem.subsystemen.add(
             Subsysteem.objects.create(
                 naam="Zakelijk Stadswarmte + koude",
@@ -185,7 +189,9 @@ class HoofdsysteemCalculateTest(TestCase):
         )
 
     def test_calculate_particulier_stadswarmte_has_zero_gkw_price(self):
-        hoofdsysteem = Hoofdsysteem.objects.get(pk=1)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Individuele Luchtwarmtepomp op Ventilatie"
+        )
         hoofdsysteem.subsystemen.add(
             Subsysteem.objects.create(
                 naam="Particulier Stadswarmte",

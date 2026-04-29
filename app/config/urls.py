@@ -8,7 +8,6 @@ from django.views.generic import RedirectView
 
 from apps.calculations.views import GebruikersInvoerCreateView
 
-
 router = DefaultRouter()
 
 

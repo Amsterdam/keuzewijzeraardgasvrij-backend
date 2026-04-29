@@ -6,8 +6,13 @@ from django.template.response import TemplateResponse
 from django.urls import path, reverse
 
 from .models import CalculationDashboard, Conversie, EnergiePrijs, GebruikersInvoer
-from .calculator import EnergieCalculator, EnergieType, StadsverwarmingCalculator
-from apps.kengetallen.models import BuurtcodeWarmteprogramma
+from .calculator import (
+    EnergieCalculator,
+    EnergieType,
+    Eliminatie,
+    StadsverwarmingCalculator,
+    WarmtenetCalculator,
+)
 from apps.systemen.models import Hoofdsysteem, Subsysteem
 
 
@@ -48,6 +53,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         hoofdsysteem_tco_sum_rows = []
         stadsverwarming_rows = []
         stadsverwarming_totals_rows = []
+        eliminatie_rows = []
         warmteprogramma_row = None
         if selected_input is not None:
 
@@ -117,35 +123,21 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                 "warmtenet_mogelijk": "false",
             }
 
-            if selected_input.buurtcode:
-                mapping = (
-                    BuurtcodeWarmteprogramma.objects.select_related("warmteprogramma")
-                    .filter(buurtcode=selected_input.buurtcode)
-                    .first()
-                )
-                if mapping is not None and mapping.warmteprogramma is not None:
-                    wp = mapping.warmteprogramma
-                    warmteprogramma_row["categorie"] = (
-                        "" if wp.categorie is None else str(wp.categorie)
-                    )
-                    warmteprogramma_row["warmtenet_start"] = (
-                        "" if wp.warmtenet_start is None else str(wp.warmtenet_start)
-                    )
-                    warmteprogramma_row["warmtenet_stop"] = (
-                        "" if wp.warmtenet_stop is None else str(wp.warmtenet_stop)
-                    )
-
-                    jaar_vervangen = selected_input.jaar_vervangen
-                    warmtenet_stop = wp.warmtenet_stop
-                    warmteprogramma_row["warmtenet_mogelijk"] = (
-                        "true"
-                        if (
-                            jaar_vervangen is not None
-                            and warmtenet_stop is not None
-                            and jaar_vervangen >= warmtenet_stop
-                        )
-                        else "false"
-                    )
+            warmtenet_result = WarmtenetCalculator().calculate(selected_input)
+            warmteprogramma_row["categorie"] = warmtenet_result.categorie
+            warmteprogramma_row["warmtenet_start"] = (
+                ""
+                if warmtenet_result.warmtenet_start is None
+                else str(warmtenet_result.warmtenet_start)
+            )
+            warmteprogramma_row["warmtenet_stop"] = (
+                ""
+                if warmtenet_result.warmtenet_stop is None
+                else str(warmtenet_result.warmtenet_stop)
+            )
+            warmteprogramma_row["warmtenet_mogelijk"] = (
+                "true" if warmtenet_result.warmtenet_mogelijk else "false"
+            )
 
             calculator = EnergieCalculator()
             energie = calculator.calculate(selected_input)
@@ -416,6 +408,27 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                 )
             )
 
+            eliminatie_rows = []
+            eliminatie = Eliminatie()
+            for hoofdsysteem in Hoofdsysteem.objects.order_by("id"):
+                try:
+                    result = eliminatie.calculate(selected_input, hoofdsysteem.naam)
+                    meenemen = bool(result.get("meenemen"))
+                    redenen = result.get("redenen")
+                    if not isinstance(redenen, list):
+                        redenen = []
+                except Exception as exc:  # keep dashboard robust
+                    meenemen = False
+                    redenen = [str(exc)]
+
+                eliminatie_rows.append(
+                    {
+                        "hoofdsysteem": hoofdsysteem.naam,
+                        "meenemen": "true" if meenemen else "false",
+                        "redenen": redenen,
+                    }
+                )
+
         context = {
             **self.admin_site.each_context(request),
             "gebruikers_invoer": gebruikers_invoer,
@@ -430,6 +443,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "hoofdsysteem_tco_sum_rows": hoofdsysteem_tco_sum_rows,
             "stadsverwarming_rows": stadsverwarming_rows,
             "stadsverwarming_totals_rows": stadsverwarming_totals_rows,
+            "eliminatie_rows": eliminatie_rows,
             "warmteprogramma_row": warmteprogramma_row,
             "title": "Berekeningen",
         }
