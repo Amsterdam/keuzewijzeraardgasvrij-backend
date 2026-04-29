@@ -13,11 +13,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.13
+        python-version: '3.13'
     - name: Install setuptools
       run: python3 -m pip install setuptools
     - name: Linting
@@ -29,7 +29,7 @@ jobs:
     - name: Start images
       run: docker compose -f docker-compose.local.yml -f docker-compose.override.yml up -d
     - name: Run Tests
-      run: docker compose exec -T keuzewijzeraardgasvrij-backend python manage.py test /app/apps
+      run: docker compose exec -T keuzewijzeraardgasvrij-backend python manage.py test -v 2
 
     - if: ${{ failure() }}
       name: "ON FAILURE: Which containers were running while failing?"
