@@ -48,18 +48,6 @@ LOCAL_DEVELOPMENT_AUTHENTICATION=False
 
 Visit the Admin at http://localhost:8081/admin/
 
-
-### DSO API
-
-If you want to make use of the DSO API, the following vars need to be set in the `.env.local` file:
-
-```bash
-DSO_API_URL=<url>
-DSO_CLIENT_SECRET=<key>
-DSO_AUTH_URL=<key>
-DSO_API_URL=<key>
-```
-
 ## Swagger
 
 http://localhost:8081/api/schema/swagger/
@@ -119,14 +107,3 @@ Containers should be running to run tests via docker.
 docker compose -f docker-compose.local.yml -f docker-compose.override.yml up -d
 docker compose exec -T keuzewijzeraardgasvrij-backend python manage.py test /app/apps
 ```
-
-## Dynamic values in BPMN field labels
-The embedded form in the camunda task does not support dynamic values by default.
-In the workflow model is a "method _evaluate_form_field_label" that will parse a form label with the following structure {{workflow.prop}}
-``
-<camunda:formData>
-    <camunda:formField id="form_controle_bouwjaar" label="This is a sentence for case {{workflow.case.id}}" type="enum">
-</camunda:formField>
-``
-The above label will be parsed to "This is a sentence for case 123"
-Currently all properties and related objects of the workflow model are supported
