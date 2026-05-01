@@ -26,11 +26,6 @@ admin.site.site_header = "Keuzewijzer Aardgasvrij - Admin"
 admin.site.site_title = "Keuzewijzer Aardgasvrij - Administration"
 admin.site.index_title = "Keuzewijzer Aardgasvrij - keuzewijzeraardgasvrij"
 
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
-    "apps.users.auth.OIDCAuthenticationBackend",
-]
-
 urlpatterns = [
     path("startup/", ok),
     path("", ok),
