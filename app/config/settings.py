@@ -16,7 +16,7 @@ DEBUG = ENVIRONMENT == "local"
 ALLOWED_HOSTS = ["*"]
 DEFAULT_WORKFLOW_TYPE = os.getenv("DEFAULT_WORKFLOW_TYPE", "director")
 
-# Application definition
+LOGIN_URL = "/oidc/authenticate/"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -34,12 +34,9 @@ INSTALLED_APPS = [
 ]
 
 
-LOCAL_DEVELOPMENT_AUTHENTICATION = (
-    os.getenv("LOCAL_DEVELOPMENT_AUTHENTICATION", "False") == "True"
-)
-
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
+    "apps.users.auth.OIDCAuthenticationBackend",
 ]
 
 REST_FRAMEWORK = {
@@ -171,3 +168,34 @@ STATIC_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), "static"))
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+OIDC_USE_NONCE = False
+OIDC_RP_CLIENT_ID = os.getenv(
+    "OIDC_RP_CLIENT_ID", "78ccbcd4-8059-4522-b8e0-01b0a2683961"
+)
+OIDC_OP_AUTHORIZATION_ENDPOINT = os.getenv(
+    "OIDC_OP_AUTHORIZATION_ENDPOINT",
+    "https://login.microsoftonline.com/72fca1b1-2c2e-4376-a445-294d80196804/oauth2/v2.0/authorize",
+)
+OIDC_OP_TOKEN_ENDPOINT = os.getenv(
+    "OIDC_OP_TOKEN_ENDPOINT",
+    "https://login.microsoftonline.com/72fca1b1-2c2e-4376-a445-294d80196804/oauth2/v2.0/token",
+)
+OIDC_OP_USER_ENDPOINT = os.getenv(
+    "OIDC_OP_USER_ENDPOINT", "https://graph.microsoft.com/oidc/userinfo"
+)
+OIDC_OP_JWKS_ENDPOINT = os.getenv(
+    "OIDC_OP_JWKS_ENDPOINT",
+    "https://login.microsoftonline.com/72fca1b1-2c2e-4376-a445-294d80196804/discovery/v2.0/keys",
+)
+OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET", None)
+
+OIDC_OP_ISSUER = os.getenv(
+    "OIDC_OP_ISSUER",
+    "https://sts.windows.net/72fca1b1-2c2e-4376-a445-294d80196804/",
+)
+
+OIDC_TRUSTED_AUDIENCES = f"api://{OIDC_RP_CLIENT_ID}"
+OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_USE_PKCE = True
+OIDC_RP_SCOPES = f"openid email api://{OIDC_RP_CLIENT_ID}/user_impersonation"

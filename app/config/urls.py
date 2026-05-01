@@ -7,8 +7,15 @@ from rest_framework.routers import DefaultRouter
 from django.views.generic import RedirectView
 
 from apps.calculations.views import GebruikersInvoerCreateView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 router = DefaultRouter()
+
+
+@login_required
+def admin_redirect(request):
+    return redirect("/admin")
 
 
 def ok(request):
@@ -19,10 +26,11 @@ admin.site.site_header = "Keuzewijzer Aardgasvrij - Admin"
 admin.site.site_title = "Keuzewijzer Aardgasvrij - Administration"
 admin.site.index_title = "Keuzewijzer Aardgasvrij - keuzewijzeraardgasvrij"
 
-
 urlpatterns = [
     path("startup/", ok),
     path("", ok),
+    path("oidc/", include("mozilla_django_oidc.urls")),
+    path("admin/login/", admin_redirect),
     path("admin/", admin.site.urls),
     path("api/v1/", include(router.urls)),
     path(
