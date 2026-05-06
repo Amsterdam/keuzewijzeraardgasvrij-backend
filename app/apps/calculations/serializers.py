@@ -126,6 +126,6 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
 class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     naam = serializers.CharField()
     beschrijving = serializers.CharField(allow_blank=True)
-    tco_midden = serializers.FloatField()
+    tco = serializers.FloatField()
     meenemen = serializers.BooleanField()
     reasons = serializers.ListField(child=serializers.CharField())
