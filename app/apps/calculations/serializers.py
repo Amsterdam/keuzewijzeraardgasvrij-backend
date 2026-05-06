@@ -121,3 +121,11 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
 
     def validate_gecontracteerd_vermogen(self, value):
         return _validate_finite_number(value, "gecontracteerd_vermogen")
+
+
+class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
+    naam = serializers.CharField()
+    beschrijving = serializers.CharField(allow_blank=True)
+    tco_midden = serializers.FloatField()
+    meenemen = serializers.BooleanField()
+    reasons = serializers.ListField(child=serializers.CharField())

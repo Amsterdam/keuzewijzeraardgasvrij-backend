@@ -48,7 +48,7 @@ class EliminatieCalculatorTest(TestCase):
         )
 
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
-        assert result["meenemen"] is True, result
+        assert result["is_mogelijk"] is True, result
         assert result["redenen"] == [], result
 
     def test_eliminatie_reason_mechanische_ventilatie_required(self) -> None:
@@ -62,7 +62,7 @@ class EliminatieCalculatorTest(TestCase):
         )
 
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
-        assert result["meenemen"] is False, result
+        assert result["is_mogelijk"] is False, result
 
     def test_eliminatie_reason_kan_niet_koelen_when_cooling_desired(self) -> None:
         hoofdsysteem = Hoofdsysteem.objects.get(
@@ -74,7 +74,7 @@ class EliminatieCalculatorTest(TestCase):
         )
 
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
-        assert result["meenemen"] is False, result
+        assert result["is_mogelijk"] is False, result
         assert result["redenen"] == [
             f"Koeling is gewenst, maar {hoofdsysteem.naam} kan niet koelen."
         ], result
@@ -86,4 +86,4 @@ class EliminatieCalculatorTest(TestCase):
         calc_input = _calculation_input(aantal_woningen=50)
 
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
-        assert result["meenemen"] is False, result
+        assert result["is_mogelijk"] is False, result

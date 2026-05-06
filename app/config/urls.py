@@ -26,6 +26,10 @@ admin.site.site_header = "Keuzewijzer Aardgasvrij - Admin"
 admin.site.site_title = "Keuzewijzer Aardgasvrij - Administration"
 admin.site.index_title = "Keuzewijzer Aardgasvrij - keuzewijzeraardgasvrij"
 
+router.register(
+    r"calculation-inputs", GebruikersInvoerCreateView, basename="calculationinput"
+)
+
 urlpatterns = [
     path("startup/", ok),
     path("", ok),
@@ -33,11 +37,6 @@ urlpatterns = [
     path("admin/login/", admin_redirect),
     path("admin/", admin.site.urls),
     path("api/v1/", include(router.urls)),
-    path(
-        "api/v1/calculation-inputs/",
-        GebruikersInvoerCreateView.as_view(),
-        name="calculationinput-create",
-    ),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger/",

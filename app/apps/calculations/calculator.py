@@ -877,10 +877,10 @@ class Eliminatie:
                         "Warmtenet is niet mogelijk vanwege de buurtcode en/of het jaar van vervangen."
                     )
 
-        meenemen = len(redenen) == 0
+        is_mogelijk = len(redenen) == 0
 
         return {
-            "meenemen": meenemen,
+            "is_mogelijk": is_mogelijk,
             "redenen": redenen,
         }
 

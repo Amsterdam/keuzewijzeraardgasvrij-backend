@@ -413,18 +413,18 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             for hoofdsysteem in Hoofdsysteem.objects.order_by("id"):
                 try:
                     result = eliminatie.calculate(selected_input, hoofdsysteem.naam)
-                    meenemen = bool(result.get("meenemen"))
+                    is_mogelijk = bool(result.get("is_mogelijk"))
                     redenen = result.get("redenen")
                     if not isinstance(redenen, list):
                         redenen = []
                 except Exception as exc:  # keep dashboard robust
-                    meenemen = False
+                    is_mogelijk = False
                     redenen = [str(exc)]
 
                 eliminatie_rows.append(
                     {
                         "hoofdsysteem": hoofdsysteem.naam,
-                        "meenemen": "true" if meenemen else "false",
+                        "is_mogelijk": "true" if is_mogelijk else "false",
                         "redenen": redenen,
                     }
                 )
