@@ -61,22 +61,24 @@ class GebruikersInvoerCreateView(viewsets.GenericViewSet):
 
             is_mogelijk = bool(elim.get("is_mogelijk"))
 
-            row: dict[str, object] = {
-                "naam": hoofdsysteem.naam,
-                "beschrijving": (
-                    ""
-                    if hoofdsysteem.beschrijving is None
-                    else str(hoofdsysteem.beschrijving)
-                ),
-                "tco": float(tco_midden),
-                "kosten_per_woning_per_jaar": float(tco_midden / 30),
-                "is_mogelijk": is_mogelijk,
-                "redenen": redenen,
-            }
-            # Sort is_mogelijk=true first, then by price.
-            items.append(((not is_mogelijk, tco_midden), row))
+            items.append(
+                (
+                    (not is_mogelijk, tco_midden),
+                    {
+                        "naam": hoofdsysteem.naam,
+                        "beschrijving": str(hoofdsysteem.beschrijving or ""),
+                        "tco": float(tco_midden),
+                        "kosten_per_woning_per_jaar": float(tco_midden / 30),
+                        "is_mogelijk": is_mogelijk,
+                        "redenen": redenen,
+                    },
+                )
+            )
 
-        items.sort(key=lambda x: x[0])
-        rows = [row for _, row in items]
-        output_serializer = HoofdsysteemCalculationResultSerializer(rows, many=True)
-        return Response(output_serializer.data, status=201)
+            items.sort()
+
+            output_serializer = HoofdsysteemCalculationResultSerializer(
+                [row for _, row in items],
+                many=True,
+            )
+            return Response(output_serializer.data, status=201)
