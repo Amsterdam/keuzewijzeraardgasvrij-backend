@@ -35,7 +35,7 @@ class CalculationInputCreateApiTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse("calculationinput-create")
+        self.url = reverse("calculationinput-list")
 
     def test_post_creates_calculation_input(self):
         response = self.client.post(self.url, data=_valid_payload(), format="json")
