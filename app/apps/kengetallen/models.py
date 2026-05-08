@@ -136,6 +136,68 @@ class EliminatieKengetal(models.Model):
         return f"{self.naam}: {self.woningen_min}–{max_label} woningen"
 
 
+class MultiCriteriaAnalyseKengetal(models.Model):
+    hoofdsysteem = models.OneToOneField(
+        "systemen.Hoofdsysteem",
+        on_delete=models.CASCADE,
+        related_name="mca_kengetal",
+    )
+
+    huidig_systeem_collectief = models.DecimalField(max_digits=18, decimal_places=9)
+    huidig_systeem_individueel = models.DecimalField(max_digits=18, decimal_places=9)
+    vloerverwarming_aanwezig_waar = models.DecimalField(max_digits=18, decimal_places=9)
+    vloerverwarming_aanwezig_onwaar = models.DecimalField(
+        max_digits=18, decimal_places=9
+    )
+
+    class Meta:
+        verbose_name = "Multi-criteria analyse kengetal"
+        verbose_name_plural = "Multi-criteria analyse kengetallen"
+        ordering = ["hoofdsysteem"]
+
+    def __str__(self) -> str:
+        return f"{self.hoofdsysteem.naam} (MCA)"
+
+
+class McdaHoofdcriterium(models.Model):
+    naam = models.CharField(max_length=255, unique=True)
+    wegingsfactor = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "MCDA hoofdcriterium"
+        verbose_name_plural = "MCDA hoofdcriteria"
+        ordering = ["naam"]
+
+    def __str__(self) -> str:
+        return f"{self.naam} ({self.wegingsfactor})"
+
+
+class McdaSubcriterium(models.Model):
+    hoofdcriterium = models.ForeignKey(
+        McdaHoofdcriterium,
+        on_delete=models.CASCADE,
+        related_name="subcriteria",
+    )
+    naam = models.CharField(max_length=255)
+    relatieve_wegingsfactor = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "MCDA subcriterium"
+        verbose_name_plural = "MCDA subcriteria"
+        ordering = ["hoofdcriterium", "naam"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["hoofdcriterium", "naam"],
+                name="uniek_mcda_hoofcriterium_naam",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return (
+            f"{self.hoofdcriterium.naam} → {self.naam} ({self.relatieve_wegingsfactor})"
+        )
+
+
 class Subkengetal(Kengetal):
     subsysteem = models.ForeignKey(
         "systemen.Subsysteem",

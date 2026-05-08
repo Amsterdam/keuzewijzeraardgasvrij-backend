@@ -7843,5 +7843,223 @@
       "kan_koelen": true,
       "laag_energieverbruik": false
     }
+  },
+
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 1,
+    "fields": {
+      "hoofdsysteem": 1,
+      "huidig_systeem_collectief": "0",
+      "huidig_systeem_individueel": "1",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 2,
+    "fields": {
+      "hoofdsysteem": 2,
+      "huidig_systeem_collectief": "0",
+      "huidig_systeem_individueel": "1",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 3,
+    "fields": {
+      "hoofdsysteem": 3,
+      "huidig_systeem_collectief": "0",
+      "huidig_systeem_individueel": "1",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 4,
+    "fields": {
+      "hoofdsysteem": 4,
+      "huidig_systeem_collectief": "0",
+      "huidig_systeem_individueel": "1",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 5,
+    "fields": {
+      "hoofdsysteem": 5,
+      "huidig_systeem_collectief": "0",
+      "huidig_systeem_individueel": "1",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 6,
+    "fields": {
+      "hoofdsysteem": 6,
+      "huidig_systeem_collectief": "0",
+      "huidig_systeem_individueel": "1",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "1"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 7,
+    "fields": {
+      "hoofdsysteem": 7,
+      "huidig_systeem_collectief": "0",
+      "huidig_systeem_individueel": "1",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "1"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 8,
+    "fields": {
+      "hoofdsysteem": 8,
+      "huidig_systeem_collectief": "1",
+      "huidig_systeem_individueel": "0",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 9,
+    "fields": {
+      "hoofdsysteem": 9,
+      "huidig_systeem_collectief": "1",
+      "huidig_systeem_individueel": "0",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 10,
+    "fields": {
+      "hoofdsysteem": 10,
+      "huidig_systeem_collectief": "1",
+      "huidig_systeem_individueel": "0",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "0"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 11,
+    "fields": {
+      "hoofdsysteem": 11,
+      "huidig_systeem_collectief": "1",
+      "huidig_systeem_individueel": "0",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "1"
+    }
+  },
+  {
+    "model": "kengetallen.multicriteriaanalysekengetal",
+    "pk": 12,
+    "fields": {
+      "hoofdsysteem": 12,
+      "huidig_systeem_collectief": "1",
+      "huidig_systeem_individueel": "0",
+      "vloerverwarming_aanwezig_waar": "1",
+      "vloerverwarming_aanwezig_onwaar": "1"
+    }
+  },
+
+  {
+    "model": "kengetallen.mcdahoofdcriterium",
+    "pk": 1,
+    "fields": {"naam": "TCO", "wegingsfactor": "0.5"}
+  },
+  {
+    "model": "kengetallen.mcdahoofdcriterium",
+    "pk": 2,
+    "fields": {"naam": "Vermogen", "wegingsfactor": "0.2"}
+  },
+  {
+    "model": "kengetallen.mcdahoofdcriterium",
+    "pk": 3,
+    "fields": {"naam": "Ruimtebeslag", "wegingsfactor": "0.2"}
+  },
+  {
+    "model": "kengetallen.mcdahoofdcriterium",
+    "pk": 4,
+    "fields": {"naam": "Impact aanpassingen", "wegingsfactor": "0.1"}
+  },
+
+  {
+    "model": "kengetallen.mcdasubcriterium",
+    "pk": 1,
+    "fields": {
+      "hoofdcriterium": 1,
+      "naam": "TCO",
+      "relatieve_wegingsfactor": "1"
+    }
+  },
+  {
+    "model": "kengetallen.mcdasubcriterium",
+    "pk": 2,
+    "fields": {
+      "hoofdcriterium": 2,
+      "naam": "Vermogen",
+      "relatieve_wegingsfactor": "1"
+    }
+  },
+  {
+    "model": "kengetallen.mcdasubcriterium",
+    "pk": 3,
+    "fields": {
+      "hoofdcriterium": 3,
+      "naam": "Woning",
+      "relatieve_wegingsfactor": "0.5"
+    }
+  },
+  {
+    "model": "kengetallen.mcdasubcriterium",
+    "pk": 4,
+    "fields": {
+      "hoofdcriterium": 3,
+      "naam": "COL binnen",
+      "relatieve_wegingsfactor": "0.25"
+    }
+  },
+  {
+    "model": "kengetallen.mcdasubcriterium",
+    "pk": 5,
+    "fields": {
+      "hoofdcriterium": 3,
+      "naam": "COL buiten",
+      "relatieve_wegingsfactor": "0.25"
+    }
+  },
+  {
+    "model": "kengetallen.mcdasubcriterium",
+    "pk": 6,
+    "fields": {
+      "hoofdcriterium": 4,
+      "naam": "Aanpassingen - Vloerverwarming",
+      "relatieve_wegingsfactor": "0.3"
+    }
+  },
+  {
+    "model": "kengetallen.mcdasubcriterium",
+    "pk": 7,
+    "fields": {
+      "hoofdcriterium": 4,
+      "naam": "Aanpassingen - systeem",
+      "relatieve_wegingsfactor": "0.7"
+    }
   }
 ]
