@@ -31,14 +31,48 @@ def _valid_payload():
 
 
 class CalculationInputCreateApiTest(TestCase):
+    fixtures = ["fixtures"]
+
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse("calculationinput-create")
+        self.url = reverse("calculationinput-list")
 
     def test_post_creates_calculation_input(self):
         response = self.client.post(self.url, data=_valid_payload(), format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
         self.assertEqual(GebruikersInvoer.objects.count(), 1)
+
+        self.assertIsInstance(response.data, list)
+        self.assertGreater(len(response.data), 0)
+        first = response.data[0]
+        self.assertEqual(
+            sorted(first.keys()),
+            sorted(
+                [
+                    "naam",
+                    "beschrijving",
+                    "tco",
+                    "is_mogelijk",
+                    "redenen",
+                    "kosten_per_woning_per_jaar",
+                ]
+            ),
+        )
+
+        # Ordering: is_mogelijk=true first, then is_mogelijk=false; within each group sort by tco_midden low→high.
+        is_mogelijk_flags = [bool(r.get("is_mogelijk")) for r in response.data]
+        if False in is_mogelijk_flags:
+            first_false_idx = is_mogelijk_flags.index(False)
+            self.assertTrue(all(is_mogelijk_flags[:first_false_idx]))
+            self.assertTrue(all(not x for x in is_mogelijk_flags[first_false_idx:]))
+
+        def _assert_non_decreasing(values: list[float]) -> None:
+            self.assertEqual(values, sorted(values))
+
+        tcos_true = [float(r["tco"]) for r in response.data if r["is_mogelijk"]]
+        tcos_false = [float(r["tco"]) for r in response.data if not r["is_mogelijk"]]
+        _assert_non_decreasing(tcos_true)
+        _assert_non_decreasing(tcos_false)
 
         created = GebruikersInvoer.objects.get()
         self.assertEqual(created.bouwjaar, 1990)
