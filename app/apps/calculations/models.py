@@ -3,6 +3,11 @@ from __future__ import annotations
 from django.db import models
 
 
+class HuidigSysteemChoices(models.TextChoices):
+    COLLECTIEF = "collectief", "Collectief"
+    INDIVIDUEEL = "individueel", "Individueel"
+
+
 class GebruikersInvoer(models.Model):
     bouwjaar = models.PositiveIntegerField()
     bruto_vloeroppervlak = models.DecimalField(max_digits=18, decimal_places=9)
@@ -63,6 +68,11 @@ class GebruikersInvoer(models.Model):
         max_digits=18,
         decimal_places=9,
         default=100,
+    )
+    huidig_systeem = models.CharField(
+        max_length=20,
+        choices=HuidigSysteemChoices.choices,
+        default=HuidigSysteemChoices.COLLECTIEF,
     )
 
     class Meta:

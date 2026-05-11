@@ -45,6 +45,8 @@ class HoofdsysteemScenarioResult:
     prijs_cv_eur_per_gj: Decimal
     prijs_gkw_eur_per_gj: Decimal
 
+    elektrisch_vermogen: Decimal
+
     energiekosten_tap_eur_per_woning_per_jaar: Decimal
     energiekosten_cv_eur_per_woning_per_jaar: Decimal
     energiekosten_gkw_eur_per_woning_per_jaar: Decimal
@@ -167,6 +169,16 @@ class Hoofdsysteem(models.Model):
             cap_gkw / hoofdkengetal.cop_gkw if hoofdkengetal.cop_gkw else Decimal("0")
         )
 
+        vermogen_tap = by_type[EnergieType.TAP].vermogen_warmte_kw_per_vve
+        vermogen_cv = by_type[EnergieType.CV].vermogen_warmte_kw_per_vve
+
+        verbruikt_elektriciteit = "warmtelevering" not in self.naam.lower()
+        elektrisch_vermogen = (
+            (vermogen_tap / hoofdkengetal.cop_tap)
+            + (vermogen_cv / hoofdkengetal.cop_cv)
+            if verbruikt_elektriciteit
+            else Decimal("0")
+        )
         kosten_tap = elec_tap_gj * prijs_tap
         kosten_cv = elec_cv_gj * prijs_cv
         kosten_gkw = elec_gkw_gj * prijs_gkw
@@ -182,6 +194,7 @@ class Hoofdsysteem(models.Model):
             prijs_tap_eur_per_gj=prijs_tap,
             prijs_cv_eur_per_gj=prijs_cv,
             prijs_gkw_eur_per_gj=prijs_gkw,
+            elektrisch_vermogen=elektrisch_vermogen,
             energiekosten_tap_eur_per_woning_per_jaar=kosten_tap,
             energiekosten_cv_eur_per_woning_per_jaar=kosten_cv,
             energiekosten_gkw_eur_per_woning_per_jaar=kosten_gkw,

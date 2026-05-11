@@ -217,6 +217,7 @@
           <th>Prijs TAP [€/GJ]</th>
           <th>Prijs CV [€/GJ]</th>
           <th>Prijs GKW [€/GJ]</th>
+          <th>Elektrisch vermogen [GJ/w/j]</th>
           <th>Kosten TAP [€/w/j]</th>
           <th>Kosten CV [€/w/j]</th>
           <th>Kosten GKW [€/w/j]</th>
@@ -239,11 +240,64 @@
             <td>{{ row.prijs_tap }}</td>
             <td>{{ row.prijs_cv }}</td>
             <td>{{ row.prijs_gkw }}</td>
+            <td>{{ row.elektrisch_vermogen }}</td>
             <td>{{ row.kosten_tap }}</td>
             <td>{{ row.kosten_cv }}</td>
             <td>{{ row.kosten_gkw }}</td>
             <td>{{ row.kosten_totaal }}</td>
             <td>{{ row.tco }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>MCDA breakdown</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Hoofdsysteem</th>
+          <th>Is mogelijk</th>
+          <th>Score totaal [1–10]</th>
+          <th>TCO normaliseren</th>
+          <th>Elektrisch vermogen normaliseren</th>
+          <th>Ruimte woning normaliseren</th>
+          <th>Ruimte binnen normaliseren</th>
+          <th>Ruimte buiten normaliseren</th>
+          <th>Score huidig systeem</th>
+          <th>Score huidig systeem normaliseren</th>
+          <th>Score vloerverwarming</th>
+          <th>Score vloerverwarming normaliseren</th>
+          <th>TCO gewogen [1–10]</th>
+          <th>Elektrisch vermogen gewogen [1–10]</th>
+          <th>Ruimte woning gewogen [1–10]</th>
+          <th>Ruimte binnen gewogen [1–10]</th>
+          <th>Ruimte buiten gewogen [1–10]</th>
+          <th>Huidig systeem gewogen [1–10]</th>
+          <th>Vloerverwarming gewogen [1–10]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in mcda_breakdown_rows %}
+          <tr>
+            <td>{{ row.naam }}</td>
+            <td>{{ row.is_mogelijk }}</td>
+            <td>{{ row.score_totaal_1_10 }}</td>
+            <td>{{ row.tco_genormaliseerd }}</td>
+            <td>{{ row.elektrisch_vermogen_genormaliseerd }}</td>
+            <td>{{ row.ruimte_woning_genormaliseerd }}</td>
+            <td>{{ row.ruimte_binnen_genormaliseerd }}</td>
+            <td>{{ row.ruimte_buiten_genormaliseerd }}</td>
+            <td>{{ row.score_huidig_systeem }}</td>
+            <td>{{ row.score_huidig_systeem_genormaliseerd }}</td>
+            <td>{{ row.score_vloerverwarming }}</td>
+            <td>{{ row.score_vloerverwarming_genormaliseerd }}</td>
+            <td>{{ row.score_tco_gewogen_1_10 }}</td>
+            <td>{{ row.score_elektrisch_vermogen_gewogen_1_10 }}</td>
+            <td>{{ row.score_ruimte_woning_gewogen_1_10 }}</td>
+            <td>{{ row.score_ruimte_binnen_gewogen_1_10 }}</td>
+            <td>{{ row.score_ruimte_buiten_gewogen_1_10 }}</td>
+            <td>{{ row.score_huidig_systeem_gewogen_1_10 }}</td>
+            <td>{{ row.score_vloerverwarming_gewogen_1_10 }}</td>
           </tr>
         {% endfor %}
       </tbody>

@@ -10,6 +10,7 @@ from .calculator import (
     EnergieCalculator,
     EnergieType,
     Eliminatie,
+    MultiCriteriaAnalyse,
     StadsverwarmingCalculator,
     WarmtenetCalculator,
 )
@@ -50,6 +51,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         energie_rows = []
         subsysteem_rows = []
         hoofdsysteem_rows = []
+        mcda_breakdown_rows = []
         hoofdsysteem_tco_sum_rows = []
         stadsverwarming_rows = []
         stadsverwarming_totals_rows = []
@@ -316,6 +318,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                             "prijs_tap": format_eur(result.prijs_tap_eur_per_gj),
                             "prijs_cv": format_eur(result.prijs_cv_eur_per_gj),
                             "prijs_gkw": format_eur(result.prijs_gkw_eur_per_gj),
+                            "elektrisch_vermogen": format(result.elektrisch_vermogen),
                             "kosten_tap": format_eur(
                                 result.energiekosten_tap_eur_per_woning_per_jaar
                             ),
@@ -432,6 +435,63 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                     }
                 )
 
+            mcda_breakdown_rows = []
+            hoofdsystemen_for_mcda = list(
+                Hoofdsysteem.objects.order_by("id").prefetch_related("subsystemen")
+            )
+            for r in MultiCriteriaAnalyse().calculate_breakdown_for_admin(
+                calculation_input=selected_input,
+                hoofdsystemen=hoofdsystemen_for_mcda,
+                energie_calculation=energie,
+            ):
+                mcda_breakdown_rows.append(
+                    {
+                        "naam": r["naam"],
+                        "is_mogelijk": "true" if r["is_mogelijk"] else "false",
+                        "score_totaal_1_10": format(r["score_totaal_1_10"]),
+                        "tco_genormaliseerd": format(r["tco_genormaliseerd"]),
+                        "elektrisch_vermogen_genormaliseerd": format(
+                            r["elektrisch_vermogen_genormaliseerd"]
+                        ),
+                        "ruimte_woning_genormaliseerd": format(
+                            r["ruimte_woning_genormaliseerd"]
+                        ),
+                        "ruimte_binnen_genormaliseerd": format(
+                            r["ruimte_binnen_genormaliseerd"]
+                        ),
+                        "ruimte_buiten_genormaliseerd": format(
+                            r["ruimte_buiten_genormaliseerd"]
+                        ),
+                        "score_huidig_systeem": format(r["score_huidig_systeem"]),
+                        "score_huidig_systeem_genormaliseerd": format(
+                            r["score_huidig_systeem_genormaliseerd"]
+                        ),
+                        "score_vloerverwarming": format(r["score_vloerverwarming"]),
+                        "score_vloerverwarming_genormaliseerd": format(
+                            r["score_vloerverwarming_genormaliseerd"]
+                        ),
+                        "score_tco_gewogen_1_10": format(r["score_tco_gewogen_1_10"]),
+                        "score_elektrisch_vermogen_gewogen_1_10": format(
+                            r["score_elektrisch_vermogen_gewogen_1_10"]
+                        ),
+                        "score_ruimte_woning_gewogen_1_10": format(
+                            r["score_ruimte_woning_gewogen_1_10"]
+                        ),
+                        "score_ruimte_binnen_gewogen_1_10": format(
+                            r["score_ruimte_binnen_gewogen_1_10"]
+                        ),
+                        "score_ruimte_buiten_gewogen_1_10": format(
+                            r["score_ruimte_buiten_gewogen_1_10"]
+                        ),
+                        "score_huidig_systeem_gewogen_1_10": format(
+                            r["score_huidig_systeem_gewogen_1_10"]
+                        ),
+                        "score_vloerverwarming_gewogen_1_10": format(
+                            r["score_vloerverwarming_gewogen_1_10"]
+                        ),
+                    }
+                )
+
         context = {
             **self.admin_site.each_context(request),
             "gebruikers_invoer": gebruikers_invoer,
@@ -443,6 +503,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "energie_rows": energie_rows,
             "subsysteem_rows": subsysteem_rows,
             "hoofdsysteem_rows": hoofdsysteem_rows,
+            "mcda_breakdown_rows": mcda_breakdown_rows,
             "hoofdsysteem_tco_sum_rows": hoofdsysteem_tco_sum_rows,
             "stadsverwarming_rows": stadsverwarming_rows,
             "stadsverwarming_totals_rows": stadsverwarming_totals_rows,

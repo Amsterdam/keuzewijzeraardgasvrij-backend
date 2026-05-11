@@ -101,6 +101,11 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
             "volledig_gasloos",
             "wens_tot_koelen",
             "koken_op_gas",
+            "dubbel_glas",
+            "wtw_aanwezig",
+            "buurtcode",
+            "jaar_vervangen",
+            "huidig_systeem",
         ]
         read_only_fields = ["id"]
 
@@ -127,6 +132,7 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     naam = serializers.CharField()
     beschrijving = serializers.CharField(allow_blank=True)
     tco = serializers.FloatField()
+    score = serializers.FloatField()
     is_mogelijk = serializers.BooleanField()
     redenen = serializers.ListField(child=serializers.CharField())
     kosten_per_woning_per_jaar = serializers.FloatField()
