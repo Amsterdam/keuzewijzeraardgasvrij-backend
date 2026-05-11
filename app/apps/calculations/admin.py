@@ -58,7 +58,10 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         if selected_input is not None:
 
             def format(value: Decimal) -> str:
-                return str(value.quantize(Decimal("0.0001")))
+                return str(value.quantize(Decimal("0.01")))
+
+            def format_opt(value: Decimal | None) -> str:
+                return "" if value is None else format(value)
 
             def format_eur(value: Decimal) -> str:
                 if isinstance(value, int):
@@ -215,10 +218,10 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                             if r.vermogen_berekenen_op is None
                             else str(r.vermogen_berekenen_op)
                         ),
-                        "kw_min": "" if r.kw_min is None else str(r.kw_min),
-                        "kw_max": "∞" if r.kw_max is None else str(r.kw_max),
-                        "waarde_1": str(r.waarde_1),
-                        "waarde_2": str(r.waarde_2),
+                        "kw_min": format_opt(r.kw_min),
+                        "kw_max": "∞" if r.kw_max is None else format(r.kw_max),
+                        "waarde_1": format(r.waarde_1),
+                        "waarde_2": format(r.waarde_2),
                         "vermogen_cv_vve": format(r.vermogen_cv_vve),
                         "vermogen_tap_vve": format(r.vermogen_tap_vve),
                         "vermogen_koude_vve": format(r.vermogen_koude_vve),
@@ -232,8 +235,8 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                         "waarde_vast": format_eur(r.waarde_vast),
                         "waarde_variabel": format_eur(r.waarde_variabel),
                         "waarde_geclassificeerd": format_eur(r.waarde_geclassificeerd),
-                        "factor_naar_jaar": str(r.factor_naar_jaar),
-                        "factor_collectief": str(r.factor_collectief),
+                        "factor_naar_jaar": format(r.factor_naar_jaar),
+                        "factor_collectief": format(r.factor_collectief),
                         "stadsverwarming_kosten_totaal": format_eur(
                             r.stadsverwarming_kosten_totaal
                         ),
