@@ -45,7 +45,8 @@ class MultiCriteriaAnalyseRow(TypedDict):
     redenen: list[str]
 
 
-class MultiCriteriaAnalyseMetrics(TypedDict):
+@dataclass(frozen=True, slots=True)
+class Metrics:
     tco: Decimal
     elektrisch_vermogen: Decimal
     ruimte_in_woning: Decimal
@@ -55,29 +56,34 @@ class MultiCriteriaAnalyseMetrics(TypedDict):
     vloerverwarming: Decimal
 
 
-class MultiCriteriaAnalyseBreakdownRow(TypedDict):
-    naam: str
-    is_mogelijk: bool
-    score_totaal_1_10: Decimal
+@dataclass(frozen=True, slots=True)
+class Weights:
+    weging_tco: Decimal
+    weging_vermogen: Decimal
+    weging_ruimtebeslag: Decimal
+    weging_aanpassing: Decimal
+    weging_ruimtebeslag_woning: Decimal
+    weging_ruimtebeslag_collectief_binnen: Decimal
+    weging_ruimtebeslag_collectief_buiten: Decimal
+    weging_aanpassing_systeem: Decimal
+    weging_aanpassing_vloerverwarming: Decimal
 
-    tco_genormaliseerd: Decimal
-    elektrisch_vermogen_genormaliseerd: Decimal
-    ruimte_woning_genormaliseerd: Decimal
-    ruimte_binnen_genormaliseerd: Decimal
-    ruimte_buiten_genormaliseerd: Decimal
 
-    score_huidig_systeem: Decimal
-    score_huidig_systeem_genormaliseerd: Decimal
-    score_vloerverwarming: Decimal
-    score_vloerverwarming_genormaliseerd: Decimal
+@dataclass(frozen=True, slots=True)
+class PreparedRowsAndMetrics:
+    rows: list[MultiCriteriaAnalyseRow]
+    metrics_by_hoofdsysteem_naam: dict[str, Metrics]
 
-    score_tco_gewogen_1_10: Decimal
-    score_elektrisch_vermogen_gewogen_1_10: Decimal
-    score_ruimte_woning_gewogen_1_10: Decimal
-    score_ruimte_binnen_gewogen_1_10: Decimal
-    score_ruimte_buiten_gewogen_1_10: Decimal
-    score_huidig_systeem_gewogen_1_10: Decimal
-    score_vloerverwarming_gewogen_1_10: Decimal
+
+@dataclass(frozen=True, slots=True)
+class MetricLists:
+    tco: list[Decimal]
+    elektrisch_vermogen: list[Decimal]
+    ruimte_in_woning: list[Decimal]
+    collectief_ruimte_binnen: list[Decimal]
+    collectief_ruimte_buiten: list[Decimal]
+    huidig_systeem: list[Decimal]
+    vloerverwarming: list[Decimal]
 
 
 class EnergieType:
@@ -945,147 +951,31 @@ class MultiCriteriaAnalyse:
         calculation_input: GebruikersInvoer,
         hoofdsystemen: Iterable[Hoofdsysteem],
         energie_calculation: EnergieCalculatorFullResult,
-    ) -> list[tuple[MultiCriteriaAnalyseSortKey, MultiCriteriaAnalyseRow]]:
+    ) -> list[MultiCriteriaAnalyseRow]:
         hoofdsystemen_list = list(hoofdsystemen)
         eliminatie = Eliminatie()
         weights = self._get_weights()
 
-        rows_in_order, metrics_by_hoofdsysteem_naam = self._build_rows_and_metrics(
+        systeem_calculation_results = self._run_systeem_calculations(
             hoofdsystemen_list=hoofdsystemen_list,
             calculation_input=calculation_input,
             energie_calculation=energie_calculation,
             eliminatie=eliminatie,
         )
-
-        metric_lists = self._collect_metric_lists(
+        metric_lists = self._append_systeem_metrics(
             hoofdsystemen_list=hoofdsystemen_list,
-            metrics_by_hoofdsysteem_naam=metrics_by_hoofdsysteem_naam,
+            metrics_by_hoofdsysteem_naam=systeem_calculation_results.metrics_by_hoofdsysteem_naam,
         )
         score_by_hoofdsysteem_naam = self._calculate_scores(
             hoofdsystemen_list=hoofdsystemen_list,
-            metrics_by_hoofdsysteem_naam=metrics_by_hoofdsysteem_naam,
+            metrics_by_hoofdsysteem_naam=systeem_calculation_results.metrics_by_hoofdsysteem_naam,
             weights=weights,
             metric_lists=metric_lists,
         )
-        return self._build_items(
-            rows_in_order=rows_in_order,
+        return self._combine_and_sort_results(
+            rows=systeem_calculation_results.rows,
             score_by_hoofdsysteem_naam=score_by_hoofdsysteem_naam,
         )
-
-    def calculate_breakdown_for_admin(
-        self,
-        *,
-        calculation_input: GebruikersInvoer,
-        hoofdsystemen: Iterable[Hoofdsysteem],
-        energie_calculation: EnergieCalculatorFullResult,
-    ) -> list[MultiCriteriaAnalyseBreakdownRow]:
-        hoofdsystemen_list = list(hoofdsystemen)
-        eliminatie = Eliminatie()
-        weights = self._get_weights()
-
-        rows_in_order, metrics_by_hoofdsysteem_naam = self._build_rows_and_metrics(
-            hoofdsystemen_list=hoofdsystemen_list,
-            calculation_input=calculation_input,
-            energie_calculation=energie_calculation,
-            eliminatie=eliminatie,
-        )
-        metric_lists = self._collect_metric_lists(
-            hoofdsystemen_list=hoofdsystemen_list,
-            metrics_by_hoofdsysteem_naam=metrics_by_hoofdsysteem_naam,
-        )
-
-        normalized_by_naam = self._calculate_normalized_metrics(
-            hoofdsystemen_list=hoofdsystemen_list,
-            metrics_by_hoofdsysteem_naam=metrics_by_hoofdsysteem_naam,
-            metric_lists=metric_lists,
-        )
-
-        score_by_naam = self._calculate_scores(
-            hoofdsystemen_list=hoofdsystemen_list,
-            metrics_by_hoofdsysteem_naam=metrics_by_hoofdsysteem_naam,
-            weights=weights,
-            metric_lists=metric_lists,
-        )
-
-        breakdown_rows: list[MultiCriteriaAnalyseBreakdownRow] = []
-        for row in rows_in_order:
-            hoofdsysteem_naam = row["naam"]
-            metrics = metrics_by_hoofdsysteem_naam[hoofdsysteem_naam]
-            normalized = normalized_by_naam[hoofdsysteem_naam]
-            totaal_score = score_by_naam.get(hoofdsysteem_naam, Decimal("0"))
-
-            score_tco_gewogen_1_10 = (
-                normalized["tco"] * weights["weging_tco"] * Decimal("10")
-            )
-            score_elektrisch_vermogen_gewogen_1_10 = (
-                normalized["elektrisch_vermogen"]
-                * weights["weging_vermogen"]
-                * Decimal("10")
-            )
-            score_ruimte_woning_gewogen_1_10 = (
-                normalized["ruimte_in_woning"]
-                * weights["weging_ruimtebeslag_woning"]
-                * weights["weging_ruimtebeslag"]
-                * Decimal("10")
-            )
-            score_ruimte_binnen_gewogen_1_10 = (
-                normalized["collectief_ruimte_binnen"]
-                * weights["weging_ruimtebeslag_collectief_binnen"]
-                * weights["weging_ruimtebeslag"]
-                * Decimal("10")
-            )
-            score_ruimte_buiten_gewogen_1_10 = (
-                normalized["collectief_ruimte_buiten"]
-                * weights["weging_ruimtebeslag_collectief_buiten"]
-                * weights["weging_ruimtebeslag"]
-                * Decimal("10")
-            )
-            score_huidig_systeem_gewogen_1_10 = (
-                normalized["huidig_systeem"]
-                * weights["weging_aanpassing_systeem"]
-                * weights["weging_aanpassing"]
-                * Decimal("10")
-            )
-            score_vloerverwarming_gewogen_1_10 = (
-                normalized["vloerverwarming"]
-                * weights["weging_aanpassing_vloerverwarming"]
-                * weights["weging_aanpassing"]
-                * Decimal("10")
-            )
-
-            breakdown_rows.append(
-                {
-                    "naam": hoofdsysteem_naam,
-                    "is_mogelijk": bool(row["is_mogelijk"]),
-                    "score_totaal_1_10": totaal_score,
-                    "tco_genormaliseerd": normalized["tco"],
-                    "elektrisch_vermogen_genormaliseerd": normalized[
-                        "elektrisch_vermogen"
-                    ],
-                    "ruimte_woning_genormaliseerd": normalized["ruimte_in_woning"],
-                    "ruimte_binnen_genormaliseerd": normalized[
-                        "collectief_ruimte_binnen"
-                    ],
-                    "ruimte_buiten_genormaliseerd": normalized[
-                        "collectief_ruimte_buiten"
-                    ],
-                    "score_huidig_systeem": metrics["huidig_systeem"],
-                    "score_huidig_systeem_genormaliseerd": normalized["huidig_systeem"],
-                    "score_vloerverwarming": metrics["vloerverwarming"],
-                    "score_vloerverwarming_genormaliseerd": normalized[
-                        "vloerverwarming"
-                    ],
-                    "score_tco_gewogen_1_10": score_tco_gewogen_1_10,
-                    "score_elektrisch_vermogen_gewogen_1_10": score_elektrisch_vermogen_gewogen_1_10,
-                    "score_ruimte_woning_gewogen_1_10": score_ruimte_woning_gewogen_1_10,
-                    "score_ruimte_binnen_gewogen_1_10": score_ruimte_binnen_gewogen_1_10,
-                    "score_ruimte_buiten_gewogen_1_10": score_ruimte_buiten_gewogen_1_10,
-                    "score_huidig_systeem_gewogen_1_10": score_huidig_systeem_gewogen_1_10,
-                    "score_vloerverwarming_gewogen_1_10": score_vloerverwarming_gewogen_1_10,
-                }
-            )
-
-        return breakdown_rows
 
     def _calculate_subsysteem_tco(
         self,
@@ -1121,25 +1011,6 @@ class MultiCriteriaAnalyse:
         redenen = cast(list[str], redenen_any)
         return is_mogelijk, redenen
 
-    def _build_row(
-        self,
-        *,
-        hoofdsysteem: Hoofdsysteem,
-        tco_midden: Decimal,
-        score: Decimal,
-        is_mogelijk: bool,
-        redenen: list[str],
-    ) -> MultiCriteriaAnalyseRow:
-        return {
-            "naam": hoofdsysteem.naam,
-            "beschrijving": str(hoofdsysteem.beschrijving or ""),
-            "tco": float(tco_midden),
-            "score": round(score),
-            "kosten_per_woning_per_jaar": float(tco_midden / Decimal("30")),
-            "is_mogelijk": is_mogelijk,
-            "redenen": redenen,
-        }
-
     def _build_metrics(
         self,
         *,
@@ -1147,7 +1018,7 @@ class MultiCriteriaAnalyse:
         full,
         calculation_input: GebruikersInvoer,
         tco: Decimal,
-    ) -> MultiCriteriaAnalyseMetrics:
+    ) -> Metrics:
         eliminatie_kengetal = EliminatieKengetal.objects.get(naam=hoofdsysteem.naam)
         ruimte_in_woning = self._to_decimal(
             eliminatie_kengetal.benodigde_ruimte_in_woning_m2
@@ -1185,26 +1056,26 @@ class MultiCriteriaAnalyse:
             full.by_scenario[ScenarioKeuze.MIDDEN].elektrisch_vermogen
         )
 
-        return {
-            "tco": self._to_decimal(tco),
-            "elektrisch_vermogen": elektrisch_vermogen,
-            "ruimte_in_woning": ruimte_in_woning,
-            "collectief_ruimte_binnen": collectief_ruimte_binnen,
-            "collectief_ruimte_buiten": collectief_ruimte_buiten,
-            "huidig_systeem": self._to_decimal(huidig_systeem),
-            "vloerverwarming": self._to_decimal(vloerverwarming),
-        }
+        return Metrics(
+            tco=self._to_decimal(tco),
+            elektrisch_vermogen=elektrisch_vermogen,
+            ruimte_in_woning=ruimte_in_woning,
+            collectief_ruimte_binnen=collectief_ruimte_binnen,
+            collectief_ruimte_buiten=collectief_ruimte_buiten,
+            huidig_systeem=self._to_decimal(huidig_systeem),
+            vloerverwarming=self._to_decimal(vloerverwarming),
+        )
 
-    def _build_rows_and_metrics(
+    def _run_systeem_calculations(
         self,
         *,
         hoofdsystemen_list: list[Hoofdsysteem],
         calculation_input: GebruikersInvoer,
         energie_calculation: EnergieCalculatorFullResult,
         eliminatie: Eliminatie,
-    ) -> tuple[list[MultiCriteriaAnalyseRow], dict[str, MultiCriteriaAnalyseMetrics]]:
-        rows_in_order: list[MultiCriteriaAnalyseRow] = []
-        metrics_by_hoofdsysteem_naam: dict[str, MultiCriteriaAnalyseMetrics] = {}
+    ) -> PreparedRowsAndMetrics:
+        rows: list[MultiCriteriaAnalyseRow] = []
+        metrics_by_hoofdsysteem_naam: dict[str, Metrics] = {}
 
         for hoofdsysteem in hoofdsystemen_list:
             full = hoofdsysteem.calculate(energie_calculation=energie_calculation)
@@ -1223,14 +1094,17 @@ class MultiCriteriaAnalyse:
                 hoofdsysteem_naam=hoofdsysteem.naam,
             )
 
-            row = self._build_row(
-                hoofdsysteem=hoofdsysteem,
-                tco_midden=tco_midden,
-                score=Decimal("0"),
-                is_mogelijk=is_mogelijk,
-                redenen=redenen,
+            rows.append(
+                {
+                    "naam": hoofdsysteem.naam,
+                    "beschrijving": str(hoofdsysteem.beschrijving or ""),
+                    "tco": float(tco_midden),
+                    "score": round(Decimal("0")),
+                    "kosten_per_woning_per_jaar": float(tco_midden / Decimal("30")),
+                    "is_mogelijk": is_mogelijk,
+                    "redenen": redenen,
+                }
             )
-            rows_in_order.append(row)
 
             metrics_by_hoofdsysteem_naam[hoofdsysteem.naam] = self._build_metrics(
                 hoofdsysteem=hoofdsysteem,
@@ -1239,14 +1113,17 @@ class MultiCriteriaAnalyse:
                 tco=tco_midden,
             )
 
-        return rows_in_order, metrics_by_hoofdsysteem_naam
+        return PreparedRowsAndMetrics(
+            rows=rows,
+            metrics_by_hoofdsysteem_naam=metrics_by_hoofdsysteem_naam,
+        )
 
-    def _collect_metric_lists(
+    def _append_systeem_metrics(
         self,
         *,
         hoofdsystemen_list: list[Hoofdsysteem],
-        metrics_by_hoofdsysteem_naam: dict[str, MultiCriteriaAnalyseMetrics],
-    ) -> dict[str, list[Decimal]]:
+        metrics_by_hoofdsysteem_naam: dict[str, Metrics],
+    ) -> MetricLists:
         tco_values: list[Decimal] = []
         elektrisch_vermogen_values: list[Decimal] = []
         ruimte_in_woning_values: list[Decimal] = []
@@ -1257,73 +1134,31 @@ class MultiCriteriaAnalyse:
 
         for hoofdsysteem in hoofdsystemen_list:
             metrics = metrics_by_hoofdsysteem_naam[hoofdsysteem.naam]
-            tco_values.append(metrics["tco"])
-            elektrisch_vermogen_values.append(metrics["elektrisch_vermogen"])
-            ruimte_in_woning_values.append(metrics["ruimte_in_woning"])
-            collectief_ruimte_binnen_values.append(metrics["collectief_ruimte_binnen"])
-            collectief_ruimte_buiten_values.append(metrics["collectief_ruimte_buiten"])
-            huidig_systeem_values.append(metrics["huidig_systeem"])
-            vloerverwarming_values.append(metrics["vloerverwarming"])
+            tco_values.append(metrics.tco)
+            elektrisch_vermogen_values.append(metrics.elektrisch_vermogen)
+            ruimte_in_woning_values.append(metrics.ruimte_in_woning)
+            collectief_ruimte_binnen_values.append(metrics.collectief_ruimte_binnen)
+            collectief_ruimte_buiten_values.append(metrics.collectief_ruimte_buiten)
+            huidig_systeem_values.append(metrics.huidig_systeem)
+            vloerverwarming_values.append(metrics.vloerverwarming)
 
-        return {
-            "tco": tco_values,
-            "elektrisch_vermogen": elektrisch_vermogen_values,
-            "ruimte_in_woning": ruimte_in_woning_values,
-            "collectief_ruimte_binnen": collectief_ruimte_binnen_values,
-            "collectief_ruimte_buiten": collectief_ruimte_buiten_values,
-            "huidig_systeem": huidig_systeem_values,
-            "vloerverwarming": vloerverwarming_values,
-        }
-
-    def _calculate_normalized_metrics(
-        self,
-        *,
-        hoofdsystemen_list: list[Hoofdsysteem],
-        metrics_by_hoofdsysteem_naam: dict[str, MultiCriteriaAnalyseMetrics],
-        metric_lists: dict[str, list[Decimal]],
-    ) -> dict[str, dict[str, Decimal]]:
-        normalized_by_naam: dict[str, dict[str, Decimal]] = {}
-        for hoofdsysteem in hoofdsystemen_list:
-            naam = hoofdsysteem.naam
-            metrics = metrics_by_hoofdsysteem_naam[naam]
-            normalized_by_naam[naam] = {
-                "tco": self._inverse_min_max_normalize(
-                    metric_lists["tco"], metrics["tco"]
-                ),
-                "elektrisch_vermogen": self._inverse_min_max_normalize(
-                    metric_lists["elektrisch_vermogen"],
-                    metrics["elektrisch_vermogen"],
-                ),
-                "ruimte_in_woning": self._inverse_min_max_normalize(
-                    metric_lists["ruimte_in_woning"],
-                    metrics["ruimte_in_woning"],
-                ),
-                "collectief_ruimte_binnen": self._inverse_min_max_normalize(
-                    metric_lists["collectief_ruimte_binnen"],
-                    metrics["collectief_ruimte_binnen"],
-                ),
-                "collectief_ruimte_buiten": self._inverse_min_max_normalize(
-                    metric_lists["collectief_ruimte_buiten"],
-                    metrics["collectief_ruimte_buiten"],
-                ),
-                "huidig_systeem": self._inverse_min_max_normalize(
-                    metric_lists["huidig_systeem"],
-                    metrics["huidig_systeem"],
-                ),
-                "vloerverwarming": self._inverse_min_max_normalize(
-                    metric_lists["vloerverwarming"],
-                    metrics["vloerverwarming"],
-                ),
-            }
-        return normalized_by_naam
+        return MetricLists(
+            tco=tco_values,
+            elektrisch_vermogen=elektrisch_vermogen_values,
+            ruimte_in_woning=ruimte_in_woning_values,
+            collectief_ruimte_binnen=collectief_ruimte_binnen_values,
+            collectief_ruimte_buiten=collectief_ruimte_buiten_values,
+            huidig_systeem=huidig_systeem_values,
+            vloerverwarming=vloerverwarming_values,
+        )
 
     def _calculate_scores(
         self,
         *,
         hoofdsystemen_list: list[Hoofdsysteem],
-        metrics_by_hoofdsysteem_naam: dict[str, MultiCriteriaAnalyseMetrics],
-        weights: dict[str, Decimal],
-        metric_lists: dict[str, list[Decimal]],
+        metrics_by_hoofdsysteem_naam: dict[str, Metrics],
+        weights: Weights,
+        metric_lists: MetricLists,
     ) -> dict[str, Decimal]:
         score_by_hoofdsysteem_naam: dict[str, Decimal] = {}
 
@@ -1331,52 +1166,52 @@ class MultiCriteriaAnalyse:
             metrics = metrics_by_hoofdsysteem_naam[hoofdsysteem.naam]
 
             tco_normalized = self._inverse_min_max_normalize(
-                metric_lists["tco"],
-                metrics["tco"],
+                metric_lists.tco,
+                metrics.tco,
             )
             elektrisch_vermogen_normalized = self._inverse_min_max_normalize(
-                metric_lists["elektrisch_vermogen"],
-                metrics["elektrisch_vermogen"],
+                metric_lists.elektrisch_vermogen,
+                metrics.elektrisch_vermogen,
             )
             ruimte_in_woning_normalized = self._inverse_min_max_normalize(
-                metric_lists["ruimte_in_woning"],
-                metrics["ruimte_in_woning"],
+                metric_lists.ruimte_in_woning,
+                metrics.ruimte_in_woning,
             )
             collectief_ruimte_binnen_normalized = self._inverse_min_max_normalize(
-                metric_lists["collectief_ruimte_binnen"],
-                metrics["collectief_ruimte_binnen"],
+                metric_lists.collectief_ruimte_binnen,
+                metrics.collectief_ruimte_binnen,
             )
             collectief_ruimte_buiten_normalized = self._inverse_min_max_normalize(
-                metric_lists["collectief_ruimte_buiten"],
-                metrics["collectief_ruimte_buiten"],
+                metric_lists.collectief_ruimte_buiten,
+                metrics.collectief_ruimte_buiten,
             )
 
-            score_tco = tco_normalized * weights["weging_tco"]
-            score_vermogen = elektrisch_vermogen_normalized * weights["weging_vermogen"]
+            score_tco = tco_normalized * weights.weging_tco
+            score_vermogen = elektrisch_vermogen_normalized * weights.weging_vermogen
             score_ruimte_in_woning = (
                 ruimte_in_woning_normalized
-                * weights["weging_ruimtebeslag_woning"]
-                * weights["weging_ruimtebeslag"]
+                * weights.weging_ruimtebeslag_woning
+                * weights.weging_ruimtebeslag
             )
             score_collectief_binnen = (
                 collectief_ruimte_binnen_normalized
-                * weights["weging_ruimtebeslag_collectief_binnen"]
-                * weights["weging_ruimtebeslag"]
+                * weights.weging_ruimtebeslag_collectief_binnen
+                * weights.weging_ruimtebeslag
             )
             score_collectief_buiten = (
                 collectief_ruimte_buiten_normalized
-                * weights["weging_ruimtebeslag_collectief_buiten"]
-                * weights["weging_ruimtebeslag"]
+                * weights.weging_ruimtebeslag_collectief_buiten
+                * weights.weging_ruimtebeslag
             )
             score_aanpassing_systeem = (
-                metrics["huidig_systeem"]
-                * weights["weging_aanpassing_systeem"]
-                * weights["weging_aanpassing"]
+                metrics.huidig_systeem
+                * weights.weging_aanpassing_systeem
+                * weights.weging_aanpassing
             )
             score_aanpassing_vloerverwarming = (
-                metrics["vloerverwarming"]
-                * weights["weging_aanpassing_vloerverwarming"]
-                * weights["weging_aanpassing"]
+                metrics.vloerverwarming
+                * weights.weging_aanpassing_vloerverwarming
+                * weights.weging_aanpassing
             )
             totaal_score = (
                 score_tco
@@ -1392,62 +1227,63 @@ class MultiCriteriaAnalyse:
 
         return score_by_hoofdsysteem_naam
 
-    def _build_items(
+    def _combine_and_sort_results(
         self,
         *,
-        rows_in_order: list[MultiCriteriaAnalyseRow],
+        rows: list[MultiCriteriaAnalyseRow],
         score_by_hoofdsysteem_naam: dict[str, Decimal],
-    ) -> list[tuple[MultiCriteriaAnalyseSortKey, MultiCriteriaAnalyseRow]]:
-        items: list[tuple[MultiCriteriaAnalyseSortKey, MultiCriteriaAnalyseRow]] = []
-
-        for row in rows_in_order:
+    ) -> list[MultiCriteriaAnalyseRow]:
+        for row in rows:
             hoofdsysteem_naam = row["naam"]
             score = score_by_hoofdsysteem_naam.get(hoofdsysteem_naam, Decimal("0"))
             row["score"] = round(score)
 
-            sort_key: MultiCriteriaAnalyseSortKey = (
+        def _sort_key(row: MultiCriteriaAnalyseRow) -> tuple[bool, Decimal, str]:
+            naam = row["naam"]
+            score = score_by_hoofdsysteem_naam.get(naam, Decimal("0"))
+            return (
                 not bool(row["is_mogelijk"]),
                 -score,
-                hoofdsysteem_naam,
+                naam,
             )
-            items.append((sort_key, row))
 
-        return items
+        rows.sort(key=_sort_key)
+        return rows
 
-    def _get_weights(self) -> dict[str, Decimal]:
-        return {
-            "weging_tco": self._to_decimal(
+    def _get_weights(self) -> Weights:
+        return Weights(
+            weging_tco=self._to_decimal(
                 McdaHoofdcriterium.objects.get(naam="TCO").wegingsfactor
             ),
-            "weging_vermogen": self._to_decimal(
+            weging_vermogen=self._to_decimal(
                 McdaHoofdcriterium.objects.get(naam="Vermogen").wegingsfactor
             ),
-            "weging_ruimtebeslag": self._to_decimal(
+            weging_ruimtebeslag=self._to_decimal(
                 McdaHoofdcriterium.objects.get(naam="Ruimtebeslag").wegingsfactor
             ),
-            "weging_aanpassing": self._to_decimal(
+            weging_aanpassing=self._to_decimal(
                 McdaHoofdcriterium.objects.get(naam="Impact aanpassingen").wegingsfactor
             ),
-            "weging_ruimtebeslag_woning": self._to_decimal(
+            weging_ruimtebeslag_woning=self._to_decimal(
                 McdaSubcriterium.objects.get(naam="Woning").relatieve_wegingsfactor
             ),
-            "weging_ruimtebeslag_collectief_binnen": self._to_decimal(
+            weging_ruimtebeslag_collectief_binnen=self._to_decimal(
                 McdaSubcriterium.objects.get(naam="COL binnen").relatieve_wegingsfactor
             ),
-            "weging_ruimtebeslag_collectief_buiten": self._to_decimal(
+            weging_ruimtebeslag_collectief_buiten=self._to_decimal(
                 McdaSubcriterium.objects.get(naam="COL buiten").relatieve_wegingsfactor
             ),
-            "weging_aanpassing_systeem": self._to_decimal(
+            weging_aanpassing_systeem=self._to_decimal(
                 McdaSubcriterium.objects.get(
                     naam="Aanpassingen - systeem"
                 ).relatieve_wegingsfactor
             ),
-            "weging_aanpassing_vloerverwarming": self._to_decimal(
+            weging_aanpassing_vloerverwarming=self._to_decimal(
                 McdaSubcriterium.objects.get(
                     naam="Aanpassingen - Vloerverwarming"
                 ).relatieve_wegingsfactor
             ),
-        }
+        )
 
     @staticmethod
     def _to_decimal(value: object) -> Decimal:

@@ -33,16 +33,14 @@ class GebruikersInvoerCreateView(viewsets.GenericViewSet):
             "subsystemen"
         )
 
-        items = MultiCriteriaAnalyse().calculate(
+        rows = MultiCriteriaAnalyse().calculate(
             calculation_input=calculation_input,
             hoofdsystemen=hoofdsystemen,
             energie_calculation=energie,
         )
 
-        items.sort(key=lambda item: item[0])
-
         output_serializer = HoofdsysteemCalculationResultSerializer(
-            [row for _, row in items],
+            rows,
             many=True,
         )
 

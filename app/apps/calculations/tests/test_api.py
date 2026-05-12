@@ -12,21 +12,30 @@ from apps.calculations.serializers import GebruikersInvoerCreateSerializer
 def _valid_payload():
     return {
         "bouwjaar": 1990,
-        "bruto_vloeroppervlak": 1234.5,
-        "aantal_woningen": 10,
-        "mechanische_ventilatie_aanwezig": True,
+        "bruto_vloeroppervlak": 15000,
+        "aantal_woningen": 200,
+        "mechanische_ventilatie_aanwezig": False,
         "vloerverwarming_aanwezig": False,
         "inpandige_berging_aanwezig": True,
         "ruimte_op_het_dak_aanwezig": True,
         "type_dak": "plat_dak",
         "tapwater_op_gas": True,
-        "gasverbruik_vve_totaal": 5000.0,
-        "elektriciteitsverbruik_per_woning": 1000.0,
-        "elektriciteitsverbruik_vve_totaal": 10000.0,
-        "gecontracteerd_vermogen": 50.0,
-        "huidige_warmtesysteem": "cv_ketel",
-        "volledig_gasloos": False,
+        "gasverbruik_vve_totaal": 268920,
+        "elektriciteitsverbruik_per_woning": 10,
+        "elektriciteitsverbruik_vve_totaal": 10,
+        "gecontracteerd_vermogen": 10,
+        "huidige_warmtesysteem": "warmtepomp",
+        "volledig_gasloos": True,
         "wens_tot_koelen": False,
+        "koken_op_gas": True,
+        "huidig_systeem": "collectief",
+        "dubbel_glas": False,
+        "buurtcode": "BU03636501",
+        "beschikbare_ruimte_in_woning_m2": 1,
+        "beschikbare_collectieve_ruimte_binnen_m2": 20,
+        "beschikbare_collectieve_ruimte_buiten_m2": 100,
+        "jaar_vervangen": 2040,
+        "wtw_aanwezig": True,
     }
 
 
@@ -52,6 +61,7 @@ class CalculationInputCreateApiTest(TestCase):
                     "naam",
                     "beschrijving",
                     "tco",
+                    "score",
                     "is_mogelijk",
                     "redenen",
                     "kosten_per_woning_per_jaar",
@@ -59,24 +69,78 @@ class CalculationInputCreateApiTest(TestCase):
             ),
         )
 
-        # Ordering: is_mogelijk=true first, then is_mogelijk=false; within each group sort by tco_midden low→high.
+        # Ordering: is_mogelijk=true first, then is_mogelijk=false; within each group sort by score high→low.
         is_mogelijk_flags = [bool(r.get("is_mogelijk")) for r in response.data]
         if False in is_mogelijk_flags:
             first_false_idx = is_mogelijk_flags.index(False)
             self.assertTrue(all(is_mogelijk_flags[:first_false_idx]))
             self.assertTrue(all(not x for x in is_mogelijk_flags[first_false_idx:]))
 
-        def _assert_non_decreasing(values: list[float]) -> None:
-            self.assertEqual(values, sorted(values))
+        def _assert_non_increasing(values: list[float]) -> None:
+            self.assertEqual(values, sorted(values, reverse=True))
 
-        tcos_true = [float(r["tco"]) for r in response.data if r["is_mogelijk"]]
-        tcos_false = [float(r["tco"]) for r in response.data if not r["is_mogelijk"]]
-        _assert_non_decreasing(tcos_true)
-        _assert_non_decreasing(tcos_false)
+        scores_true = [float(r["score"]) for r in response.data if r["is_mogelijk"]]
+        scores_false = [
+            float(r["score"]) for r in response.data if not r["is_mogelijk"]
+        ]
+        _assert_non_increasing(scores_true)
+        _assert_non_increasing(scores_false)
 
         created = GebruikersInvoer.objects.get()
         self.assertEqual(created.bouwjaar, 1990)
         self.assertEqual(created.type_dak, "plat_dak")
+
+    def test_post_returns_correct_scores(self):
+        expected = [
+            ("Zakelijk Collectief Externe warmtelevering", 9.0, True),
+            (
+                "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+                7.0,
+                True,
+            ),
+            ("Particulier Externe warmtelevering", 7.0, True),
+            (
+                "Zakelijk Collectief Externe warmtelevering + externe koeling",
+                6.0,
+                True,
+            ),
+            ("Particulier Externe warmtelevering + externe koeling", 6.0, True),
+            ("Collectieve Luchtwarmtepomp op Buitenlucht", 6.0, True),
+            ("Individuele Luchtwarmtepomp op Buitenlucht", 1.0, True),
+            (
+                "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
+                9.0,
+                False,
+            ),
+            (
+                "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
+                8.0,
+                False,
+            ),
+            (
+                "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+                7.0,
+                False,
+            ),
+            (
+                "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+                6.0,
+                False,
+            ),
+            ("Individuele Luchtwarmtepomp op Ventilatie", 2.0, False),
+        ]
+
+        response = self.client.post(self.url, data=_valid_payload(), format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+        self.assertIsInstance(response.data, list)
+        self.assertEqual(len(response.data), len(expected))
+
+        for actual, (expected_naam, expected_score, expected_is_mogelijk) in zip(
+            response.data, expected, strict=True
+        ):
+            self.assertEqual(actual.get("naam"), expected_naam)
+            self.assertEqual(float(actual.get("score")), expected_score)
+            self.assertEqual(bool(actual.get("is_mogelijk")), expected_is_mogelijk)
 
     def test_get_not_allowed(self):
         response = self.client.get(self.url)
