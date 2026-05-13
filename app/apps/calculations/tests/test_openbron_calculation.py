@@ -21,17 +21,9 @@ def _calculation_input(**overrides: object) -> GebruikersInvoer:
         "aantal_woningen": 200,
         "mechanische_ventilatie_aanwezig": True,
         "vloerverwarming_aanwezig": False,
-        "inpandige_berging_aanwezig": True,
-        "ruimte_op_het_dak_aanwezig": True,
-        "type_dak": "plat_dak",
         "tapwater_op_gas": True,
         "koken_op_gas": False,
         "gasverbruik_vve_totaal": Decimal("1334.6"),
-        "elektriciteitsverbruik_per_woning": Decimal("1000"),
-        "elektriciteitsverbruik_vve_totaal": Decimal("10000"),
-        "gecontracteerd_vermogen": Decimal("50"),
-        "huidige_warmtesysteem": "cv_ketel",
-        "volledig_gasloos": False,
         "wens_tot_koelen": False,
     }
     defaults.update(overrides)
