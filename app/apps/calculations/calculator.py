@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 from numbers import Number
-from typing import TYPE_CHECKING, Final, Iterable, Literal, TypeAlias, TypedDict, cast
+from typing import Final, Iterable, Literal, TypeAlias, TypedDict, cast
 from django.db.models import Q
 from apps.kengetallen.models import (
     AlgemeenKengetal,
@@ -25,9 +25,6 @@ from apps.kengetallen.models import (
 )
 
 from .models import Conversie, GebruikersInvoer, HuidigSysteemChoices
-
-if TYPE_CHECKING:
-    from apps.systemen.models import Hoofdsysteem
 
 EnergieTypeValue = Literal["tapwater", "cv", "gkw"]
 
@@ -951,6 +948,8 @@ class MultiCriteriaAnalyse:
         calculation_input: GebruikersInvoer,
         energie_calculation: EnergieCalculatorFullResult,
     ) -> list[MultiCriteriaAnalyseRow]:
+        from apps.systemen.models import Hoofdsysteem
+
         hoofdsystemen = Hoofdsysteem.objects.order_by("id").prefetch_related(
             "subsystemen"
         )
