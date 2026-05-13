@@ -298,7 +298,7 @@
     "fields": {
       "subsysteem": 4,
       "scenario": "laag",
-      "investeringskosten": 50000,
+      "investeringskosten": 35000,
       "levensduur": 30,
       "beheer_en_onderhoud": 0.02,
       "verhouding_vermogen_bron": 0.75,
@@ -587,7 +587,7 @@
     "fields": {
       "subsysteem": 4,
       "scenario": "midden",
-      "investeringskosten": 50000,
+      "investeringskosten": 35000,
       "levensduur": 30,
       "beheer_en_onderhoud": 0.02,
       "verhouding_vermogen_bron": 0.75,
@@ -877,7 +877,7 @@
     "fields": {
       "subsysteem": 4,
       "scenario": "hoog",
-      "investeringskosten": 50000,
+      "investeringskosten": 35000,
       "levensduur": 30,
       "beheer_en_onderhoud": 0.02,
       "verhouding_vermogen_bron": 0.75,
@@ -7821,7 +7821,7 @@
     "pk": 11,
     "fields": {
       "naam": "Zakelijk Collectief Externe warmtelevering",
-      "woningen_min": 1,
+      "woningen_min": 25,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",
       "stadsverwarming_nodig": true,
@@ -7835,7 +7835,7 @@
     "pk": 12,
     "fields": {
       "naam": "Zakelijk Collectief Externe warmtelevering + externe koeling",
-      "woningen_min": 1,
+      "woningen_min": 25,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",
       "stadsverwarming_nodig": true,
