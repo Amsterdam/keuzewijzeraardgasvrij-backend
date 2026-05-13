@@ -217,6 +217,7 @@
           <th>Prijs TAP [€/GJ]</th>
           <th>Prijs CV [€/GJ]</th>
           <th>Prijs GKW [€/GJ]</th>
+          <th>Elektrisch vermogen [GJ/w/j]</th>
           <th>Kosten TAP [€/w/j]</th>
           <th>Kosten CV [€/w/j]</th>
           <th>Kosten GKW [€/w/j]</th>
@@ -239,11 +240,42 @@
             <td>{{ row.prijs_tap }}</td>
             <td>{{ row.prijs_cv }}</td>
             <td>{{ row.prijs_gkw }}</td>
+            <td>{{ row.elektrisch_vermogen }}</td>
             <td>{{ row.kosten_tap }}</td>
             <td>{{ row.kosten_cv }}</td>
             <td>{{ row.kosten_gkw }}</td>
             <td>{{ row.kosten_totaal }}</td>
             <td>{{ row.tco }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>MCA resultaat</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Hoofdsysteem</th>
+          <th>Score</th>
+          <th>Is mogelijk</th>
+          <th>TCO</th>
+          <th>Kosten per woning per jaar</th>
+          <th>Redenen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in mca_rows %}
+          <tr>
+            <td>{{ row.naam }}</td>
+            <td>{{ row.score }}</td>
+            <td>{{ row.is_mogelijk }}</td>
+            <td>{{ row.tco }}</td>
+            <td>{{ row.kosten_per_woning_per_jaar }}</td>
+            <td>
+              {% for r in row.redenen %}
+                {{ r }}<br />
+              {% endfor %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>

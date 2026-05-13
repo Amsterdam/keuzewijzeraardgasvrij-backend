@@ -1,7 +1,7 @@
 [
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Een buitenlucht warmtepomp haalt warmte uit de ventilatielucht. Hiervoor is mechanische ventilatie nodig. De warmtepomp haalt warmte uit de lucht en geeft deze af aan water. Dit water gebruikt u om uw huis te verwarmen of om warm water te maken, bijvoorbeeld om te douchen. Per woning is er een warmtepomp en voorraadvat nodig.",
       "beschrijving_url": null,
       "naam": "Individuele Luchtwarmtepomp op Ventilatie",
       "subsystemen": [
@@ -14,7 +14,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Een buitenlucht warmtepomp haalt warmte uit de buitenlucht. Dit doet de warmtepomp met een grote ventilator. Dit noemen we de buitenunit. De warmtepomp haalt warmte uit de lucht en geeft deze af aan water. Dit water gebruikt u om uw huis te verwarmen of om warm water te maken, bijvoorbeeld om te douchen. Per woning is er een warmtepomp en voorraadvat nodig.",
       "beschrijving_url": null,
       "naam": "Individuele Luchtwarmtepomp op Buitenlucht",
       "subsystemen": [
@@ -27,7 +27,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Een bodem warmtepomp haalt warmte uit de grond onder de straat of tuin. Er worden lange buizen tot wel 100 meter diep in de bodem geboord voor één woning. Door de buizen stroomt water dat de warmte uit de grond haalt. De warmtepomp gebruikt deze warmte om uw huis te verwarmen. In elke woning staat een bodem warmtepomp en een voorraadvat.",
       "beschrijving_url": null,
       "naam": "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
       "subsystemen": [
@@ -41,7 +41,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Een bodem warmtepomp haalt warmte uit de grond onder de straat of tuin. Er worden lange buizen tot wel 100 meter diep in de bodem geboord voor het hele gebouw. Door de buizen stroomt water dat de warmte uit de grond haalt. De warmtepomp gebruikt deze warmte om uw huis te verwarmen. In elke woning staat een bodem warmtepomp en een voorraadvat.",
       "beschrijving_url": null,
       "naam": "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
       "subsystemen": [
@@ -55,7 +55,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "In de winter wordt het gebouw verwarmd met een bodem warmtepomp die warmte onttrekt aan het opgepompte grondwater. Dat koelt af en wordt weer teruggepompt in de bodem. In de zomer wordt dit afgekoelde water rondgepompt en gebruikt als passieve koeling. Het daardoor opgewarmde water wordt teruggebracht als de warme bron. De bron levert warmte voor het hele gebouw. Per woning is er een warmtepomp en voorraadvat nodig.",
       "beschrijving_url": null,
       "naam": "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
       "subsystemen": [
@@ -70,7 +70,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Dit is een warmtenet – ook wel stadsverwarming genoemd – Het is een netwerk van ondergrondse leidingen waar warm water doorheen stroomt. Dit warme water wordt naar buurten gebracht en gebruikt om huizen te verwarmen en warm tapwater te leveren. Dat warme water komt uit bronnen zoals restwarmte van de industrie en bij de verbranding van afval. Voor deze oplossing is een warmtewisselaar in de woning nodig.",
       "beschrijving_url": null,
       "naam": "Particulier Externe warmtelevering",
       "subsystemen": [
@@ -82,7 +82,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Dit is een warmtenet – ook wel stadsverwarming genoemd – Het is een netwerk van ondergrondse leidingen waar warm en koud water doorheen stroomt. Dit water wordt naar buurten gebracht en gebruikt om huizen te koelen, te verwarmen en warm tapwater te leveren. Dat warme water komt uit bronnen zoals restwarmte van de industrie en bij de verbranding van afval. Voor deze oplossing is een warmtewisselaar in de woning nodig.",
       "beschrijving_url": null,
       "naam": "Particulier Externe warmtelevering + externe koeling",
       "subsystemen": [
@@ -94,7 +94,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Een buitenlucht warmtepomp haalt warmte uit de buitenlucht. Dit doet de warmtepomp met een grote ventilator. Dit noemen we de buitenunit. De warmtepomp haalt warmte uit de lucht en geeft deze af aan water. Dit water gebruikt u om uw huis te verwarmen of om warm water te maken, bijvoorbeeld om te douchen. Er is een centrale warmtepomp nodig en een warmtewisselaar met voorraadvat per woning.",
       "beschrijving_url": null,
       "naam": "Collectieve Luchtwarmtepomp op Buitenlucht",
       "subsystemen": [
@@ -109,7 +109,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Een bodem warmtepomp haalt warmte uit de grond onder de straat of tuin. Er worden lange buizen tot wel 100 meter diep in de bodem geboord voor het hele gebouw. Door de buizen stroomt water dat de warmte uit de grond haalt. De warmtepomp gebruikt deze warmte om uw huis te verwarmen. In een centrale ruimte staat een bodem warmtepomp voor het hele gebouw en in elke woning een afleverset.",
       "beschrijving_url": null,
       "naam": "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
       "subsystemen": [
@@ -125,7 +125,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "In de winter wordt het gebouw verwarmd met een gedeelde bodem warmtepomp die warmte onttrekt aan het opgepompte grondwater. Dat koelt af en wordt weer teruggepompt in de bodem. In de zomer wordt dit afgekoelde water rondgepompt en gebruikt als passieve koeling. Het daardoor opgewarmde water wordt teruggebracht als de warme bron. De bron en de warmtepomp leveren warmte voor het hele gebouw. In de woningen is een afleverset nodig.",
       "beschrijving_url": null,
       "naam": "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
       "subsystemen": [
@@ -141,7 +141,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Dit is een warmtenet – ook wel stadsverwarming genoemd – Het is een netwerk van ondergrondse leidingen waar warm water doorheen stroomt. Dit warme water wordt naar buurten gebracht en gebruikt om huizen te verwarmen en warm tapwater te leveren. Dat warme water komt uit bronnen zoals restwarmte van de industrie en bij de verbranding van afval. Voor deze oplossing is een warmtewisselaar in de centrale technische ruimte nodig.",
       "beschrijving_url": null,
       "naam": "Zakelijk Collectief Externe warmtelevering",
       "subsystemen": [
@@ -155,7 +155,7 @@
   },
   {
     "fields": {
-      "beschrijving": "",
+      "beschrijving": "Dit is een warmtenet – ook wel stadsverwarming genoemd – Het is een netwerk van ondergrondse leidingen waar warm en koud water doorheen stroomt. Dit water wordt naar buurten gebracht en gebruikt om huizen te koelen, te verwarmen en warm tapwater te leveren. Dat warme water komt uit bronnen zoals restwarmte van de industrie en bij de verbranding van afval. Voor deze oplossing is een warmtewisselaar in de centrale technische ruimte nodig.",
       "beschrijving_url": null,
       "naam": "Zakelijk Collectief Externe warmtelevering + externe koeling",
       "subsystemen": [

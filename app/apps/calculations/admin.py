@@ -10,6 +10,7 @@ from .calculator import (
     EnergieCalculator,
     EnergieType,
     Eliminatie,
+    MultiCriteriaAnalyse,
     StadsverwarmingCalculator,
     WarmtenetCalculator,
 )
@@ -50,6 +51,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         energie_rows = []
         subsysteem_rows = []
         hoofdsysteem_rows = []
+        mca_rows = []
         hoofdsysteem_tco_sum_rows = []
         stadsverwarming_rows = []
         stadsverwarming_totals_rows = []
@@ -316,6 +318,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                             "prijs_tap": format_eur(result.prijs_tap_eur_per_gj),
                             "prijs_cv": format_eur(result.prijs_cv_eur_per_gj),
                             "prijs_gkw": format_eur(result.prijs_gkw_eur_per_gj),
+                            "elektrisch_vermogen": format(result.elektrisch_vermogen),
                             "kosten_tap": format_eur(
                                 result.energiekosten_tap_eur_per_woning_per_jaar
                             ),
@@ -432,6 +435,16 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                     }
                 )
 
+            mca_rows = []
+            hoofdsystemen_for_mca = list(
+                Hoofdsysteem.objects.order_by("id").prefetch_related("subsystemen")
+            )
+            mca_rows = MultiCriteriaAnalyse().calculate(
+                calculation_input=selected_input,
+                hoofdsystemen=hoofdsystemen_for_mca,
+                energie_calculation=energie,
+            )
+
         context = {
             **self.admin_site.each_context(request),
             "gebruikers_invoer": gebruikers_invoer,
@@ -443,6 +456,7 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "energie_rows": energie_rows,
             "subsysteem_rows": subsysteem_rows,
             "hoofdsysteem_rows": hoofdsysteem_rows,
+            "mca_rows": mca_rows,
             "hoofdsysteem_tco_sum_rows": hoofdsysteem_tco_sum_rows,
             "stadsverwarming_rows": stadsverwarming_rows,
             "stadsverwarming_totals_rows": stadsverwarming_totals_rows,
