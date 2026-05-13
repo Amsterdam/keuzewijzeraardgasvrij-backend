@@ -12,42 +12,11 @@ class GebruikersInvoer(models.Model):
     bouwjaar = models.PositiveIntegerField()
     bruto_vloeroppervlak = models.DecimalField(max_digits=18, decimal_places=9)
     aantal_woningen = models.PositiveIntegerField()
-
     mechanische_ventilatie_aanwezig = models.BooleanField()
     vloerverwarming_aanwezig = models.BooleanField()
-    inpandige_berging_aanwezig = models.BooleanField()
-    ruimte_op_het_dak_aanwezig = models.BooleanField()
-
-    type_dak = models.CharField(
-        max_length=20,
-        choices=[
-            ("plat_dak", "Plat dak"),
-            ("schuin_dak", "Schuin dak"),
-        ],
-    )
-
     tapwater_op_gas = models.BooleanField()
     koken_op_gas = models.BooleanField(default=False)
     gasverbruik_vve_totaal = models.DecimalField(max_digits=18, decimal_places=9)
-    elektriciteitsverbruik_per_woning = models.DecimalField(
-        max_digits=18, decimal_places=9
-    )
-    elektriciteitsverbruik_vve_totaal = models.DecimalField(
-        max_digits=18, decimal_places=9
-    )
-
-    gecontracteerd_vermogen = models.DecimalField(max_digits=18, decimal_places=9)
-
-    huidige_warmtesysteem = models.CharField(
-        max_length=20,
-        choices=[
-            ("warmtepomp", "Warmtepomp"),
-            ("cv_ketel", "Cv-ketel"),
-            ("anders", "Anders"),
-        ],
-    )
-
-    volledig_gasloos = models.BooleanField()
     wens_tot_koelen = models.BooleanField()
     dubbel_glas = models.BooleanField(default=False)
     wtw_aanwezig = models.BooleanField(default=False)

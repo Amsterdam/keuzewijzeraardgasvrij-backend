@@ -16,16 +16,10 @@ def _valid_payload():
         "aantal_woningen": 200,
         "mechanische_ventilatie_aanwezig": False,
         "vloerverwarming_aanwezig": False,
-        "inpandige_berging_aanwezig": True,
-        "ruimte_op_het_dak_aanwezig": True,
-        "type_dak": "plat_dak",
         "tapwater_op_gas": True,
         "gasverbruik_vve_totaal": 268920,
         "elektriciteitsverbruik_per_woning": 10,
         "elektriciteitsverbruik_vve_totaal": 10,
-        "gecontracteerd_vermogen": 10,
-        "huidige_warmtesysteem": "warmtepomp",
-        "volledig_gasloos": True,
         "wens_tot_koelen": False,
         "koken_op_gas": True,
         "huidig_systeem": "collectief",
@@ -88,7 +82,6 @@ class CalculationInputCreateApiTest(TestCase):
 
         created = GebruikersInvoer.objects.get()
         self.assertEqual(created.bouwjaar, 1990)
-        self.assertEqual(created.type_dak, "plat_dak")
 
     def test_post_returns_correct_scores(self):
         expected = [
@@ -158,13 +151,6 @@ class CalculationInputCreateApiTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("bouwjaar", response.data)
 
-    def test_invalid_choice_returns_400(self):
-        payload = _valid_payload()
-        payload["type_dak"] = "geen_dak"
-        response = self.client.post(self.url, data=payload, format="json")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("type_dak", response.data)
-
     def test_throttling(self):
         for _ in range(20):
             response = self.client.post(self.url, data=_valid_payload(), format="json")
@@ -189,20 +175,7 @@ class GebruikersInvoerCreateSerializerTest(TestCase):
 
     def test_rejects_non_finite_numbers(self):
         payload = _valid_payload()
-        payload["elektriciteitsverbruik_vve_totaal"] = math.nan
+        payload["beschikbare_collectieve_ruimte_binnen_m2"] = math.nan
         serializer = GebruikersInvoerCreateSerializer(data=payload)
         self.assertFalse(serializer.is_valid())
-        self.assertIn("elektriciteitsverbruik_vve_totaal", serializer.errors)
-
-    def test_rejects_invalid_choices(self):
-        payload = _valid_payload()
-        payload["type_dak"] = "geen_dak"
-        serializer = GebruikersInvoerCreateSerializer(data=payload)
-        self.assertFalse(serializer.is_valid())
-        self.assertIn("type_dak", serializer.errors)
-
-        payload = _valid_payload()
-        payload["huidige_warmtesysteem"] = "onbekend"
-        serializer = GebruikersInvoerCreateSerializer(data=payload)
-        self.assertFalse(serializer.is_valid())
-        self.assertIn("huidige_warmtesysteem", serializer.errors)
+        self.assertIn("beschikbare_collectieve_ruimte_binnen_m2", serializer.errors)
