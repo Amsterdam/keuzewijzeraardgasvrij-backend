@@ -93,6 +93,14 @@ class HoofdsysteemCalculateTest(TestCase):
                 else Decimal("0")
             )
 
+            expected_elektrisch_vermogen = (
+                by_type[EnergieType.TAP].vermogen_warmte_kw_per_vve
+                / hoofdkengetal.cop_tap
+            ) + (
+                by_type[EnergieType.CV].vermogen_warmte_kw_per_vve
+                / hoofdkengetal.cop_cv
+            )
+
             expected_cost_tap = expected_elec_tap_gj * energieprijs_eur_per_gj
             expected_cost_cv = expected_elec_cv_gj * energieprijs_eur_per_gj
             expected_cost_gkw = expected_elec_gkw_gj * energieprijs_eur_per_gj
@@ -126,6 +134,8 @@ class HoofdsysteemCalculateTest(TestCase):
             self.assertEqual(row.prijs_cv_eur_per_gj, energieprijs_eur_per_gj)
             self.assertEqual(row.prijs_gkw_eur_per_gj, energieprijs_eur_per_gj)
 
+            self.assertEqual(row.elektrisch_vermogen, expected_elektrisch_vermogen)
+
             self.assertEqual(
                 row.energiekosten_tap_eur_per_woning_per_jaar,
                 expected_cost_tap,
@@ -142,6 +152,20 @@ class HoofdsysteemCalculateTest(TestCase):
                 row.energiekosten_totaal_eur_per_woning_per_jaar,
                 expected_cost_total,
             )
+
+    def test_calculate_sets_elektrisch_vermogen_to_zero_for_warmtelevering(self):
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Particulier Externe warmtelevering"
+        )
+        calc_input = _calculation_input()
+
+        energie = EnergieCalculator().calculate(calc_input)
+        full = hoofdsysteem.calculate(energie_calculation=energie)
+
+        scenario_key = str(ScenarioKeuze.MIDDEN)
+        row = full.by_scenario[scenario_key]
+
+        self.assertEqual(row.elektrisch_vermogen, Decimal("0"))
 
     def test_calculate_uses_zakelijk_stadswarmte_met_koude_prices(self):
         hoofdsysteem = Hoofdsysteem.objects.get(

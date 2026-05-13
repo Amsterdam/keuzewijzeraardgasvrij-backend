@@ -50,8 +50,8 @@ class Metrics:
     tco: Decimal
     elektrisch_vermogen: Decimal
     ruimte_in_woning: Decimal
-    collectief_ruimte_binnen: Decimal
-    collectief_ruimte_buiten: Decimal
+    collectieve_ruimte_binnen_benodigd: Decimal
+    collectieve_ruimte_buiten_benodigd: Decimal
     huidig_systeem: Decimal
     vloerverwarming: Decimal
 
@@ -80,8 +80,8 @@ class MetricLists:
     tco: list[Decimal]
     elektrisch_vermogen: list[Decimal]
     ruimte_in_woning: list[Decimal]
-    collectief_ruimte_binnen: list[Decimal]
-    collectief_ruimte_buiten: list[Decimal]
+    collectieve_ruimte_binnen_benodigd: list[Decimal]
+    collectieve_ruimte_buiten_benodigd: list[Decimal]
     huidig_systeem: list[Decimal]
     vloerverwarming: list[Decimal]
 
@@ -949,9 +949,11 @@ class MultiCriteriaAnalyse:
     def calculate(
         self,
         calculation_input: GebruikersInvoer,
-        hoofdsystemen: Iterable[Hoofdsysteem],
         energie_calculation: EnergieCalculatorFullResult,
     ) -> list[MultiCriteriaAnalyseRow]:
+        hoofdsystemen = Hoofdsysteem.objects.order_by("id").prefetch_related(
+            "subsystemen"
+        )
         hoofdsystemen_list = list(hoofdsystemen)
         eliminatie = Eliminatie()
         weights = self._get_weights()
@@ -1023,14 +1025,14 @@ class MultiCriteriaAnalyse:
         ruimte_in_woning = self._to_decimal(
             eliminatie_kengetal.benodigde_ruimte_in_woning_m2
         )
-        collectief_ruimte_binnen = self._to_decimal(
+        collectieve_ruimte_binnen_benodigd = self._to_decimal(
             _get_collectieve_ruimte(
                 CollectieveRuimteBinnen,
                 hoofdsysteem_naam=hoofdsysteem.naam,
                 aantal_woningen=calculation_input.aantal_woningen,
             )
         )
-        collectief_ruimte_buiten = self._to_decimal(
+        collectieve_ruimte_buiten_benodigd = self._to_decimal(
             _get_collectieve_ruimte(
                 CollectieveRuimteBuiten,
                 hoofdsysteem_naam=hoofdsysteem.naam,
@@ -1060,8 +1062,8 @@ class MultiCriteriaAnalyse:
             tco=self._to_decimal(tco),
             elektrisch_vermogen=elektrisch_vermogen,
             ruimte_in_woning=ruimte_in_woning,
-            collectief_ruimte_binnen=collectief_ruimte_binnen,
-            collectief_ruimte_buiten=collectief_ruimte_buiten,
+            collectieve_ruimte_binnen_benodigd=collectieve_ruimte_binnen_benodigd,
+            collectieve_ruimte_buiten_benodigd=collectieve_ruimte_buiten_benodigd,
             huidig_systeem=self._to_decimal(huidig_systeem),
             vloerverwarming=self._to_decimal(vloerverwarming),
         )
@@ -1137,8 +1139,12 @@ class MultiCriteriaAnalyse:
             tco_values.append(metrics.tco)
             elektrisch_vermogen_values.append(metrics.elektrisch_vermogen)
             ruimte_in_woning_values.append(metrics.ruimte_in_woning)
-            collectief_ruimte_binnen_values.append(metrics.collectief_ruimte_binnen)
-            collectief_ruimte_buiten_values.append(metrics.collectief_ruimte_buiten)
+            collectief_ruimte_binnen_values.append(
+                metrics.collectieve_ruimte_binnen_benodigd
+            )
+            collectief_ruimte_buiten_values.append(
+                metrics.collectieve_ruimte_buiten_benodigd
+            )
             huidig_systeem_values.append(metrics.huidig_systeem)
             vloerverwarming_values.append(metrics.vloerverwarming)
 
@@ -1146,8 +1152,8 @@ class MultiCriteriaAnalyse:
             tco=tco_values,
             elektrisch_vermogen=elektrisch_vermogen_values,
             ruimte_in_woning=ruimte_in_woning_values,
-            collectief_ruimte_binnen=collectief_ruimte_binnen_values,
-            collectief_ruimte_buiten=collectief_ruimte_buiten_values,
+            collectieve_ruimte_binnen_benodigd=collectief_ruimte_binnen_values,
+            collectieve_ruimte_buiten_benodigd=collectief_ruimte_buiten_values,
             huidig_systeem=huidig_systeem_values,
             vloerverwarming=vloerverwarming_values,
         )
@@ -1178,12 +1184,12 @@ class MultiCriteriaAnalyse:
                 metrics.ruimte_in_woning,
             )
             collectief_ruimte_binnen_normalized = self._inverse_min_max_normalize(
-                metric_lists.collectief_ruimte_binnen,
-                metrics.collectief_ruimte_binnen,
+                metric_lists.collectieve_ruimte_binnen_benodigd,
+                metrics.collectieve_ruimte_binnen_benodigd,
             )
             collectief_ruimte_buiten_normalized = self._inverse_min_max_normalize(
-                metric_lists.collectief_ruimte_buiten,
-                metrics.collectief_ruimte_buiten,
+                metric_lists.collectieve_ruimte_buiten_benodigd,
+                metrics.collectieve_ruimte_buiten_benodigd,
             )
 
             score_tco = tco_normalized * weights.weging_tco
@@ -1213,6 +1219,7 @@ class MultiCriteriaAnalyse:
                 * weights.weging_aanpassing_vloerverwarming
                 * weights.weging_aanpassing
             )
+            score_multiplier = Decimal("10")
             totaal_score = (
                 score_tco
                 + score_vermogen
@@ -1221,7 +1228,7 @@ class MultiCriteriaAnalyse:
                 + score_collectief_buiten
                 + score_aanpassing_systeem
                 + score_aanpassing_vloerverwarming
-            ) * Decimal("10")
+            ) * score_multiplier
 
             score_by_hoofdsysteem_naam[hoofdsysteem.naam] = totaal_score
 

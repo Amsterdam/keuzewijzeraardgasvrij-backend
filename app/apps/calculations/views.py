@@ -2,7 +2,6 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from apps.calculations.calculator import EnergieCalculator, MultiCriteriaAnalyse
-from apps.systemen.models import Hoofdsysteem
 from drf_spectacular.utils import extend_schema
 
 from .models import GebruikersInvoer
@@ -29,13 +28,8 @@ class GebruikersInvoerCreateView(viewsets.GenericViewSet):
         calculation_input: GebruikersInvoer = serializer.save()
 
         energie = EnergieCalculator().calculate(calculation_input)
-        hoofdsystemen = Hoofdsysteem.objects.order_by("id").prefetch_related(
-            "subsystemen"
-        )
-
         rows = MultiCriteriaAnalyse().calculate(
             calculation_input=calculation_input,
-            hoofdsystemen=hoofdsystemen,
             energie_calculation=energie,
         )
 
