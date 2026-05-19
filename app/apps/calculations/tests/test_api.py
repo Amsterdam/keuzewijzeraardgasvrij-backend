@@ -1,10 +1,12 @@
 import math
+from decimal import Decimal
 
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from apps.calculations.calculator import RedenenScoreMessages
 from apps.calculations.models import GebruikersInvoer
 from apps.calculations.serializers import GebruikersInvoerCreateSerializer
 
@@ -64,8 +66,35 @@ class CalculationInputCreateApiTest(TestCase):
             ),
         )
 
-        self.assertIsInstance(first.get("redenen_score"), list)
-        self.assertTrue(all(isinstance(x, str) for x in first.get("redenen_score")))
+        redenen_score = first.get("redenen_score")
+        self.assertIsInstance(redenen_score, list)
+        self.assertEqual(len(redenen_score), 4)
+        self.assertTrue(all(isinstance(x, str) for x in redenen_score))
+        self.assertIn(redenen_score[0], RedenenScoreMessages.TCO_ALL)
+        self.assertIn(redenen_score[1], RedenenScoreMessages.ELEKTRISCH_ALL)
+        self.assertIn(redenen_score[2], RedenenScoreMessages.RUIMTE_ALL)
+        self.assertIn(redenen_score[3], RedenenScoreMessages.AANPASSING_ALL)
+
+        # Validate TCO message buckets exactly (top 3/next 4/rest) based on returned TCOs.
+        tco_by_naam = {
+            str(r["naam"]): Decimal(str(r.get("tco", 0))) for r in response.data
+        }
+        ordered_namen = sorted(tco_by_naam.keys(), key=lambda n: (tco_by_naam[n], n))
+        expected_tco_msg_by_naam: dict[str, str] = {}
+        for idx, naam in enumerate(ordered_namen):
+            if idx < 3:
+                expected_tco_msg_by_naam[naam] = RedenenScoreMessages.TCO_BEST
+            elif idx < 7:
+                expected_tco_msg_by_naam[naam] = RedenenScoreMessages.TCO_AVERAGE
+            else:
+                expected_tco_msg_by_naam[naam] = RedenenScoreMessages.TCO_WORST
+
+        for r in response.data:
+            naam = str(r["naam"])
+            redenen_score_any = r.get("redenen_score")
+            self.assertIsInstance(redenen_score_any, list)
+            self.assertEqual(len(redenen_score_any), 4)
+            self.assertEqual(redenen_score_any[0], expected_tco_msg_by_naam[naam])
 
         # Ordering: is_mogelijk=true first, then is_mogelijk=false; within each group sort by score high→low.
         is_mogelijk_flags = [bool(r.get("is_mogelijk")) for r in response.data]

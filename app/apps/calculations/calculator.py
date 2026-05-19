@@ -87,6 +87,57 @@ class MetricLists:
     vloerverwarming: list[Decimal]
 
 
+class RedenenScoreMessages:
+    # TCO
+    TCO_BEST: Final[str] = "Deze oplossing is goedkoper dan gemiddeld."
+    TCO_AVERAGE: Final[str] = "Deze oplossing heeft gemiddelde kosten."
+    TCO_WORST: Final[str] = "Deze oplossing is duurder dan gemiddeld."
+
+    # Elektrisch vermogen
+    ELEKTRISCH_BEST: Final[str] = (
+        "Deze oplossing heeft een lage impact op het elekriciteitsnet."
+    )
+    ELEKTRISCH_AVERAGE: Final[str] = (
+        "Deze oplossing heeft een gemiddelde impact op het elekriciteitsnet."
+    )
+    ELEKTRISCH_WORST: Final[str] = (
+        "Deze oplossing heeft een hoge impact op het elekriciteitsnet."
+    )
+
+    # Ruimte
+    RUIMTE_BEST: Final[str] = "Deze oplossing neemt weining ruimte in."
+    RUIMTE_AVERAGE: Final[str] = "Deze oplossing neemt gemiddeld ruimte in."
+    RUIMTE_WORST: Final[str] = "Deze oplossing neemt veel ruimte in."
+
+    # Aanpassingen
+    AANPASSING_BEST: Final[str] = (
+        "Er zijn weinig gebouwaanpassingen nodig voor deze oplossing."
+    )
+    AANPASSING_AVERAGE: Final[str] = (
+        "Er zijn gebouwaanpassingen nodig voor deze oplossing."
+    )
+    AANPASSING_WORST: Final[str] = (
+        "Er zijn veel gebouwaanpassingen nodig voor deze oplossing."
+    )
+
+    TCO_ALL: Final[tuple[str, str, str]] = (TCO_BEST, TCO_AVERAGE, TCO_WORST)
+    ELEKTRISCH_ALL: Final[tuple[str, str, str]] = (
+        ELEKTRISCH_BEST,
+        ELEKTRISCH_AVERAGE,
+        ELEKTRISCH_WORST,
+    )
+    RUIMTE_ALL: Final[tuple[str, str, str]] = (
+        RUIMTE_BEST,
+        RUIMTE_AVERAGE,
+        RUIMTE_WORST,
+    )
+    AANPASSING_ALL: Final[tuple[str, str, str]] = (
+        AANPASSING_BEST,
+        AANPASSING_AVERAGE,
+        AANPASSING_WORST,
+    )
+
+
 class EnergieType:
     TAP: Final[EnergieTypeValue] = "tapwater"
     CV: Final[EnergieTypeValue] = "cv"
@@ -977,7 +1028,7 @@ class MultiCriteriaAnalyse:
             weights=weights,
             metric_lists=metric_lists,
         )
-        self._add_score_uitleg(
+        self._add_score_redenen(
             rows=systeem_calculation_results.rows,
             metrics_by_hoofdsysteem_naam=systeem_calculation_results.metrics_by_hoofdsysteem_naam,
         )
@@ -1192,7 +1243,7 @@ class MultiCriteriaAnalyse:
 
         return result
 
-    def _add_score_uitleg(
+    def _add_score_redenen(
         self,
         *,
         rows: list[MultiCriteriaAnalyseRow],
@@ -1219,30 +1270,30 @@ class MultiCriteriaAnalyse:
         tco_msg = self._ranked_messages(
             namen=namen,
             value_by_naam=tco_by_naam,
-            best="Deze oplossing is goedkoper dan gemiddeld.",
-            average="Deze oplossing heeft gemiddelde kosten.",
-            worst="Deze oplossing is duurder dan gemiddeld.",
+            best=RedenenScoreMessages.TCO_BEST,
+            average=RedenenScoreMessages.TCO_AVERAGE,
+            worst=RedenenScoreMessages.TCO_WORST,
         )
         elektrisch_msg = self._ranked_messages(
             namen=namen,
             value_by_naam=elektrisch_by_naam,
-            best="Deze oplossing heeft een lage impact op het elekriciteitsnet.",
-            average="Deze oplossing heeft een gemiddelde impact op het elekriciteitsnet.",
-            worst="Deze oplossing heeft een hoge impact op het elekriciteitsnet.",
+            best=RedenenScoreMessages.ELEKTRISCH_BEST,
+            average=RedenenScoreMessages.ELEKTRISCH_AVERAGE,
+            worst=RedenenScoreMessages.ELEKTRISCH_WORST,
         )
         ruimte_msg = self._ranked_messages(
             namen=namen,
             value_by_naam=ruimte_by_naam,
-            best="Deze oplossing neemt weining ruimte in.",
-            average="Deze oplossing neemt gemiddeld ruimte in.",
-            worst="Deze oplossing neemt veel ruimte in.",
+            best=RedenenScoreMessages.RUIMTE_BEST,
+            average=RedenenScoreMessages.RUIMTE_AVERAGE,
+            worst=RedenenScoreMessages.RUIMTE_WORST,
         )
         aanpassing_msg = self._ranked_messages(
             namen=namen,
             value_by_naam=aanpassing_by_naam,
-            best="Er zijn weinig gebouwaanpassingen nodig voor deze oplossing.",
-            average="Er zijn gebouwaanpassingen nodig voor deze oplossing.",
-            worst="Er zijn veel gebouwaanpassingen nodig voor deze oplossing.",
+            best=RedenenScoreMessages.AANPASSING_BEST,
+            average=RedenenScoreMessages.AANPASSING_AVERAGE,
+            worst=RedenenScoreMessages.AANPASSING_WORST,
         )
 
         for row in rows:
