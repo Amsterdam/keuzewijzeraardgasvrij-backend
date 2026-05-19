@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import datetime
 from decimal import Decimal
 from numbers import Number
 from typing import TYPE_CHECKING, Final, Iterable, Literal, TypeAlias, TypedDict, cast
@@ -41,6 +42,8 @@ class MultiCriteriaAnalyseRow(TypedDict):
     tco: float
     score: float
     kosten_per_woning_per_jaar: float
+    kosten_per_woning_per_jaar_laag: float
+    kosten_per_woning_per_jaar_hoog: float
     is_mogelijk: bool
     redenen_niet_mogelijk: list[str]
     redenen_score: list[str]
@@ -899,15 +902,19 @@ class Eliminatie:
     ) -> dict[str, object]:
         hoofdsysteem_naam = hoofdsysteem_naam
         aantal_woningen = calculation_input.aantal_woningen
-        collectief_ruimte_binnen_benodigd = _get_collectieve_ruimte(
-            CollectieveRuimteBinnen,
-            hoofdsysteem_naam=hoofdsysteem_naam,
-            aantal_woningen=aantal_woningen,
+        collectief_ruimte_binnen_benodigd = round(
+            _get_collectieve_ruimte(
+                CollectieveRuimteBinnen,
+                hoofdsysteem_naam=hoofdsysteem_naam,
+                aantal_woningen=aantal_woningen,
+            )
         )
-        collectief_ruimte_buiten_benodigd = _get_collectieve_ruimte(
-            CollectieveRuimteBuiten,
-            hoofdsysteem_naam=hoofdsysteem_naam,
-            aantal_woningen=aantal_woningen,
+        collectief_ruimte_buiten_benodigd = round(
+            _get_collectieve_ruimte(
+                CollectieveRuimteBuiten,
+                hoofdsysteem_naam=hoofdsysteem_naam,
+                aantal_woningen=aantal_woningen,
+            )
         )
 
         eliminatie_kengetal = EliminatieKengetal.objects.get(naam=hoofdsysteem_naam)
@@ -927,7 +934,7 @@ class Eliminatie:
             )
         ):
             redenen.append(
-                f"Aantal woningen {aantal_woningen} voldoet niet aan range {eliminatie_kengetal.woningen_min}–{max_label} van {hoofdsysteem_naam}."
+                f"{hoofdsysteem_naam} is het meest geschikt voor gebouwen tussen {eliminatie_kengetal.woningen_min} tot {max_label} woningen (er zijn {aantal_woningen} woningen in de VvE)."
             )
 
         if (
@@ -936,9 +943,7 @@ class Eliminatie:
             < eliminatie_kengetal.benodigde_ruimte_in_woning_m2
         ):
             redenen.append(
-                "Ruimte in woning "
-                f"{calculation_input.beschikbare_ruimte_in_woning_m2} m² is onvoldoende voor {hoofdsysteem_naam} "
-                f"(benodigd {eliminatie_kengetal.benodigde_ruimte_in_woning_m2} m²)."
+                f"Er is te weinig ruimte in de woning voor {hoofdsysteem_naam} (ongeveer nodig: {eliminatie_kengetal.benodigde_ruimte_in_woning_m2} m²)."
             )
 
         if (
@@ -947,9 +952,7 @@ class Eliminatie:
             < collectief_ruimte_binnen_benodigd
         ):
             redenen.append(
-                "Collectieve ruimte binnen "
-                f"{calculation_input.beschikbare_collectieve_ruimte_binnen_m2} m² is onvoldoende voor {hoofdsysteem_naam} "
-                f"(benodigd {collectief_ruimte_binnen_benodigd} m²)."
+                f"Er is te weinig gezamenlijke binnenruimte voor {hoofdsysteem_naam} (ongeveer nodig: {collectief_ruimte_binnen_benodigd} m²)."
             )
 
         if (
@@ -958,9 +961,7 @@ class Eliminatie:
             < collectief_ruimte_buiten_benodigd
         ):
             redenen.append(
-                "Collectieve ruimte buiten "
-                f"{calculation_input.beschikbare_collectieve_ruimte_buiten_m2} m² is onvoldoende voor {hoofdsysteem_naam} "
-                f"(benodigd {collectief_ruimte_buiten_benodigd} m²)."
+                f"Er is te weinig gezamenlijke buitenruimte voor {hoofdsysteem_naam} (ongeveer nodig: {collectief_ruimte_buiten_benodigd} m²)."
             )
 
         if (
@@ -968,7 +969,7 @@ class Eliminatie:
             and not calculation_input.mechanische_ventilatie_aanwezig
         ):
             redenen.append(
-                f"Mechanische ventilatie is vereist voor {hoofdsysteem_naam}, maar mechanische ventilatie is niet aanwezig."
+                f"Voor {hoofdsysteem_naam} is mechanische ventilatie nodig, maar die is er niet."
             )
 
         if calculation_input.wens_tot_koelen and not eliminatie_kengetal.kan_koelen:
@@ -985,9 +986,21 @@ class Eliminatie:
                     calculation_input
                 )
                 if not warmtenet_berekening.warmtenet_mogelijk:
-                    redenen.append(
-                        "Warmtenet is niet mogelijk vanwege de buurtcode en/of het jaar van vervangen."
-                    )
+                    if (
+                        warmtenet_berekening.warmtenet_start is None
+                        or warmtenet_berekening.warmtenet_start
+                        > (datetime.datetime.now().year + 20)
+                    ):
+                        redenen.append(
+                            "Er is geen warmtenet in uw buurt, en er zijn ook geen plannen om dat aan te leggen."
+                        )
+                    elif (
+                        warmtenet_berekening.warmtenet_start
+                        <= datetime.datetime.now().year + 20
+                    ):
+                        redenen.append(
+                            f"Er wordt tussen {warmtenet_berekening.warmtenet_start} en {warmtenet_berekening.warmtenet_stop} een warmtenet verwacht in uw buurt. Dit is later dan de verduurzaming in {calculation_input.jaar_vervangen}."
+                        )
 
         is_mogelijk = len(redenen) == 0
 
@@ -1044,17 +1057,18 @@ class MultiCriteriaAnalyse:
         hoofdsysteem: Hoofdsysteem,
         energie_calculation: EnergieCalculatorFullResult,
         calculation_input: GebruikersInvoer,
+        scenario: ScenarioKeuze = ScenarioKeuze.MIDDEN,
     ) -> Decimal:
         subsysteem_tco = Decimal("0")
         for subsysteem in hoofdsysteem.subsystemen.all():
             if not subsysteem.calculation_method:
                 continue
             subs_full = subsysteem.calculate(
-                scenarios=(ScenarioKeuze.MIDDEN,),
+                scenarios=(scenario,),
                 energie_calculation=energie_calculation,
                 calculation_input=calculation_input,
             )
-            subsysteem_tco += subs_full.by_scenario[ScenarioKeuze.MIDDEN].berekening.tco
+            subsysteem_tco += subs_full.by_scenario[str(scenario)].berekening.tco
         return subsysteem_tco
 
     def _calculate_eliminatie(
@@ -1140,13 +1154,33 @@ class MultiCriteriaAnalyse:
 
         for hoofdsysteem in hoofdsystemen_list:
             full = hoofdsysteem.calculate(energie_calculation=energie_calculation)
-            subsysteem_tco = self._calculate_subsysteem_tco(
+            subsysteem_tco_midden = self._calculate_subsysteem_tco(
                 hoofdsysteem=hoofdsysteem,
                 energie_calculation=energie_calculation,
                 calculation_input=calculation_input,
             )
             tco_midden = (
-                full.by_scenario[ScenarioKeuze.MIDDEN].tco + subsysteem_tco
+                full.by_scenario[ScenarioKeuze.MIDDEN].tco + subsysteem_tco_midden
+            ).quantize(Decimal("0.01"))
+
+            subsysteem_tco_laag = self._calculate_subsysteem_tco(
+                hoofdsysteem=hoofdsysteem,
+                energie_calculation=energie_calculation,
+                calculation_input=calculation_input,
+                scenario=ScenarioKeuze.LAAG,
+            )
+            tco_laag = (
+                full.by_scenario[ScenarioKeuze.LAAG].tco + subsysteem_tco_laag
+            ).quantize(Decimal("0.01"))
+
+            subsysteem_tco_hoog = self._calculate_subsysteem_tco(
+                hoofdsysteem=hoofdsysteem,
+                energie_calculation=energie_calculation,
+                calculation_input=calculation_input,
+                scenario=ScenarioKeuze.HOOG,
+            )
+            tco_hoog = (
+                full.by_scenario[ScenarioKeuze.HOOG].tco + subsysteem_tco_hoog
             ).quantize(Decimal("0.01"))
 
             is_mogelijk, redenen = self._calculate_eliminatie(
@@ -1161,7 +1195,9 @@ class MultiCriteriaAnalyse:
                     "beschrijving": str(hoofdsysteem.beschrijving or ""),
                     "tco": float(tco_midden),
                     "score": round(Decimal("0")),
-                    "kosten_per_woning_per_jaar": float(tco_midden / Decimal("30")),
+                    "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
+                    "kosten_per_woning_per_jaar_laag": round(tco_laag / Decimal("30")),
+                    "kosten_per_woning_per_jaar_hoog": round(tco_hoog / Decimal("30")),
                     "is_mogelijk": is_mogelijk,
                     "redenen_niet_mogelijk": redenen,
                 }
