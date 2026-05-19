@@ -1045,7 +1045,6 @@ class MultiCriteriaAnalyse:
             rows=systeem_calculation_results.rows,
             metrics_by_hoofdsysteem_naam=systeem_calculation_results.metrics_by_hoofdsysteem_naam,
         )
-
         return self._combine_and_sort_results(
             rows=systeem_calculation_results.rows,
             score_by_hoofdsysteem_naam=score_by_hoofdsysteem_naam,
@@ -1193,6 +1192,7 @@ class MultiCriteriaAnalyse:
                 {
                     "naam": hoofdsysteem.naam,
                     "beschrijving": str(hoofdsysteem.beschrijving or ""),
+                    "beschrijving_url": str(hoofdsysteem.beschrijving_url or ""),
                     "tco": float(tco_midden),
                     "score": round(Decimal("0")),
                     "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
