@@ -94,9 +94,9 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
 class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     naam = serializers.CharField()
     beschrijving = serializers.CharField(allow_blank=True)
-    tco = serializers.FloatField()
-    score = serializers.FloatField()
+    tco = serializers.IntegerField()
+    score = serializers.IntegerField()
     is_mogelijk = serializers.BooleanField()
     redenen_niet_mogelijk = serializers.ListField(child=serializers.CharField())
-    kosten_per_woning_per_jaar = serializers.FloatField()
+    kosten_per_woning_per_jaar = serializers.IntegerField()
     redenen_score = serializers.ListField(child=serializers.CharField())

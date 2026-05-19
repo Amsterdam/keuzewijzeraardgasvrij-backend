@@ -436,12 +436,8 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                 )
 
             mca_rows = []
-            hoofdsystemen_for_mca = list(
-                Hoofdsysteem.objects.order_by("id").prefetch_related("subsystemen")
-            )
             mca_rows = MultiCriteriaAnalyse().calculate(
                 calculation_input=selected_input,
-                hoofdsystemen=hoofdsystemen_for_mca,
                 energie_calculation=energie,
             )
 
