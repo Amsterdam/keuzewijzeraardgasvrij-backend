@@ -943,7 +943,7 @@ class Eliminatie:
             < eliminatie_kengetal.benodigde_ruimte_in_woning_m2
         ):
             redenen.append(
-                f"Er is te weinig ruimte in de woning voor {hoofdsysteem_naam} (ongeveer nodig: {eliminatie_kengetal.benodigde_ruimte_in_woning_m2} m²)."
+                f"Er is te weinig ruimte in de woning voor {hoofdsysteem_naam} (ongeveer nodig: {round(eliminatie_kengetal.benodigde_ruimte_in_woning_m2, 1)} m²)."
             )
 
         if (
