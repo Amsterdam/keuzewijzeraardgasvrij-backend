@@ -97,5 +97,6 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     tco = serializers.FloatField()
     score = serializers.FloatField()
     is_mogelijk = serializers.BooleanField()
-    redenen = serializers.ListField(child=serializers.CharField())
+    redenen_niet_mogelijk = serializers.ListField(child=serializers.CharField())
     kosten_per_woning_per_jaar = serializers.FloatField()
+    redenen_score = serializers.ListField(child=serializers.CharField())

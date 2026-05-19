@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 from numbers import Number
-from typing import Final, Iterable, Literal, TypeAlias, TypedDict, cast
+from typing import TYPE_CHECKING, Final, Iterable, Literal, TypeAlias, TypedDict, cast
 from django.db.models import Q
 from apps.kengetallen.models import (
     AlgemeenKengetal,
@@ -24,6 +24,9 @@ from apps.kengetallen.models import (
     McdaSubcriterium,
 )
 
+if TYPE_CHECKING:
+    from apps.systemen.models import Hoofdsysteem
+
 from .models import Conversie, GebruikersInvoer, HuidigSysteemChoices
 
 EnergieTypeValue = Literal["tapwater", "cv", "gkw"]
@@ -39,7 +42,8 @@ class MultiCriteriaAnalyseRow(TypedDict):
     score: float
     kosten_per_woning_per_jaar: float
     is_mogelijk: bool
-    redenen: list[str]
+    redenen_niet_mogelijk: list[str]
+    redenen_score: list[str]
 
 
 @dataclass(frozen=True, slots=True)
@@ -81,6 +85,57 @@ class MetricLists:
     collectieve_ruimte_buiten_benodigd: list[Decimal]
     huidig_systeem: list[Decimal]
     vloerverwarming: list[Decimal]
+
+
+class RedenenScoreMessages:
+    # TCO
+    TCO_BEST: Final[str] = "Deze oplossing is goedkoper dan gemiddeld."
+    TCO_AVERAGE: Final[str] = "Deze oplossing heeft gemiddelde kosten."
+    TCO_WORST: Final[str] = "Deze oplossing is duurder dan gemiddeld."
+
+    # Elektrisch vermogen
+    ELEKTRISCH_BEST: Final[str] = (
+        "Deze oplossing heeft een lage impact op het elekriciteitsnet."
+    )
+    ELEKTRISCH_AVERAGE: Final[str] = (
+        "Deze oplossing heeft een gemiddelde impact op het elekriciteitsnet."
+    )
+    ELEKTRISCH_WORST: Final[str] = (
+        "Deze oplossing heeft een hoge impact op het elekriciteitsnet."
+    )
+
+    # Ruimte
+    RUIMTE_BEST: Final[str] = "Deze oplossing neemt weining ruimte in."
+    RUIMTE_AVERAGE: Final[str] = "Deze oplossing neemt gemiddeld ruimte in."
+    RUIMTE_WORST: Final[str] = "Deze oplossing neemt veel ruimte in."
+
+    # Aanpassingen
+    AANPASSING_BEST: Final[str] = (
+        "Er zijn weinig gebouwaanpassingen nodig voor deze oplossing."
+    )
+    AANPASSING_AVERAGE: Final[str] = (
+        "Er zijn gebouwaanpassingen nodig voor deze oplossing."
+    )
+    AANPASSING_WORST: Final[str] = (
+        "Er zijn veel gebouwaanpassingen nodig voor deze oplossing."
+    )
+
+    TCO_ALL: Final[tuple[str, str, str]] = (TCO_BEST, TCO_AVERAGE, TCO_WORST)
+    ELEKTRISCH_ALL: Final[tuple[str, str, str]] = (
+        ELEKTRISCH_BEST,
+        ELEKTRISCH_AVERAGE,
+        ELEKTRISCH_WORST,
+    )
+    RUIMTE_ALL: Final[tuple[str, str, str]] = (
+        RUIMTE_BEST,
+        RUIMTE_AVERAGE,
+        RUIMTE_WORST,
+    )
+    AANPASSING_ALL: Final[tuple[str, str, str]] = (
+        AANPASSING_BEST,
+        AANPASSING_AVERAGE,
+        AANPASSING_WORST,
+    )
 
 
 class EnergieType:
@@ -973,6 +1028,11 @@ class MultiCriteriaAnalyse:
             weights=weights,
             metric_lists=metric_lists,
         )
+        self._add_score_redenen(
+            rows=systeem_calculation_results.rows,
+            metrics_by_hoofdsysteem_naam=systeem_calculation_results.metrics_by_hoofdsysteem_naam,
+        )
+
         return self._combine_and_sort_results(
             rows=systeem_calculation_results.rows,
             score_by_hoofdsysteem_naam=score_by_hoofdsysteem_naam,
@@ -1103,7 +1163,7 @@ class MultiCriteriaAnalyse:
                     "score": round(Decimal("0")),
                     "kosten_per_woning_per_jaar": float(tco_midden / Decimal("30")),
                     "is_mogelijk": is_mogelijk,
-                    "redenen": redenen,
+                    "redenen_niet_mogelijk": redenen,
                 }
             )
 
@@ -1156,6 +1216,94 @@ class MultiCriteriaAnalyse:
             huidig_systeem=huidig_systeem_values,
             vloerverwarming=vloerverwarming_values,
         )
+
+    def _ranked_messages(
+        self,
+        *,
+        namen: list[str],
+        value_by_naam: dict[str, Decimal],
+        best: str,
+        average: str,
+        worst: str,
+    ) -> dict[str, str]:
+        ordered = sorted(
+            namen,
+            key=lambda naam: (value_by_naam.get(naam, Decimal("0")), naam),
+        )
+        result: dict[str, str] = {}
+
+        # Lower value is better: top 3 → best, next 4 → average, rest → worst.
+        for idx, naam in enumerate(ordered):
+            if idx < 3:
+                result[naam] = best
+            elif idx < 7:
+                result[naam] = average
+            else:
+                result[naam] = worst
+
+        return result
+
+    def _add_score_redenen(
+        self,
+        *,
+        rows: list[MultiCriteriaAnalyseRow],
+        metrics_by_hoofdsysteem_naam: dict[str, Metrics],
+    ) -> None:
+        namen = [r["naam"] for r in rows]
+
+        tco_by_naam = {naam: metrics_by_hoofdsysteem_naam[naam].tco for naam in namen}
+        elektrisch_by_naam = {
+            naam: metrics_by_hoofdsysteem_naam[naam].elektrisch_vermogen
+            for naam in namen
+        }
+        ruimte_by_naam = {
+            naam: (
+                metrics_by_hoofdsysteem_naam[naam].ruimte_in_woning
+                + metrics_by_hoofdsysteem_naam[naam].collectieve_ruimte_binnen_benodigd
+                + metrics_by_hoofdsysteem_naam[naam].collectieve_ruimte_buiten_benodigd
+            )
+            for naam in namen
+        }
+        aanpassing_by_naam = {
+            naam: metrics_by_hoofdsysteem_naam[naam].huidig_systeem for naam in namen
+        }
+        tco_msg = self._ranked_messages(
+            namen=namen,
+            value_by_naam=tco_by_naam,
+            best=RedenenScoreMessages.TCO_BEST,
+            average=RedenenScoreMessages.TCO_AVERAGE,
+            worst=RedenenScoreMessages.TCO_WORST,
+        )
+        elektrisch_msg = self._ranked_messages(
+            namen=namen,
+            value_by_naam=elektrisch_by_naam,
+            best=RedenenScoreMessages.ELEKTRISCH_BEST,
+            average=RedenenScoreMessages.ELEKTRISCH_AVERAGE,
+            worst=RedenenScoreMessages.ELEKTRISCH_WORST,
+        )
+        ruimte_msg = self._ranked_messages(
+            namen=namen,
+            value_by_naam=ruimte_by_naam,
+            best=RedenenScoreMessages.RUIMTE_BEST,
+            average=RedenenScoreMessages.RUIMTE_AVERAGE,
+            worst=RedenenScoreMessages.RUIMTE_WORST,
+        )
+        aanpassing_msg = self._ranked_messages(
+            namen=namen,
+            value_by_naam=aanpassing_by_naam,
+            best=RedenenScoreMessages.AANPASSING_BEST,
+            average=RedenenScoreMessages.AANPASSING_AVERAGE,
+            worst=RedenenScoreMessages.AANPASSING_WORST,
+        )
+
+        for row in rows:
+            naam = row["naam"]
+            row["redenen_score"] = [
+                tco_msg.get(naam, ""),
+                elektrisch_msg.get(naam, ""),
+                ruimte_msg.get(naam, ""),
+                aanpassing_msg.get(naam, ""),
+            ]
 
     def _calculate_scores(
         self,
