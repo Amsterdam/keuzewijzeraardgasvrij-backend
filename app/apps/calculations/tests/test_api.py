@@ -57,11 +57,15 @@ class CalculationInputCreateApiTest(TestCase):
                     "tco",
                     "score",
                     "is_mogelijk",
-                    "redenen",
                     "kosten_per_woning_per_jaar",
+                    "redenen_niet_mogelijk",
+                    "redenen_score",
                 ]
             ),
         )
+
+        self.assertIsInstance(first.get("redenen_score"), list)
+        self.assertTrue(all(isinstance(x, str) for x in first.get("redenen_score")))
 
         # Ordering: is_mogelijk=true first, then is_mogelijk=false; within each group sort by score high→low.
         is_mogelijk_flags = [bool(r.get("is_mogelijk")) for r in response.data]

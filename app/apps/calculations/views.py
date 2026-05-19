@@ -32,7 +32,6 @@ class GebruikersInvoerCreateView(viewsets.GenericViewSet):
             calculation_input=calculation_input,
             energie_calculation=energie,
         )
-
         output_serializer = HoofdsysteemCalculationResultSerializer(
             rows,
             many=True,
