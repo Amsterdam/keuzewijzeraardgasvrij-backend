@@ -60,6 +60,8 @@ class CalculationInputCreateApiTest(TestCase):
                     "score",
                     "is_mogelijk",
                     "kosten_per_woning_per_jaar",
+                    "kosten_per_woning_per_jaar_laag",
+                    "kosten_per_woning_per_jaar_hoog",
                     "redenen_niet_mogelijk",
                     "redenen_score",
                 ]

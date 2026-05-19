@@ -42,6 +42,8 @@ class MultiCriteriaAnalyseRow(TypedDict):
     tco: float
     score: float
     kosten_per_woning_per_jaar: float
+    kosten_per_woning_per_jaar_laag: float
+    kosten_per_woning_per_jaar_hoog: float
     is_mogelijk: bool
     redenen_niet_mogelijk: list[str]
     redenen_score: list[str]
@@ -984,8 +986,10 @@ class Eliminatie:
                     calculation_input
                 )
                 if not warmtenet_berekening.warmtenet_mogelijk:
-                    if warmtenet_berekening.warmtenet_start > (
-                        datetime.datetime.now().year + 20
+                    if (
+                        warmtenet_berekening.warmtenet_start is None
+                        or warmtenet_berekening.warmtenet_start
+                        > (datetime.datetime.now().year + 20)
                     ):
                         redenen.append(
                             "Er is geen warmtenet in uw buurt, en er zijn ook geen plannen om dat aan te leggen."
@@ -1053,17 +1057,18 @@ class MultiCriteriaAnalyse:
         hoofdsysteem: Hoofdsysteem,
         energie_calculation: EnergieCalculatorFullResult,
         calculation_input: GebruikersInvoer,
+        scenario: ScenarioKeuze = ScenarioKeuze.MIDDEN,
     ) -> Decimal:
         subsysteem_tco = Decimal("0")
         for subsysteem in hoofdsysteem.subsystemen.all():
             if not subsysteem.calculation_method:
                 continue
             subs_full = subsysteem.calculate(
-                scenarios=(ScenarioKeuze.MIDDEN,),
+                scenarios=(scenario,),
                 energie_calculation=energie_calculation,
                 calculation_input=calculation_input,
             )
-            subsysteem_tco += subs_full.by_scenario[ScenarioKeuze.MIDDEN].berekening.tco
+            subsysteem_tco += subs_full.by_scenario[str(scenario)].berekening.tco
         return subsysteem_tco
 
     def _calculate_eliminatie(
@@ -1149,13 +1154,33 @@ class MultiCriteriaAnalyse:
 
         for hoofdsysteem in hoofdsystemen_list:
             full = hoofdsysteem.calculate(energie_calculation=energie_calculation)
-            subsysteem_tco = self._calculate_subsysteem_tco(
+            subsysteem_tco_midden = self._calculate_subsysteem_tco(
                 hoofdsysteem=hoofdsysteem,
                 energie_calculation=energie_calculation,
                 calculation_input=calculation_input,
             )
             tco_midden = (
-                full.by_scenario[ScenarioKeuze.MIDDEN].tco + subsysteem_tco
+                full.by_scenario[ScenarioKeuze.MIDDEN].tco + subsysteem_tco_midden
+            ).quantize(Decimal("0.01"))
+
+            subsysteem_tco_laag = self._calculate_subsysteem_tco(
+                hoofdsysteem=hoofdsysteem,
+                energie_calculation=energie_calculation,
+                calculation_input=calculation_input,
+                scenario=ScenarioKeuze.LAAG,
+            )
+            tco_laag = (
+                full.by_scenario[ScenarioKeuze.LAAG].tco + subsysteem_tco_laag
+            ).quantize(Decimal("0.01"))
+
+            subsysteem_tco_hoog = self._calculate_subsysteem_tco(
+                hoofdsysteem=hoofdsysteem,
+                energie_calculation=energie_calculation,
+                calculation_input=calculation_input,
+                scenario=ScenarioKeuze.HOOG,
+            )
+            tco_hoog = (
+                full.by_scenario[ScenarioKeuze.HOOG].tco + subsysteem_tco_hoog
             ).quantize(Decimal("0.01"))
 
             is_mogelijk, redenen = self._calculate_eliminatie(
@@ -1170,7 +1195,9 @@ class MultiCriteriaAnalyse:
                     "beschrijving": str(hoofdsysteem.beschrijving or ""),
                     "tco": float(tco_midden),
                     "score": round(Decimal("0")),
-                    "kosten_per_woning_per_jaar": float(tco_midden / Decimal("30")),
+                    "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
+                    "kosten_per_woning_per_jaar_laag": round(tco_laag / Decimal("30")),
+                    "kosten_per_woning_per_jaar_hoog": round(tco_hoog / Decimal("30")),
                     "is_mogelijk": is_mogelijk,
                     "redenen_niet_mogelijk": redenen,
                 }
