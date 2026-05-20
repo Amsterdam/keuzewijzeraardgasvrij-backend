@@ -95,6 +95,7 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     naam = serializers.CharField()
     beschrijving = serializers.CharField(allow_blank=True)
     beschrijving_url = serializers.CharField(allow_blank=True)
+    beschrijving_url_title = serializers.CharField(allow_blank=True)
     tco = serializers.IntegerField()
     score = serializers.IntegerField()
     is_mogelijk = serializers.BooleanField()

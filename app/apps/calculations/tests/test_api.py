@@ -57,6 +57,7 @@ class CalculationInputCreateApiTest(TestCase):
                     "naam",
                     "beschrijving",
                     "beschrijving_url",
+                    "beschrijving_url_title",
                     "tco",
                     "score",
                     "is_mogelijk",
