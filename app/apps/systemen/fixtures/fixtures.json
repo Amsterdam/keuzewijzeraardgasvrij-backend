@@ -3,6 +3,7 @@
     "fields": {
       "beschrijving": "Een buitenlucht warmtepomp haalt warmte uit de ventilatielucht. Hiervoor is mechanische ventilatie nodig. De warmtepomp haalt warmte uit de lucht en geeft deze af aan water. Dit water gebruikt u om uw huis te verwarmen of om warm water te maken, bijvoorbeeld om te douchen. Per woning is er een warmtepomp en voorraadvat nodig.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp",
+      "beschrijving_url_title": "Warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Individuele Luchtwarmtepomp op Ventilatie",
       "subsystemen": [
         1,
@@ -16,7 +17,7 @@
     "fields": {
       "beschrijving": "Een buitenlucht warmtepomp haalt warmte uit de buitenlucht. Dit doet de warmtepomp met een grote ventilator. Dit noemen we de buitenunit. De warmtepomp haalt warmte uit de lucht en geeft deze af aan water. Dit water gebruikt u om uw huis te verwarmen of om warm water te maken, bijvoorbeeld om te douchen. Per woning is er een warmtepomp en voorraadvat nodig.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp/buitenlucht-warmtepomp",
-      "beschrijving_url_title": "Buitenlucht-warmtepomp | Duurzaam Wonen Amsterdam",
+      "beschrijving_url_title": "Buitenlucht warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Individuele Luchtwarmtepomp op Buitenlucht",
       "subsystemen": [
         2,
@@ -30,7 +31,7 @@
     "fields": {
       "beschrijving": "Een bodem warmtepomp haalt warmte uit de grond onder de straat of tuin. Er worden lange buizen tot wel 100 meter diep in de bodem geboord voor één woning. Door de buizen stroomt water dat de warmte uit de grond haalt. De warmtepomp gebruikt deze warmte om uw huis te verwarmen. In elke woning staat een bodem warmtepomp en een voorraadvat.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp/bodem-warmtepomp",
-      "beschrijving_url_title": "Bodem-warmtepomp | Duurzaam Wonen Amsterdam",
+      "beschrijving_url_title": "Bodem warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
       "subsystemen": [
         11,
@@ -45,7 +46,7 @@
     "fields": {
       "beschrijving": "Een bodem warmtepomp haalt warmte uit de grond onder de straat of tuin. Er worden lange buizen tot wel 100 meter diep in de bodem geboord voor het hele gebouw. Door de buizen stroomt water dat de warmte uit de grond haalt. De warmtepomp gebruikt deze warmte om uw huis te verwarmen. In elke woning staat een bodem warmtepomp en een voorraadvat.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp/bodem-warmtepomp",
-      "beschrijving_url_title": "Bodem-warmtepomp | Duurzaam Wonen Amsterdam",
+      "beschrijving_url_title": "Bodem warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
       "subsystemen": [
         12,
@@ -60,7 +61,7 @@
     "fields": {
       "beschrijving": "In de winter wordt het gebouw verwarmd met een bodem warmtepomp die warmte onttrekt aan het opgepompte grondwater. Dat koelt af en wordt weer teruggepompt in de bodem. In de zomer wordt dit afgekoelde water rondgepompt en gebruikt als passieve koeling. Het daardoor opgewarmde water wordt teruggebracht als de warme bron. De bron levert warmte voor het hele gebouw. Per woning is er een warmtepomp en voorraadvat nodig.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp/bodem-warmtepomp",
-      "beschrijving_url_title": "Bodem-warmtepomp | Duurzaam Wonen Amsterdam",
+      "beschrijving_url_title": "Bodem warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
       "subsystemen": [
         4,
@@ -102,7 +103,7 @@
     "fields": {
       "beschrijving": "Een buitenlucht warmtepomp haalt warmte uit de buitenlucht. Dit doet de warmtepomp met een grote ventilator. Dit noemen we de buitenunit. De warmtepomp haalt warmte uit de lucht en geeft deze af aan water. Dit water gebruikt u om uw huis te verwarmen of om warm water te maken, bijvoorbeeld om te douchen. Er is een centrale warmtepomp nodig en een warmtewisselaar met voorraadvat per woning.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp/buitenlucht-warmtepomp",
-      "beschrijving_url_title": "Buitenlucht-warmtepomp | Duurzaam Wonen Amsterdam",
+      "beschrijving_url_title": "Buitenlucht warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Collectieve Luchtwarmtepomp op Buitenlucht",
       "subsystemen": [
         23,
@@ -118,7 +119,7 @@
     "fields": {
       "beschrijving": "Een bodem warmtepomp haalt warmte uit de grond onder de straat of tuin. Er worden lange buizen tot wel 100 meter diep in de bodem geboord voor het hele gebouw. Door de buizen stroomt water dat de warmte uit de grond haalt. De warmtepomp gebruikt deze warmte om uw huis te verwarmen. In een centrale ruimte staat een bodem warmtepomp voor het hele gebouw en in elke woning een afleverset.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp/bodem-warmtepomp",
-      "beschrijving_url_title": "Bodem-warmtepomp | Duurzaam Wonen Amsterdam",
+      "beschrijving_url_title": "Bodem warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
       "subsystemen": [
         7,
@@ -135,7 +136,7 @@
     "fields": {
       "beschrijving": "In de winter wordt het gebouw verwarmd met een gedeelde bodem warmtepomp die warmte onttrekt aan het opgepompte grondwater. Dat koelt af en wordt weer teruggepompt in de bodem. In de zomer wordt dit afgekoelde water rondgepompt en gebruikt als passieve koeling. Het daardoor opgewarmde water wordt teruggebracht als de warme bron. De bron en de warmtepomp leveren warmte voor het hele gebouw. In de woningen is een afleverset nodig.",
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtepomp/bodem-warmtepomp",
-      "beschrijving_url_title": "Bodem-warmtepomp | Duurzaam Wonen Amsterdam",
+      "beschrijving_url_title": "Bodem warmtepomp | Duurzaam Wonen Amsterdam",
       "naam": "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
       "subsystemen": [
         18,
