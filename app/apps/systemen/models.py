@@ -66,6 +66,7 @@ class Hoofdsysteem(models.Model):
     beschrijving = models.TextField(blank=True, null=True)
     subsystemen = models.ManyToManyField("Subsysteem", related_name="hoofdsystemen")
     beschrijving_url = models.URLField(blank=True, null=True)
+    beschrijving_url_title = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = "Hoofdsysteem"

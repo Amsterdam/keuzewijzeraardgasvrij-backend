@@ -39,6 +39,8 @@ MultiCriteriaAnalyseSortKey: TypeAlias = tuple[bool, Decimal, str]
 class MultiCriteriaAnalyseRow(TypedDict):
     naam: str
     beschrijving: str
+    beschrijving_url: str
+    beschrijving_url_title: str
     tco: float
     score: float
     kosten_per_woning_per_jaar: float
@@ -1193,6 +1195,9 @@ class MultiCriteriaAnalyse:
                     "naam": hoofdsysteem.naam,
                     "beschrijving": str(hoofdsysteem.beschrijving or ""),
                     "beschrijving_url": str(hoofdsysteem.beschrijving_url or ""),
+                    "beschrijving_url_title": str(
+                        hoofdsysteem.beschrijving_url_title or ""
+                    ),
                     "tco": float(tco_midden),
                     "score": round(Decimal("0")),
                     "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
