@@ -180,8 +180,8 @@ class StadsverwarmingKengetalCalculationResult:
 
     kw_min: Decimal | None
     kw_max: Decimal | None
-    waarde_1: Decimal
-    waarde_2: Decimal
+    positieve_factor: Decimal
+    negatieve_factor: Decimal
 
     vermogen_cv_vve: Decimal
     vermogen_tap_vve: Decimal
@@ -593,11 +593,14 @@ class StadsverwarmingCalculator:
                     kw_max=kengetal.kw_max,
                 )
 
-                waarde_vast = self._get_waarde_vast(kengetal.eenheid, kengetal.waarde_1)
+                waarde_vast = self._get_waarde_vast(
+                    kengetal.eenheid,
+                    kengetal.positieve_factor,
+                )
                 waarde_geclassificeerd = self._get_waarde_geclassificeerd(
                     eenheid=kengetal.eenheid,
                     is_tussen_min_max=is_tussen_min_max,
-                    waarde_1=kengetal.waarde_1,
+                    positieve_factor=kengetal.positieve_factor,
                 )
                 waarde_variabel = self._get_waarde_variabel(
                     eenheid=kengetal.eenheid,
@@ -606,8 +609,8 @@ class StadsverwarmingCalculator:
                     is_boven_max=is_boven_max,
                     kw_min=kengetal.kw_min,
                     kw_max=kengetal.kw_max,
-                    waarde_1=kengetal.waarde_1,
-                    waarde_2=kengetal.waarde_2,
+                    positieve_factor=kengetal.positieve_factor,
+                    negatieve_factor=kengetal.negatieve_factor,
                 )
 
                 kosten_totaal = self._get_kosten_totaal(
@@ -645,8 +648,8 @@ class StadsverwarmingCalculator:
                     ),
                     kw_min=kengetal.kw_min,
                     kw_max=kengetal.kw_max,
-                    waarde_1=kengetal.waarde_1,
-                    waarde_2=kengetal.waarde_2,
+                    positieve_factor=kengetal.positieve_factor,
+                    negatieve_factor=kengetal.negatieve_factor,
                     vermogen_cv_vve=vermogens[EnergieType.CV],
                     vermogen_tap_vve=vermogens[EnergieType.TAP],
                     vermogen_koude_vve=vermogens[EnergieType.GKW],
@@ -750,17 +753,19 @@ class StadsverwarmingCalculator:
         is_tussen_min_max = min_val <= te_berekenen_vermogen < max_val
         return is_tussen_min_max, is_boven_max
 
-    def _get_waarde_vast(self, eenheid: str, waarde_1: Decimal) -> Decimal:
-        return waarde_1 if eenheid == StadsverwarmingEenheid.VAST else Decimal("0")
+    def _get_waarde_vast(self, eenheid: str, positieve_factor: Decimal) -> Decimal:
+        return (
+            positieve_factor if eenheid == StadsverwarmingEenheid.VAST else Decimal("0")
+        )
 
     def _get_waarde_geclassificeerd(
         self,
         eenheid: str,
         is_tussen_min_max: bool,
-        waarde_1: Decimal,
+        positieve_factor: Decimal,
     ) -> Decimal:
         if eenheid == StadsverwarmingEenheid.GECLASSIFICEERD and is_tussen_min_max:
-            return waarde_1
+            return positieve_factor
         return Decimal("0")
 
     def _get_waarde_variabel(
@@ -771,22 +776,24 @@ class StadsverwarmingCalculator:
         is_boven_max: bool,
         kw_min: Decimal | None,
         kw_max: Decimal | None,
-        waarde_1: Decimal,
-        waarde_2: Decimal,
+        positieve_factor: Decimal,
+        negatieve_factor: Decimal,
     ) -> Decimal:
         if eenheid != StadsverwarmingEenheid.VARIABEL or te_berekenen_vermogen is None:
             return Decimal("0")
 
-        if waarde_2 > 0 and is_tussen_min_max:
+        if negatieve_factor > 0 and is_tussen_min_max:
             return (te_berekenen_vermogen - kw_min) * (
-                waarde_1 - (waarde_2 * te_berekenen_vermogen)
+                positieve_factor - (negatieve_factor * te_berekenen_vermogen)
             )
-        if waarde_2 > 0 and is_boven_max and kw_max is not None:
-            return (kw_max - kw_min) * (waarde_1 - (waarde_2 * (kw_max - kw_min)))
-        if waarde_2 == 0 and is_tussen_min_max:
-            return (te_berekenen_vermogen - kw_min) * waarde_1
-        if waarde_2 == 0 and is_boven_max and kw_max is not None:
-            return (kw_max - kw_min) * waarde_1
+        if negatieve_factor > 0 and is_boven_max and kw_max is not None:
+            return (kw_max - kw_min) * (
+                positieve_factor - (negatieve_factor * (kw_max - kw_min))
+            )
+        if negatieve_factor == 0 and is_tussen_min_max:
+            return (te_berekenen_vermogen - kw_min) * positieve_factor
+        if negatieve_factor == 0 and is_boven_max and kw_max is not None:
+            return (kw_max - kw_min) * positieve_factor
 
         return Decimal("0")
 

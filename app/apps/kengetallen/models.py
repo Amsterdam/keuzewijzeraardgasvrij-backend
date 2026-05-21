@@ -383,8 +383,8 @@ class StadsverwarmingKengetal(models.Model):
         null=True,
     )
 
-    waarde_1 = models.DecimalField(max_digits=18, decimal_places=9)
-    waarde_2 = models.DecimalField(max_digits=18, decimal_places=9)
+    positieve_factor = models.DecimalField(max_digits=18, decimal_places=9)
+    negatieve_factor = models.DecimalField(max_digits=18, decimal_places=9)
 
     class Meta:
         verbose_name = "Stadsverwarming kengetal"
