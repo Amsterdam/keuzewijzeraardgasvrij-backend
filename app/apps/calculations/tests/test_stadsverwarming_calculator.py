@@ -127,7 +127,7 @@ class StadsverwarmingCalculatorTest(TestCase):
 
         expected_waarde_variabel = (
             te_berekenen_vermogen - kengetal.kw_min
-        ) * kengetal.waarde_1
+        ) * kengetal.positieve_factor
         self.assertEqual(match.waarde_variabel, expected_waarde_variabel)
 
         self.assertEqual(match.waarde_vast, Decimal("0"))
@@ -175,16 +175,16 @@ class StadsverwarmingCalculatorTest(TestCase):
         self.assertEqual(match.factor_collectief, Decimal("1"))
         self.assertEqual(match.factor_naar_jaar, Decimal("1"))
 
-        self.assertEqual(match.waarde_vast, kengetal.waarde_1)
+        self.assertEqual(match.waarde_vast, kengetal.positieve_factor)
         self.assertEqual(match.waarde_variabel, Decimal("0"))
         self.assertEqual(match.waarde_geclassificeerd, Decimal("0"))
 
-        self.assertEqual(match.stadsverwarming_kosten_totaal, kengetal.waarde_1)
+        self.assertEqual(match.stadsverwarming_kosten_totaal, kengetal.positieve_factor)
         self.assertEqual(
-            match.stadsverwarming_kosten_particulier_warmte, kengetal.waarde_1
+            match.stadsverwarming_kosten_particulier_warmte, kengetal.positieve_factor
         )
         self.assertEqual(
-            match.stadsverwarming_kosten_particulier_koude, kengetal.waarde_1
+            match.stadsverwarming_kosten_particulier_koude, kengetal.positieve_factor
         )
         self.assertEqual(match.stadsverwarming_kosten_zakelijk_warmte, Decimal("0"))
         self.assertEqual(
@@ -235,12 +235,13 @@ class StadsverwarmingCalculatorTest(TestCase):
 
         if expected_is_tussen_min_max:
             expected_waarde_variabel = expected_te_berekenen_vermogen * (
-                kengetal.waarde_1 - (kengetal.waarde_2 * expected_te_berekenen_vermogen)
+                kengetal.positieve_factor
+                - (kengetal.negatieve_factor * expected_te_berekenen_vermogen)
             )
         else:
             expected_waarde_variabel = (kengetal.kw_max - kengetal.kw_min) * (
-                kengetal.waarde_1
-                - (kengetal.waarde_2 * (kengetal.kw_max - kengetal.kw_min))
+                kengetal.positieve_factor
+                - (kengetal.negatieve_factor * (kengetal.kw_max - kengetal.kw_min))
             )
 
         self.assertEqual(match.waarde_variabel, expected_waarde_variabel)

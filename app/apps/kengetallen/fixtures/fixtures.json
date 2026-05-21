@@ -1504,8 +1504,8 @@
       "vermogen_berekenen_op": null,
       "kw_min": null,
       "kw_max": null,
-      "waarde_1": "582.82",
-      "waarde_2": "0"
+      "positieve_factor": "582.82",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1520,8 +1520,8 @@
       "vermogen_berekenen_op": null,
       "kw_min": null,
       "kw_max": null,
-      "waarde_1": "145.83",
-      "waarde_2": "0"
+      "positieve_factor": "145.83",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1536,8 +1536,8 @@
       "vermogen_berekenen_op": null,
       "kw_min": null,
       "kw_max": null,
-      "waarde_1": "31.44",
-      "waarde_2": "0"
+      "positieve_factor": "31.44",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1552,8 +1552,8 @@
       "vermogen_berekenen_op": null,
       "kw_min": null,
       "kw_max": null,
-      "waarde_1": "281.69",
-      "waarde_2": "0"
+      "positieve_factor": "281.69",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1568,8 +1568,8 @@
       "vermogen_berekenen_op": null,
       "kw_min": null,
       "kw_max": null,
-      "waarde_1": "5250",
-      "waarde_2": "0"
+      "positieve_factor": "5250",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1584,8 +1584,8 @@
       "vermogen_berekenen_op": null,
       "kw_min": null,
       "kw_max": null,
-      "waarde_1": "5781.86",
-      "waarde_2": "0"
+      "positieve_factor": "5781.86",
+      "negatieve_factor": "0"
     }
   },
 
@@ -1601,8 +1601,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "0",
       "kw_max": "999",
-      "waarde_1": "1.1816667",
-      "waarde_2": "0.0004083"
+      "positieve_factor": "1.1816667",
+      "negatieve_factor": "0.0004083"
     }
   },
   {
@@ -1617,8 +1617,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "999",
       "kw_max": null,
-      "waarde_1": "0.7725",
-      "waarde_2": "0"
+      "positieve_factor": "0.7725",
+      "negatieve_factor": "0"
     }
   },
 
@@ -1634,8 +1634,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "0",
       "kw_max": "50",
-      "waarde_1": "54.16",
-      "waarde_2": "0"
+      "positieve_factor": "54.16",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1650,8 +1650,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "50",
       "kw_max": "101",
-      "waarde_1": "60.4975",
-      "waarde_2": "0"
+      "positieve_factor": "60.4975",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1666,8 +1666,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "101",
       "kw_max": "149",
-      "waarde_1": "54.08",
-      "waarde_2": "0"
+      "positieve_factor": "54.08",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1682,8 +1682,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "149",
       "kw_max": "231",
-      "waarde_1": "73.88",
-      "waarde_2": "0"
+      "positieve_factor": "73.88",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1698,8 +1698,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "231",
       "kw_max": "371",
-      "waarde_1": "120.7",
-      "waarde_2": "0"
+      "positieve_factor": "120.7",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1714,8 +1714,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "371",
       "kw_max": "601",
-      "waarde_1": "240.22",
-      "waarde_2": "0"
+      "positieve_factor": "240.22",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1730,8 +1730,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "601",
       "kw_max": "924",
-      "waarde_1": "333.93",
-      "waarde_2": "0"
+      "positieve_factor": "333.93",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1746,8 +1746,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "924",
       "kw_max": "1478",
-      "waarde_1": "469.32",
-      "waarde_2": "0"
+      "positieve_factor": "469.32",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1762,8 +1762,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "1478",
       "kw_max": "2309",
-      "waarde_1": "697.17",
-      "waarde_2": "0"
+      "positieve_factor": "697.17",
+      "negatieve_factor": "0"
     }
   },
   {
@@ -1778,8 +1778,8 @@
       "vermogen_berekenen_op": "warmte",
       "kw_min": "2309",
       "kw_max": null,
-      "waarde_1": "999.15",
-      "waarde_2": "0"
+      "positieve_factor": "999.15",
+      "negatieve_factor": "0"
     }
   },
 
@@ -1795,8 +1795,8 @@
       "vermogen_berekenen_op": "koude",
       "kw_min": "0",
       "kw_max": null,
-      "waarde_1": "56.62",
-      "waarde_2": "0"
+      "positieve_factor": "56.62",
+      "negatieve_factor": "0"
     }
   },
 
