@@ -54,7 +54,6 @@ class DsoClient:
         return oppervlakte_totaal
 
     def _get_paginated_response(self, url: str) -> dict[str, Any]:
-        print(f"Fetching URL: {url}")
         req = Request(
             url,
             headers={
@@ -73,7 +72,6 @@ class DsoClient:
             and isinstance(data["_links"].get("next"), dict)
             and data["_links"]["next"].get("href")
         ):
-            print(f"Fetching next page: {data['_links']['next']['href']}")
             next_page = str(data["_links"]["next"]["href"])
             req = Request(
                 next_page,

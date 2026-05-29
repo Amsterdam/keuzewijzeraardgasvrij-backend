@@ -30,6 +30,11 @@
     "fields": {"naam": "jaren_tco", "waarde": "30"}
   },
   {
+    "model": "calculation_inputs.conversie",
+    "pk": 7,
+    "fields": {"naam": "bvo_factor", "waarde": "1.1"}
+  },
+  {
     "model": "calculation_inputs.energieprijs",
     "pk": 1,
     "fields": {"naam": "Elektriciteit", "prijs_eur_per_gj": "53.00"}

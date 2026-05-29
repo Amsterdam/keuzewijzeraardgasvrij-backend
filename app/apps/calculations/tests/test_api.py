@@ -1,5 +1,6 @@
 import math
 from decimal import Decimal
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.urls import reverse
@@ -8,6 +9,7 @@ from rest_framework.test import APIClient
 
 from apps.calculations.calculator import RedenenScoreMessages
 from apps.calculations.models import GebruikersInvoer
+from apps.calculations.pdok_client import PandData
 from apps.calculations.serializers import GebruikersInvoerCreateSerializer
 
 
@@ -175,6 +177,36 @@ class CalculationInputCreateApiTest(TestCase):
     def test_get_not_allowed(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    @patch("apps.calculations.views.DsoClient.get_bruto_vloeroppervlak")
+    @patch("apps.calculations.views.PdokClient.get_pand_info")
+    def test_retrieve_returns_bag_info(
+        self,
+        mock_get_pand_info,
+        mock_get_bruto_vloeroppervlak,
+    ):
+        bag_id = "0363010000828496"
+        detail_url = reverse("calculationinput-detail", args=[bag_id])
+        mock_get_pand_info.return_value = PandData(
+            aantal_woningen=24,
+            bouwjaar=1983,
+            identificatie="0363100012130718",
+        )
+        mock_get_bruto_vloeroppervlak.return_value = 106
+
+        response = self.client.get(detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
+        self.assertEqual(
+            response.data,
+            {
+                "bruto_vloeroppervlak": 117,
+                "aantal_woningen": 24,
+                "bouwjaar": 1983,
+            },
+        )
+        mock_get_pand_info.assert_called_once_with(bag_id=bag_id)
+        mock_get_bruto_vloeroppervlak.assert_called_once_with("0363100012130718")
 
     def test_invalid_bouwjaar_returns_400(self):
         payload = _valid_payload()
