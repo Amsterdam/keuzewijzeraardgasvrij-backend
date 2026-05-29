@@ -104,3 +104,9 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     kosten_per_woning_per_jaar_laag = serializers.IntegerField()
     kosten_per_woning_per_jaar_hoog = serializers.IntegerField()
     redenen_score = serializers.ListField(child=serializers.CharField())
+
+
+class GebruikersInvoerBagResponseSerializer(serializers.Serializer):
+    bruto_vloeroppervlak = serializers.IntegerField(allow_null=True)
+    aantal_woningen = serializers.IntegerField(allow_null=True)
+    bouwjaar = serializers.IntegerField(allow_null=True)
