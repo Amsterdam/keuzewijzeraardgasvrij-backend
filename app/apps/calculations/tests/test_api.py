@@ -11,6 +11,7 @@ from apps.calculations.calculator import RedenenScoreMessages
 from apps.calculations.models import GebruikersInvoer
 from apps.calculations.pdok_client import PandData
 from apps.calculations.serializers import GebruikersInvoerCreateSerializer
+from apps.kengetallen.models import GasverbruikGegeven
 
 
 def _valid_payload():
@@ -187,10 +188,16 @@ class CalculationInputCreateApiTest(TestCase):
     ):
         bag_id = "0363010000828496"
         detail_url = reverse("calculationinput-detail", args=[bag_id])
+        GasverbruikGegeven.objects.create(
+            postcode_start="1234AA",
+            postcode_eind="1234ZZ",
+            gemiddeld_verbruik=Decimal("100"),
+        )
         mock_get_pand_info.return_value = PandData(
             aantal_woningen=24,
             bouwjaar=1983,
             identificatie="0363100012130718",
+            postcode="1234AB",
         )
         mock_get_bruto_vloeroppervlak.return_value = 106
 
@@ -203,6 +210,7 @@ class CalculationInputCreateApiTest(TestCase):
                 "bruto_vloeroppervlak": 117,
                 "aantal_woningen": 24,
                 "bouwjaar": 1983,
+                "gasverbruik_vve_totaal": 2400,
             },
         )
         mock_get_pand_info.assert_called_once_with(bag_id=bag_id)

@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from apps.calculations.calculator import EnergieCalculator, MultiCriteriaAnalyse
+from apps.kengetallen.models import GasverbruikGegeven
 from drf_spectacular.utils import extend_schema
 from .models import Conversie, GebruikersInvoer
 from .pdok_client import PdokClient
@@ -67,11 +68,21 @@ class GebruikersInvoerCreateView(viewsets.GenericViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        gasverbruik_per_woning = GasverbruikGegeven.gemiddeld_verbruik_voor_postcode(
+            pand_info.postcode or ""
+        )
+        gasverbruik_vve_totaal = None
+        if gasverbruik_per_woning is not None and pand_info.aantal_woningen is not None:
+            gasverbruik_vve_totaal = round(
+                gasverbruik_per_woning * pand_info.aantal_woningen
+            )
+
         response_serializer = GebruikersInvoerBagResponseSerializer(
             data={
                 "bruto_vloeroppervlak": bruto_vloeroppervlak or None,
                 "aantal_woningen": pand_info.aantal_woningen or None,
                 "bouwjaar": pand_info.bouwjaar or None,
+                "gasverbruik_vve_totaal": gasverbruik_vve_totaal,
             }
         )
         response_serializer.is_valid(raise_exception=True)

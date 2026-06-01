@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from decimal import Decimal
 
 from django.db import models
+from django.db.models.functions import Replace, Upper
 
 
 class ScenarioKeuze(models.TextChoices):
@@ -399,3 +401,51 @@ class StadsverwarmingKengetal(models.Model):
         if self.kw_min is not None or self.kw_max is not None:
             kw_range = f" ({self.kw_min or 0}–{self.kw_max or '∞'} kW)"
         return f"{self.klanttype}/{self.producttype} - {self.kostetype}{kw_range}"
+
+
+class GasverbruikGegeven(models.Model):
+    postcode_start = models.CharField(max_length=7)
+    postcode_eind = models.CharField(max_length=7)
+    gemiddeld_verbruik = models.DecimalField(max_digits=18, decimal_places=9)
+
+    @classmethod
+    def gemiddeld_verbruik_voor_postcode(cls, postcode: str) -> Decimal | None:
+        normalized_postcode = postcode.upper().replace(" ", "")
+        if not normalized_postcode:
+            return None
+
+        return (
+            cls.objects.annotate(
+                postcode_start_normalized=Replace(
+                    Upper("postcode_start"), models.Value(" "), models.Value("")
+                ),
+                postcode_eind_normalized=Replace(
+                    Upper("postcode_eind"), models.Value(" "), models.Value("")
+                ),
+            )
+            .filter(
+                postcode_start_normalized__lte=normalized_postcode,
+                postcode_eind_normalized__gte=normalized_postcode,
+            )
+            .order_by("postcode_start", "postcode_eind")
+            .values_list("gemiddeld_verbruik", flat=True)
+            .first()
+        )
+
+    class Meta:
+        verbose_name = "Gasverbruikgegeven"
+        verbose_name_plural = "Gasverbruikgegevens"
+        ordering = ["postcode_start", "postcode_eind"]
+        indexes = [
+            models.Index(fields=["postcode_start"]),
+            models.Index(fields=["postcode_eind"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["postcode_start", "postcode_eind"],
+                name="uniek_postcode_start_postcode_eind_gasverbruik",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.postcode_start}–{self.postcode_eind}: {self.gemiddeld_verbruik}"
