@@ -37,20 +37,13 @@ Run the following command to either create the user, or make the existing one a 
 sh bin/setup_superuser.sh <email>
 ```
 
-### Using local development authentication
-To run the project with local Django authentication instead of OpenID Connect (OIDC), create a `.env.local` file with:
-
-```bash
-LOCAL_DEVELOPMENT_AUTHENTICATION=False
-```
-
 ### Django admin
 
-Visit the Admin at http://localhost:8081/admin/
+Visit the Admin at http://localhost:8082/admin/
 
 ## Swagger
 
-http://localhost:8081/api/schema/swagger/
+http://localhost:8082/api/schema/swagger/
 
 ## Django DB migrations
 
@@ -104,6 +97,28 @@ bash bin/install_pre_commit.sh
 
 Containers should be running to run tests via docker.
 ```bash
-docker compose -f docker-compose.local.yml -f docker-compose.override.yml up -d
+docker compose -f docker-compose.local.yml up -d
 docker compose exec -T keuzewijzeraardgasvrij-backend python manage.py test /app/apps
+```
+
+## Importing gas usage CSV
+
+Source of the data: https://www.liander.nl/over-ons/open-data#verbruiksdata-kleinverbruikaansluitingen
+
+Copy the CSV into the backend container:
+
+```bash
+docker cp LOCATION/verbruikgegevens.csv keuzewijzeraardgasvrij-backend-keuzewijzeraardgasvrij-backend-1:/app
+```
+
+Run a dry run first to validate and see how many rows would be created or updated:
+
+```bash
+docker compose exec keuzewijzeraardgasvrij-backend python manage.py import_gasverbruikgegevens /app/verbruikgegevens.csv
+```
+
+Run the actual import:
+
+```bash
+docker compose exec keuzewijzeraardgasvrij-backend python manage.py import_gasverbruikgegevens /app/verbruikgegevens.csv --no-dry-run
 ```

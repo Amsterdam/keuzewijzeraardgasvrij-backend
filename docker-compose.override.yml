@@ -1,5 +1,0 @@
-services:
-
-  keuzewijzeraardgasvrij-backend:
-    environment:
-      - LOCAL_DEVELOPMENT_AUTHENTICATION=True

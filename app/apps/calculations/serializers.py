@@ -110,3 +110,4 @@ class GebruikersInvoerBagResponseSerializer(serializers.Serializer):
     bruto_vloeroppervlak = serializers.IntegerField(allow_null=True)
     aantal_woningen = serializers.IntegerField(allow_null=True)
     bouwjaar = serializers.IntegerField(allow_null=True)
+    gasverbruik_vve_totaal = serializers.IntegerField(allow_null=True)

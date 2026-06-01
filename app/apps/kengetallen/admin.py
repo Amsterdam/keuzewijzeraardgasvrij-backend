@@ -9,6 +9,7 @@ from .models import (
     CollectieveRuimteBuiten,
     CollectieveWarmtepompKengetal,
     EliminatieKengetal,
+    GasverbruikGegeven,
     GelijktijdigheidCV,
     Hoofdkengetal,
     McdaHoofdcriterium,
@@ -52,6 +53,11 @@ class AlgemeenKengetalAdmin(admin.ModelAdmin):
 @admin.register(GelijktijdigheidCV)
 class GelijktijdigheidCVAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(GelijktijdigheidCV)
+
+
+@admin.register(GasverbruikGegeven)
+class GasverbruikGegevenAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(GasverbruikGegeven)
 
 
 @admin.register(CollectieveWarmtepompKengetal)

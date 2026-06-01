@@ -16,6 +16,7 @@ class PandData:
     aantal_woningen: int | None
     bouwjaar: int | None
     identificatie: str | None
+    postcode: str | None = None
 
 
 class PdokClient:
@@ -29,7 +30,7 @@ class PdokClient:
         self._timeout_seconds = float(timeout_seconds)
 
     def get_pand_info(self, *, bag_id: str) -> PandData:
-        pand_url = self._get_pand_url(identificatie=bag_id)
+        pand_url, postcode = self._get_pand_url_postcode(identificatie=bag_id)
 
         identificatie, aantal_woningen, bouwjaar = self._get_pand_woningen_en_bouwjaar(
             pand_url=pand_url
@@ -39,12 +40,15 @@ class PdokClient:
             aantal_woningen=aantal_woningen,
             bouwjaar=bouwjaar,
             identificatie=identificatie,
+            postcode=postcode,
         )
 
-    def _get_pand_url(self, *, identificatie: str) -> str | None:
+    def _get_pand_url_postcode(
+        self, *, identificatie: str
+    ) -> tuple[str | None, str | None]:
         identificatie = (identificatie or "").strip()
         if not identificatie:
-            return None
+            return None, None
 
         crs84 = "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
         params = {
@@ -62,16 +66,17 @@ class PdokClient:
 
         woning_data = self._get_json(url=url).get("features")
         if not isinstance(woning_data, list) or not woning_data:
-            return None
+            return None, None
 
         feature = woning_data[0]
         properties = feature.get("properties")
 
         if not properties:
-            return None
+            return None, None
         pand_url = properties.get("pand")[0] if properties.get("pand") else None
+        postcode = properties.get("postcode")
 
-        return pand_url
+        return pand_url, None if postcode is None else str(postcode)
 
     def _get_pand_woningen_en_bouwjaar(
         self, *, pand_url: str
