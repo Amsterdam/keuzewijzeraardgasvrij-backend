@@ -97,7 +97,7 @@ bash bin/install_pre_commit.sh
 
 Containers should be running to run tests via docker.
 ```bash
-docker compose -f docker-compose.local.yml -f docker-compose.override.yml up -d
+docker compose -f docker-compose.local.yml up -d
 docker compose exec -T keuzewijzeraardgasvrij-backend python manage.py test /app/apps
 ```
 
