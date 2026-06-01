@@ -27,7 +27,9 @@ admin.site.site_title = "Keuzewijzer Aardgasvrij - Administration"
 admin.site.index_title = "Keuzewijzer Aardgasvrij - keuzewijzeraardgasvrij"
 
 router.register(
-    r"calculation-inputs", GebruikersInvoerCreateView, basename="calculationinput"
+    r"calculation-inputs",
+    GebruikersInvoerCreateView,
+    basename="calculationinput",
 )
 
 urlpatterns = [
@@ -36,6 +38,11 @@ urlpatterns = [
     path("oidc/", include("mozilla_django_oidc.urls")),
     path("admin/login/", admin_redirect),
     path("admin/", admin.site.urls),
+    path(
+        "api/v1/calculation-inputs/prefill/<str:bagId>/",
+        GebruikersInvoerCreateView.as_view({"get": "prefill"}),
+        name="calculationinput-prefill",
+    ),
     path("api/v1/", include(router.urls)),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(

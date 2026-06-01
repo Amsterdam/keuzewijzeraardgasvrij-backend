@@ -5,7 +5,7 @@ services:
     hostname: keuzewijzeraardgasvrij-backend
     image: ${REGISTRY:-127.0.0.1:5001}/${REPOSITORY:-salmagundi/keuzewijzeraardgasvrij-backend}:${VERSION:-latest}
     ports:
-      - 8081:8000
+      - 8082:8000
     networks:
       - keuzewijzeraardgasvrij_network
     command: bash -c "/app/deploy/docker-entrypoint.sh && exec python -m manage runserver 0.0.0.0:8000"

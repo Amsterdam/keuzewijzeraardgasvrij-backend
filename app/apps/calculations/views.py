@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from apps.calculations.calculator import EnergieCalculator, MultiCriteriaAnalyse
 from apps.kengetallen.models import GasverbruikGegeven
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from .models import Conversie, GebruikersInvoer
 from .pdok_client import PdokClient
 from .dso_client import DsoClient
@@ -50,19 +50,28 @@ class GebruikersInvoerCreateView(viewsets.GenericViewSet):
         responses={
             200: GebruikersInvoerBagResponseSerializer,
         },
+        parameters=[
+            OpenApiParameter(
+                name="bagId",
+                description="adresseerbaarobject_id van het adres",
+                required=True,
+                type=str,
+                location=OpenApiParameter.PATH,
+            )
+        ],
     )
-    def retrieve(self, _, pk: str | None = None):
+    def prefill(self, _, bagId: str | None = None):
         pdok_client = PdokClient()
         dso_client = DsoClient()
         try:
-            pand_info = pdok_client.get_pand_info(bag_id=pk)
+            pand_info = pdok_client.get_pand_info(bag_id=bagId)
             bruto_vloeroppervlak = dso_client.get_bruto_vloeroppervlak(
                 pand_info.identificatie
             )
             bvo_factor = Conversie.objects.get(naam="bvo_factor").waarde
             bruto_vloeroppervlak = round(bruto_vloeroppervlak * bvo_factor)
         except Exception as exc:
-            logger.error("Error fetching BAG info for BAG_ID %s: %s", pk, exc)
+            logger.error("Error fetching BAG info for BAG_ID %s: %s", bagId, exc)
             return Response(
                 {"detail": f"Error fetching BAG info"},
                 status=status.HTTP_400_BAD_REQUEST,

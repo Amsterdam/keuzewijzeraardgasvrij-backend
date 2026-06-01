@@ -187,7 +187,7 @@ class CalculationInputCreateApiTest(TestCase):
         mock_get_bruto_vloeroppervlak,
     ):
         bag_id = "0363010000828496"
-        detail_url = reverse("calculationinput-detail", args=[bag_id])
+        detail_url = reverse("calculationinput-prefill", args=[bag_id])
         GasverbruikGegeven.objects.create(
             postcode_start="1234AA",
             postcode_eind="1234ZZ",

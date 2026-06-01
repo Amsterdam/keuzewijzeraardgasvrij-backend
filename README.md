@@ -37,20 +37,13 @@ Run the following command to either create the user, or make the existing one a 
 sh bin/setup_superuser.sh <email>
 ```
 
-### Using local development authentication
-To run the project with local Django authentication instead of OpenID Connect (OIDC), create a `.env.local` file with:
-
-```bash
-LOCAL_DEVELOPMENT_AUTHENTICATION=False
-```
-
 ### Django admin
 
-Visit the Admin at http://localhost:8081/admin/
+Visit the Admin at http://localhost:8082/admin/
 
 ## Swagger
 
-http://localhost:8081/api/schema/swagger/
+http://localhost:8082/api/schema/swagger/
 
 ## Django DB migrations
 
