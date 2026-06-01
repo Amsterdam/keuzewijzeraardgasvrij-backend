@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Any
 
 from django.core.management.base import BaseCommand, CommandError
-from django.db import transaction
 
 from apps.kengetallen.models import GasverbruikGegeven
 
@@ -27,9 +26,16 @@ class Command(BaseCommand):
             type=str,
             help="Pad naar CSV met POSTCODE, POSTCODE_EIND, PRODUCTSOORT, SJA GEMIDDELD.",
         )
+        parser.add_argument(
+            "--no-dry-run",
+            action="store_true",
+            help="Schrijf de import echt weg. Zonder deze vlag wordt alles teruggedraaid.",
+            default=False,
+        )
 
     def handle(self, *args: Any, **options: Any) -> None:
         csv_path = Path(options["csv_path"])
+        no_dry_run = options["no_dry_run"]
         if not csv_path.exists():
             raise CommandError(f"Bestand niet gevonden: {csv_path}")
         if not csv_path.is_file():
@@ -62,56 +68,59 @@ class Command(BaseCommand):
 
         total_rows = gas_rows = created = updated = 0
 
-        with transaction.atomic():
-            for row_index, row in enumerate(reader, start=2):
-                total_rows += 1
+        for row_index, row in enumerate(reader, start=2):
+            total_rows += 1
 
-                normalized_row: dict[str, str] = {}
-                for key, value in row.items():
-                    if key is None:
-                        continue
-                    normalized_row[header_map[key]] = (value or "").strip()
-
-                productsoort = normalized_row.get("PRODUCTSOORT", "").strip().upper()
-                if productsoort != "GAS":
+            normalized_row: dict[str, str] = {}
+            for key, value in row.items():
+                if key is None:
                     continue
+                normalized_row[header_map[key]] = (value or "").strip()
 
-                gas_rows += 1
+            productsoort = normalized_row.get("PRODUCTSOORT", "").strip().upper()
+            if productsoort != "GAS":
+                continue
 
-                postcode_start = normalized_row.get("POSTCODE", "").strip().upper()
-                postcode_eind = normalized_row.get("POSTCODE_EIND", "").strip().upper()
-                if not postcode_start or not postcode_eind:
-                    raise CommandError(
-                        f"Lege POSTCODE/POSTCODE_EIND op regel {row_index}."
-                    )
+            gas_rows += 1
 
-                gemiddeld_raw = normalized_row.get("SJA GEMIDDELD", "")
-                raw = gemiddeld_raw.replace("\u00a0", " ").strip().replace(" ", "")
-                if raw == "":
-                    raise CommandError(f"Lege 'SJA GEMIDDELD' op regel {row_index}.")
-                if "," in raw:
-                    raw = raw.replace(".", "").replace(",", ".")
+            postcode_start = normalized_row.get("POSTCODE", "").strip().upper()
+            postcode_eind = normalized_row.get("POSTCODE_EIND", "").strip().upper()
+            if not postcode_start or not postcode_eind:
+                raise CommandError(f"Lege POSTCODE/POSTCODE_EIND op regel {row_index}.")
 
-                try:
-                    gemiddeld_verbruik = Decimal(raw)
-                except (InvalidOperation, ValueError) as exc:
-                    raise CommandError(
-                        f"Ongeldige 'SJA GEMIDDELD' op regel {row_index}: {gemiddeld_raw!r}"
-                    ) from exc
+            gemiddeld_raw = normalized_row.get("SJA GEMIDDELD", "")
+            raw = gemiddeld_raw.replace("\u00a0", " ").strip().replace(" ", "")
+            if raw == "":
+                raise CommandError(f"Lege 'SJA GEMIDDELD' op regel {row_index}.")
+            if "," in raw:
+                raw = raw.replace(".", "").replace(",", ".")
 
-                _, was_created = GasverbruikGegeven.objects.update_or_create(
+            try:
+                gemiddeld_verbruik = Decimal(raw)
+            except (InvalidOperation, ValueError) as exc:
+                raise CommandError(
+                    f"Ongeldige 'SJA GEMIDDELD' op regel {row_index}: {gemiddeld_raw!r}"
+                ) from exc
+
+            existing = GasverbruikGegeven.objects.filter(
+                postcode_start=postcode_start,
+                postcode_eind=postcode_eind,
+            ).first()
+            if existing is None:
+                created += 1
+            else:
+                updated += 1
+
+            if no_dry_run:
+                GasverbruikGegeven.objects.update_or_create(
                     postcode_start=postcode_start,
                     postcode_eind=postcode_eind,
                     defaults={"gemiddeld_verbruik": gemiddeld_verbruik},
                 )
-                if was_created:
-                    created += 1
-                else:
-                    updated += 1
 
         self.stdout.write(
             self.style.SUCCESS(
-                "Import afgerond. "
+                f"{'Dry run afgerond' if not no_dry_run else 'Import afgerond'}. "
                 f"Totaal rijen: {total_rows}, "
                 f"GAS rijen: {gas_rows}, "
                 f"aangemaakt: {created}, "

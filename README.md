@@ -107,3 +107,25 @@ Containers should be running to run tests via docker.
 docker compose -f docker-compose.local.yml -f docker-compose.override.yml up -d
 docker compose exec -T keuzewijzeraardgasvrij-backend python manage.py test /app/apps
 ```
+
+## Importing gas usage CSV
+
+Source of the data: https://www.liander.nl/over-ons/open-data#verbruiksdata-kleinverbruikaansluitingen
+
+Copy the CSV into the backend container:
+
+```bash
+docker cp LOCATION/verbruikgegevens.csv keuzewijzeraardgasvrij-backend-keuzewijzeraardgasvrij-backend-1:/app
+```
+
+Run a dry run first to validate and see how many rows would be created or updated:
+
+```bash
+docker compose exec keuzewijzeraardgasvrij-backend python manage.py import_gasverbruikgegevens /app/verbruikgegevens.csv
+```
+
+Run the actual import:
+
+```bash
+docker compose exec keuzewijzeraardgasvrij-backend python manage.py import_gasverbruikgegevens /app/verbruikgegevens.csv --no-dry-run
+```
