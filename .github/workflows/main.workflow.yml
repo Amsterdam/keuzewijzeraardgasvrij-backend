@@ -27,7 +27,7 @@ jobs:
     - name: Create Docker network
       run: docker network create keuzewijzeraardgasvrij_network
     - name: Start images
-      run: docker compose -f docker-compose.local.yml -d
+      run: docker compose -f docker-compose.local.yml up -d
     - name: Run Tests
       run: docker compose exec -T keuzewijzeraardgasvrij-backend python manage.py test -v 2
 
