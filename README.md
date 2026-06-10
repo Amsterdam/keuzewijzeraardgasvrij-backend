@@ -122,3 +122,22 @@ Run the actual import:
 ```bash
 docker compose exec keuzewijzeraardgasvrij-backend python manage.py import_gasverbruikgegevens /app/verbruikgegevens.csv --no-dry-run
 ```
+
+## Importing buurtcode warmteprogramma CSV
+
+The CSV must contain the columns `buurt_code` and `toelichting`.
+`toelichting` is matched against `Warmteprogramma.categorie`. Rows with an unknown category are skipped.
+
+Copy the CSV into the backend container:
+
+```bash
+docker cp LOCATION/buurtcodewarmteprogramma.csv keuzewijzeraardgasvrij-backend-keuzewijzeraardgasvrij-backend-1:/app
+```
+
+Run the import:
+
+```bash
+docker compose exec keuzewijzeraardgasvrij-backend python manage.py import_buurtcodewarmteprogramma /app/buurtcodewarmteprogramma.csv
+```
+
+This command deletes all existing `BuurtcodeWarmteprogramma` records and imports the new file in a single transaction.

@@ -6,6 +6,7 @@ from django.test import TestCase
 
 from apps.calculations.calculator import WarmtenetCalculator
 from apps.calculations.models import GebruikersInvoer
+from apps.kengetallen.models import BuurtcodeWarmteprogramma, Warmteprogramma
 
 
 def _calculation_input(**overrides: object) -> GebruikersInvoer:
@@ -29,7 +30,17 @@ def _calculation_input(**overrides: object) -> GebruikersInvoer:
 
 
 class WarmtenetCalculatorTest(TestCase):
-    fixtures = ["fixtures"]
+    @classmethod
+    def setUpTestData(cls) -> None:
+        warmteprogramma = Warmteprogramma.objects.create(
+            categorie="Warmtenetbuurt: gefaseerd starten vanaf 2030",
+            warmtenet_start=2030,
+            warmtenet_stop=2040,
+        )
+        BuurtcodeWarmteprogramma.objects.create(
+            buurtcode="BU03636910",
+            warmteprogramma=warmteprogramma,
+        )
 
     def test_returns_defaults_without_buurtcode(self):
         calc_input = _calculation_input(buurtcode=None)

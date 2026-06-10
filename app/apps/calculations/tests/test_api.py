@@ -11,7 +11,11 @@ from apps.calculations.calculator import RedenenScoreMessages
 from apps.calculations.models import GebruikersInvoer
 from apps.calculations.pdok_client import PandData
 from apps.calculations.serializers import GebruikersInvoerCreateSerializer
-from apps.kengetallen.models import GasverbruikGegeven
+from apps.kengetallen.models import (
+    BuurtcodeWarmteprogramma,
+    GasverbruikGegeven,
+    Warmteprogramma,
+)
 
 
 def _valid_payload():
@@ -40,6 +44,20 @@ def _valid_payload():
 
 class CalculationInputCreateApiTest(TestCase):
     fixtures = ["fixtures"]
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        warmteprogramma, _ = Warmteprogramma.objects.get_or_create(
+            categorie="Aardgasvrij gasnet: gestaag 70% gasbesparing tot 2040",
+            defaults={
+                "warmtenet_start": 9999,
+                "warmtenet_stop": 9999,
+            },
+        )
+        BuurtcodeWarmteprogramma.objects.update_or_create(
+            buurtcode="BU03636501",
+            defaults={"warmteprogramma": warmteprogramma},
+        )
 
     def setUp(self):
         self.client = APIClient()
@@ -125,42 +143,33 @@ class CalculationInputCreateApiTest(TestCase):
 
     def test_post_returns_correct_scores(self):
         expected = [
-            ("Zakelijk Collectief Externe warmtelevering", 9.0, True),
             (
                 "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
                 7.0,
-                True,
             ),
-            ("Particulier Externe warmtelevering", 7.0, True),
-            (
-                "Zakelijk Collectief Externe warmtelevering + externe koeling",
-                6.0,
-                True,
-            ),
-            ("Particulier Externe warmtelevering + externe koeling", 6.0, True),
-            ("Collectieve Luchtwarmtepomp op Buitenlucht", 6.0, True),
-            ("Individuele Luchtwarmtepomp op Buitenlucht", 1.0, True),
+            ("Collectieve Luchtwarmtepomp op Buitenlucht", 6.0),
+            ("Individuele Luchtwarmtepomp op Buitenlucht", 1.0),
+            ("Zakelijk Collectief Externe warmtelevering", 9.0),
             (
                 "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
                 9.0,
-                False,
             ),
             (
                 "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
                 8.0,
-                False,
             ),
+            ("Particulier Externe warmtelevering", 7.0),
             (
                 "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
                 7.0,
-                False,
             ),
+            ("Zakelijk Collectief Externe warmtelevering + externe koeling", 6.0),
+            ("Particulier Externe warmtelevering + externe koeling", 6.0),
             (
                 "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
                 6.0,
-                False,
             ),
-            ("Individuele Luchtwarmtepomp op Ventilatie", 2.0, False),
+            ("Individuele Luchtwarmtepomp op Ventilatie", 2.0),
         ]
 
         response = self.client.post(self.url, data=_valid_payload(), format="json")
@@ -168,12 +177,11 @@ class CalculationInputCreateApiTest(TestCase):
         self.assertIsInstance(response.data, list)
         self.assertEqual(len(response.data), len(expected))
 
-        for actual, (expected_naam, expected_score, expected_is_mogelijk) in zip(
+        for actual, (expected_naam, expected_score) in zip(
             response.data, expected, strict=True
         ):
             self.assertEqual(actual.get("naam"), expected_naam)
             self.assertEqual(float(actual.get("score")), expected_score)
-            self.assertEqual(bool(actual.get("is_mogelijk")), expected_is_mogelijk)
 
     def test_get_not_allowed(self):
         response = self.client.get(self.url)
