@@ -4,7 +4,10 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("calculation_inputs", "0013_remove_gebruikersinvoer_elektriciteitsverbruik_per_woning_and_more"),
+        (
+            "calculation_inputs",
+            "0013_remove_gebruikersinvoer_elektriciteitsverbruik_per_woning_and_more",
+        ),
     ]
 
     operations = [
