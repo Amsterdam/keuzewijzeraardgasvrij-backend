@@ -9,6 +9,7 @@ class HuidigSysteemChoices(models.TextChoices):
 
 
 class GebruikersInvoer(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     bouwjaar = models.PositiveIntegerField()
     bruto_vloeroppervlak = models.DecimalField(max_digits=18, decimal_places=9)
     aantal_woningen = models.PositiveIntegerField()

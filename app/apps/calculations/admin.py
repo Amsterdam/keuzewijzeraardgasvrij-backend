@@ -24,6 +24,7 @@ def get_all_field_names(model):
 @admin.register(GebruikersInvoer)
 class GebruikersInvoerAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(GebruikersInvoer)
+    list_filter = ["created_at"]
 
     def get_urls(self):
         urls = super().get_urls()
