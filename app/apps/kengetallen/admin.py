@@ -221,6 +221,7 @@ class McdaSubcriteriumAdmin(admin.ModelAdmin):
 @admin.register(Warmteprogramma)
 class WarmteprogrammaAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(Warmteprogramma)
+    filter_horizontal = ("hoofdsystemen",)
 
 
 @admin.register(BuurtcodeWarmteprogramma)

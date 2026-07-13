@@ -51,8 +51,8 @@ class WarmtenetCalculatorTest(TestCase):
         self.assertIsNone(result.warmtenet_stop)
         self.assertFalse(result.warmtenet_mogelijk)
 
-    def test_warmtenet_mogelijk_true_if_jaar_vervangen_ge_stop(self):
-        calc_input = _calculation_input(buurtcode="BU03636910", jaar_vervangen=2040)
+    def test_warmtenet_mogelijk_true_if_jaar_vervangen_ge_start(self):
+        calc_input = _calculation_input(buurtcode="BU03636910", jaar_vervangen=2030)
         result = WarmtenetCalculator().calculate(calc_input)
 
         self.assertEqual(
@@ -63,9 +63,10 @@ class WarmtenetCalculatorTest(TestCase):
         self.assertEqual(result.warmtenet_stop, 2040)
         self.assertTrue(result.warmtenet_mogelijk)
 
-    def test_warmtenet_mogelijk_false_if_jaar_vervangen_lt_stop(self):
-        calc_input = _calculation_input(buurtcode="BU03636910", jaar_vervangen=2039)
+    def test_warmtenet_mogelijk_false_if_jaar_vervangen_lt_start(self):
+        calc_input = _calculation_input(buurtcode="BU03636910", jaar_vervangen=2029)
         result = WarmtenetCalculator().calculate(calc_input)
 
+        self.assertEqual(result.warmtenet_start, 2030)
         self.assertEqual(result.warmtenet_stop, 2040)
         self.assertFalse(result.warmtenet_mogelijk)

@@ -23,6 +23,7 @@ from apps.kengetallen.models import (
     StadsverwarmingVermogenBerekenenOp,
     McdaHoofdcriterium,
     McdaSubcriterium,
+    Warmteprogramma,
 )
 
 if TYPE_CHECKING:
@@ -41,6 +42,8 @@ class MultiCriteriaAnalyseRow(TypedDict):
     beschrijving: str
     beschrijving_url: str
     beschrijving_url_title: str
+    warmteprogramma_tekst: str
+    omgevingsvergunning: str
     tco: float
     score: float
     kosten_per_woning_per_jaar: float
@@ -90,6 +93,12 @@ class MetricLists:
     collectieve_ruimte_buiten_benodigd: list[Decimal]
     huidig_systeem: list[Decimal]
     vloerverwarming: list[Decimal]
+
+
+@dataclass(frozen=True, slots=True)
+class WarmteprogrammaMatchContext:
+    categorie: str
+    passende_hoofdsysteem_namen: frozenset[str]
 
 
 class RedenenScoreMessages:
@@ -889,11 +898,11 @@ class WarmtenetCalculator:
 
         wp = mapping.warmteprogramma
         jaar_vervangen = calculation_input.jaar_vervangen
-        warmtenet_stop = wp.warmtenet_stop
+        warmtenet_start = wp.warmtenet_start
         warmtenet_mogelijk = bool(
             jaar_vervangen is not None
-            and warmtenet_stop is not None
-            and jaar_vervangen >= warmtenet_stop
+            and warmtenet_start is not None
+            and jaar_vervangen >= warmtenet_start
         )
         return WarmtenetCalculatorResult(
             categorie="" if wp.categorie is None else str(wp.categorie),
@@ -1033,12 +1042,16 @@ class MultiCriteriaAnalyse:
         hoofdsystemen_list = list(hoofdsystemen)
         eliminatie = Eliminatie()
         weights = self._get_weights()
+        omgevingsvergunning_drempel_kw = Conversie.objects.get(
+            naam="omgevingsvergunning_drempel_kw"
+        ).waarde
 
         systeem_calculation_results = self._run_systeem_calculations(
             hoofdsystemen_list=hoofdsystemen_list,
             calculation_input=calculation_input,
             energie_calculation=energie_calculation,
             eliminatie=eliminatie,
+            omgevingsvergunning_drempel_kw=omgevingsvergunning_drempel_kw,
         )
         metric_lists = self._append_systeem_metrics(
             hoofdsystemen_list=hoofdsystemen_list,
@@ -1156,9 +1169,13 @@ class MultiCriteriaAnalyse:
         calculation_input: GebruikersInvoer,
         energie_calculation: EnergieCalculatorFullResult,
         eliminatie: Eliminatie,
+        omgevingsvergunning_drempel_kw: Decimal,
     ) -> PreparedRowsAndMetrics:
         rows: list[MultiCriteriaAnalyseRow] = []
         metrics_by_hoofdsysteem_naam: dict[str, Metrics] = {}
+        warmteprogramma_context = self._get_warmteprogramma_match_context(
+            calculation_input
+        )
 
         for hoofdsysteem in hoofdsystemen_list:
             full = hoofdsysteem.calculate(energie_calculation=energie_calculation)
@@ -1205,6 +1222,16 @@ class MultiCriteriaAnalyse:
                     "beschrijving_url_title": str(
                         hoofdsysteem.beschrijving_url_title or ""
                     ),
+                    "warmteprogramma_tekst": self._build_warmteprogramma_tekst(
+                        warmteprogramma_context=warmteprogramma_context,
+                        hoofdsysteem=hoofdsysteem,
+                    ),
+                    "omgevingsvergunning": self._build_omgevingsvergunning_text(
+                        hoofdsysteem=hoofdsysteem,
+                        energie_calculation=energie_calculation,
+                        calculation_input=calculation_input,
+                        omgevingsvergunning_drempel_kw=omgevingsvergunning_drempel_kw,
+                    ),
                     "tco": float(tco_midden),
                     "score": round(Decimal("0")),
                     "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
@@ -1226,6 +1253,110 @@ class MultiCriteriaAnalyse:
             rows=rows,
             metrics_by_hoofdsysteem_naam=metrics_by_hoofdsysteem_naam,
         )
+
+    def _get_warmteprogramma_match_context(
+        self, calculation_input: GebruikersInvoer
+    ) -> WarmteprogrammaMatchContext | None:
+        buurtcode = calculation_input.buurtcode
+        if not buurtcode:
+            return None
+
+        mapping = (
+            BuurtcodeWarmteprogramma.objects.select_related("warmteprogramma")
+            .prefetch_related("warmteprogramma__hoofdsystemen")
+            .filter(buurtcode=buurtcode)
+            .first()
+        )
+        if mapping is None or mapping.warmteprogramma is None:
+            return None
+
+        warmteprogramma: Warmteprogramma = mapping.warmteprogramma
+        if not warmteprogramma.categorie:
+            return None
+
+        return WarmteprogrammaMatchContext(
+            categorie=str(warmteprogramma.categorie),
+            passende_hoofdsysteem_namen=frozenset(
+                warmteprogramma.hoofdsystemen.values_list("naam", flat=True)
+            ),
+        )
+
+    def _build_warmteprogramma_tekst(
+        self,
+        *,
+        warmteprogramma_context: WarmteprogrammaMatchContext | None,
+        hoofdsysteem: Hoofdsysteem,
+    ) -> str:
+        if warmteprogramma_context is None:
+            return ""
+
+        hoofdsysteem_naam = hoofdsysteem.naam.lower()
+        if hoofdsysteem.naam in warmteprogramma_context.passende_hoofdsysteem_namen:
+            return (
+                "Volgens de Transitievisie Warmte valt uw buurt binnen de categorie "
+                f"{warmteprogramma_context.categorie}. Een {hoofdsysteem_naam} sluit hierbij aan. "
+                "Wat dit precies betekent, is op dit moment nog niet duidelijk. "
+                "Mogelijk wordt er nu of in de toekomst ondersteuning of subsidie "
+                "geboden voor technieken die binnen deze categorie vallen."
+            )
+
+        return (
+            "Volgens de Transitievisie Warmte valt uw buurt binnen de categorie "
+            f"{warmteprogramma_context.categorie}. Een {hoofdsysteem_naam} past niet binnen deze categorie. "
+            "Het is op dit moment nog niet duidelijk welke gevolgen dit heeft. "
+            "Het is mogelijk dat huidige of toekomstige ondersteuning zich richt op "
+            "technieken die wel binnen deze categorie vallen."
+        )
+
+    def _build_omgevingsvergunning_text(
+        self,
+        *,
+        hoofdsysteem: Hoofdsysteem,
+        energie_calculation: EnergieCalculatorFullResult,
+        calculation_input: GebruikersInvoer,
+        omgevingsvergunning_drempel_kw: Decimal,
+    ) -> str:
+        bodemzijdig_vermogen_kw = self._get_bodemzijdig_vermogen_kw(
+            hoofdsysteem=hoofdsysteem,
+            energie_calculation=energie_calculation,
+            calculation_input=calculation_input,
+        )
+        if bodemzijdig_vermogen_kw is None:
+            return ""
+
+        drempel_kw = omgevingsvergunning_drempel_kw
+        if bodemzijdig_vermogen_kw > drempel_kw:
+            return (
+                f"Dit systeem haalt meer dan {round(drempel_kw)}kW warmte uit de bodem. "
+                "Er is een omgevingsvergunning nodig."
+            )
+
+        return (
+            f"Dit systeem haalt minder dan {round(drempel_kw)}kW warmte uit de bodem. "
+            "Er is een kans dat u geen omgevingsvergunning nodig heeft."
+        )
+
+    def _get_bodemzijdig_vermogen_kw(
+        self,
+        *,
+        hoofdsysteem: Hoofdsysteem,
+        energie_calculation: EnergieCalculatorFullResult,
+        calculation_input: GebruikersInvoer,
+    ) -> Decimal | None:
+        for subsysteem in hoofdsysteem.subsystemen.all():
+            if subsysteem.calculation_method not in {"openbron", "gbs"}:
+                continue
+
+            subsysteem_result = subsysteem.calculate(
+                scenarios=(ScenarioKeuze.MIDDEN,),
+                energie_calculation=energie_calculation,
+                calculation_input=calculation_input,
+            )
+            berekening = subsysteem_result.by_scenario[ScenarioKeuze.MIDDEN].berekening
+            if berekening.bodemzijdig_vermogen_kw is not None:
+                return berekening.bodemzijdig_vermogen_kw
+
+        return None
 
     def _append_systeem_metrics(
         self,

@@ -16,6 +16,7 @@ from apps.kengetallen.models import (
     GasverbruikGegeven,
     Warmteprogramma,
 )
+from apps.systemen.models import Hoofdsysteem
 
 
 def _valid_payload():
@@ -79,6 +80,8 @@ class CalculationInputCreateApiTest(TestCase):
                     "beschrijving",
                     "beschrijving_url",
                     "beschrijving_url_title",
+                    "warmteprogramma_tekst",
+                    "omgevingsvergunning",
                     "tco",
                     "score",
                     "is_mogelijk",
@@ -140,6 +143,59 @@ class CalculationInputCreateApiTest(TestCase):
 
         created = GebruikersInvoer.objects.get()
         self.assertEqual(created.bouwjaar, 1990)
+
+    def test_post_includes_warmteprogramma_text_based_on_matching_hoofdsysteem(self):
+        warmteprogramma, _ = Warmteprogramma.objects.get_or_create(
+            categorie="Lokale bronnetten en warmtenet: gestaag aardgasvrij tussen 2020 en 2032",
+            defaults={
+                "warmtenet_start": 2020,
+                "warmtenet_stop": 2032,
+            },
+        )
+        warmteprogramma.hoofdsystemen.set(
+            Hoofdsysteem.objects.filter(
+                naam__in=[
+                    "Particulier Externe warmtelevering",
+                    "Particulier Externe warmtelevering + externe koeling",
+                    "Zakelijk Collectief Externe warmtelevering",
+                    "Zakelijk Collectief Externe warmtelevering + externe koeling",
+                    "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+                    "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+                ]
+            )
+        )
+        BuurtcodeWarmteprogramma.objects.update_or_create(
+            buurtcode="TESTWP001",
+            defaults={"warmteprogramma": warmteprogramma},
+        )
+
+        payload = _valid_payload()
+        payload["buurtcode"] = "TESTWP001"
+
+        response = self.client.post(self.url, data=payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+        by_name = {row["naam"]: row for row in response.data}
+        self.assertEqual(
+            by_name[
+                "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp"
+            ]["warmteprogramma_tekst"],
+            "Volgens de Transitievisie Warmte valt uw buurt binnen de categorie "
+            "Lokale bronnetten en warmtenet: gestaag aardgasvrij tussen 2020 en 2032. "
+            "Een collectief open bodem energie systeem met individuele bodemwarmtepomp sluit hierbij aan. "
+            "Wat dit precies betekent, is op dit moment nog niet duidelijk. "
+            "Mogelijk wordt er nu of in de toekomst ondersteuning of subsidie geboden voor technieken die binnen deze categorie vallen.",
+        )
+        self.assertEqual(
+            by_name["Individuele Luchtwarmtepomp op Buitenlucht"][
+                "warmteprogramma_tekst"
+            ],
+            "Volgens de Transitievisie Warmte valt uw buurt binnen de categorie "
+            "Lokale bronnetten en warmtenet: gestaag aardgasvrij tussen 2020 en 2032. "
+            "Een individuele luchtwarmtepomp op buitenlucht past niet binnen deze categorie. "
+            "Het is op dit moment nog niet duidelijk welke gevolgen dit heeft. "
+            "Het is mogelijk dat huidige of toekomstige ondersteuning zich richt op technieken die wel binnen deze categorie vallen.",
+        )
 
     def test_post_returns_correct_scores(self):
         expected = [

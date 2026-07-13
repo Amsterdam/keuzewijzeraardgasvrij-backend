@@ -27,6 +27,7 @@ class SubsysteemBerekening:
     afschrijving_eur_per_woning_per_jaar: Decimal
     onderhoud_eur_per_woning_per_jaar: Decimal
     tco: Decimal
+    bodemzijdig_vermogen_kw: Decimal | None = None
 
 
 @dataclass(frozen=True)
@@ -107,7 +108,9 @@ def calculate_openbron_systeem(
     investering_eur_per_woning = (
         subkengetal.investeringskosten / aantal_woningen_op_bron
     )
-
+    bodemzijdig_vermogen = (
+        cv_energie_calculation.vermogen_warmte_kw_per_woning * verhouding_vermogen_bron
+    )
     jaren_tco = get_jaren_tco()
 
     afschrijving = investering_eur_per_woning / Decimal(subkengetal.levensduur)
@@ -117,6 +120,7 @@ def calculate_openbron_systeem(
         afschrijving_eur_per_woning_per_jaar=afschrijving,
         onderhoud_eur_per_woning_per_jaar=onderhoud,
         tco=tco,
+        bodemzijdig_vermogen_kw=bodemzijdig_vermogen,
     )
 
 
@@ -130,9 +134,9 @@ def calculate_gbs(
     - Warmtevraag vermogen VvE totaal [kW]:
         `warmtevraag_vermogen_vve_totaal = cv_energie_calculation.vermogen_warmte_kw_per_vve`
     - Vermogen bron [kW]:
-        `verhouding_bron = warmtevraag_vermogen_vve_totaal * subkengetal.verhouding_vermogen_bron`
+        `bodemzijdig_vermogen = warmtevraag_vermogen_vve_totaal * subkengetal.verhouding_vermogen_bron`
     - Aantal lussen:
-        `berekening_aantal_lussen = verhouding_bron / subkengetal.onttrekkingsvermogen`
+        `berekening_aantal_lussen = bodemzijdig_vermogen / subkengetal.onttrekkingsvermogen`
     - Investering VvE:
         `investering_vve = subkengetal.investeringskosten * berekening_aantal_lussen`
     - Investering per woning:
@@ -143,10 +147,10 @@ def calculate_gbs(
         `onderhoud_woning_per_jaar = investering_eur_per_woning * subkengetal.beheer_en_onderhoud`
     """
     warmtevraag_vermogen_vve_totaal = cv_energie_calculation.vermogen_warmte_kw_per_vve
-    verhouding_bron = (
+    bodemzijdig_vermogen = (
         warmtevraag_vermogen_vve_totaal * subkengetal.verhouding_vermogen_bron
     )
-    berekening_aantal_lussen = verhouding_bron / subkengetal.onttrekkingsvermogen
+    berekening_aantal_lussen = bodemzijdig_vermogen / subkengetal.onttrekkingsvermogen
     investering_vve = subkengetal.investeringskosten * berekening_aantal_lussen
 
     investering_eur_per_woning = investering_vve / aantal_woningen
@@ -163,6 +167,7 @@ def calculate_gbs(
         afschrijving_eur_per_woning_per_jaar=afschrijving_woning_per_jaar,
         onderhoud_eur_per_woning_per_jaar=onderhoud_woning_per_jaar,
         tco=tco,
+        bodemzijdig_vermogen_kw=bodemzijdig_vermogen,
     )
 
 
