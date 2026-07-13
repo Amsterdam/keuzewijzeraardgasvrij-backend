@@ -294,6 +294,11 @@ class Warmteprogramma(models.Model):
     categorie = models.CharField(max_length=255, unique=True, blank=True, null=True)
     warmtenet_start = models.IntegerField(blank=True, null=True)
     warmtenet_stop = models.IntegerField(blank=True, null=True)
+    hoofdsystemen = models.ManyToManyField(
+        "systemen.Hoofdsysteem",
+        blank=True,
+        related_name="warmteprogrammas",
+    )
 
     class Meta:
         verbose_name = "Warmteprogramma kengetal"

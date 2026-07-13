@@ -1323,52 +1323,52 @@
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 1,
-    "fields": {"categorie": "Grotendeels onbebouwd", "warmtenet_start": 9999, "warmtenet_stop": 9999}
+    "fields": {"categorie": "Grotendeels onbebouwd", "warmtenet_start": 9999, "warmtenet_stop": 9999, "hoofdsystemen": []}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 2,
-    "fields": {"categorie": "All electric: gestaag aardgasvrij tussen 2020 en 2040", "warmtenet_start": 9999, "warmtenet_stop": 9999}
+    "fields": {"categorie": "All electric: gestaag aardgasvrij tussen 2020 en 2040", "warmtenet_start": 9999, "warmtenet_stop": 9999, "hoofdsystemen": [1, 2, 3, 8, 9]}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 3,
-    "fields": {"categorie": "Lokale bronnetten: gestaag aardgasvrij tussen 2020 en 2040", "warmtenet_start": 9999, "warmtenet_stop": 9999}
+    "fields": {"categorie": "Lokale bronnetten: gestaag aardgasvrij tussen 2020 en 2040", "warmtenet_start": 9999, "warmtenet_stop": 9999, "hoofdsystemen": [4, 5]}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 4,
-    "fields": {"categorie": "Warmtenetbuurt: gefaseerd starten vanaf 2030", "warmtenet_start": 2030, "warmtenet_stop": 2040}
+    "fields": {"categorie": "Warmtenetbuurt: gefaseerd starten vanaf 2030", "warmtenet_start": 2030, "warmtenet_stop": 2040, "hoofdsystemen": [6, 7, 11, 12]}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 5,
-    "fields": {"categorie": "Warmtenetbuurt: gefaseerd aardgasvrij tussen 2020 en 2030", "warmtenet_start": 2020, "warmtenet_stop": 2030}
+    "fields": {"categorie": "Warmtenetbuurt: gefaseerd aardgasvrij tussen 2020 en 2030", "warmtenet_start": 2020, "warmtenet_stop": 2030, "hoofdsystemen": [6, 7, 11, 12]}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 6,
-    "fields": {"categorie": "Warmtenetbuurt: gefaseerd aardgasvrij tussen 2022 en 2032", "warmtenet_start": 2022, "warmtenet_stop": 2032}
+    "fields": {"categorie": "Warmtenetbuurt: gefaseerd aardgasvrij tussen 2022 en 2032", "warmtenet_start": 2022, "warmtenet_stop": 2032, "hoofdsystemen": [6, 7, 11, 12]}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 7,
-    "fields": {"categorie": "Nieuwbouw- en transformatiegebied: volgt de fasering van de gebiedsontwikkeling", "warmtenet_start": 9999, "warmtenet_stop": 9999}
+    "fields": {"categorie": "Nieuwbouw- en transformatiegebied: volgt de fasering van de gebiedsontwikkeling", "warmtenet_start": 9999, "warmtenet_stop": 9999, "hoofdsystemen": []}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 8,
-    "fields": {"categorie": "Aardgasvrij gasnet: gestaag 70% gasbesparing tot 2040", "warmtenet_start": 9999, "warmtenet_stop": 9999}
+    "fields": {"categorie": "Aardgasvrij gasnet: gestaag 70% gasbesparing tot 2040", "warmtenet_start": 9999, "warmtenet_stop": 9999, "hoofdsystemen": []}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 9,
-    "fields": {"categorie": "Al (bijna) volledig op het warmtenet", "warmtenet_start": 0, "warmtenet_stop": 0}
+    "fields": {"categorie": "Al (bijna) volledig op het warmtenet", "warmtenet_start": 0, "warmtenet_stop": 0, "hoofdsystemen": [6, 7, 11, 12]}
   },
   {
     "model": "kengetallen.Warmteprogramma",
     "pk": 10,
-    "fields": {"categorie": "Lokale bronnetten en warmtenet: gestaag aardgasvrij tussen 2020 en 2032", "warmtenet_start": 2020, "warmtenet_stop": 2032}
+    "fields": {"categorie": "Lokale bronnetten en warmtenet: gestaag aardgasvrij tussen 2020 en 2032", "warmtenet_start": 2020, "warmtenet_stop": 2032, "hoofdsystemen": [6, 7, 11, 12, 4, 5]}
   },
   {
     "model": "kengetallen.algemeenkengetal",

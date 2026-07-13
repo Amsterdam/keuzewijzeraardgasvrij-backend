@@ -35,6 +35,11 @@
     "fields": {"naam": "bvo_factor", "waarde": "1.1"}
   },
   {
+    "model": "calculation_inputs.conversie",
+    "pk": 8,
+    "fields": {"naam": "omgevingsvergunning_drempel_kw", "waarde": "70"}
+  },
+  {
     "model": "calculation_inputs.energieprijs",
     "pk": 1,
     "fields": {"naam": "Elektriciteit", "prijs_eur_per_gj": "53.00"}
