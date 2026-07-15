@@ -34,10 +34,15 @@ class GebruikersInvoer(models.Model):
         decimal_places=9,
         default=20,
     )
-    beschikbare_collectieve_ruimte_buiten_m2 = models.DecimalField(
+    beschikbare_collectieve_ruimte_tuin_m2 = models.DecimalField(
         max_digits=18,
         decimal_places=9,
         default=100,
+    )
+    beschikbare_collectieve_ruimte_dak_m2 = models.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        default=0,
     )
     huidig_systeem = models.CharField(
         max_length=20,

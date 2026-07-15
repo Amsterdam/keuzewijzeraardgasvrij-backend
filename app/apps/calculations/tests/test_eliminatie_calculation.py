@@ -38,7 +38,8 @@ class EliminatieCalculatorTest(TestCase):
             aantal_woningen=250,
             beschikbare_ruimte_in_woning_m2=Decimal("10000"),
             beschikbare_collectieve_ruimte_binnen_m2=Decimal("10000"),
-            beschikbare_collectieve_ruimte_buiten_m2=Decimal("10000"),
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("10000"),
+            beschikbare_collectieve_ruimte_dak_m2=Decimal("0"),
         )
 
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
@@ -112,7 +113,8 @@ class EliminatieCalculatorTest(TestCase):
             jaar_vervangen=now_year + 5,
             beschikbare_ruimte_in_woning_m2=Decimal("999"),
             beschikbare_collectieve_ruimte_binnen_m2=Decimal("999"),
-            beschikbare_collectieve_ruimte_buiten_m2=Decimal("999"),
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("999"),
+            beschikbare_collectieve_ruimte_dak_m2=Decimal("0"),
         )
 
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
@@ -148,7 +150,8 @@ class EliminatieCalculatorTest(TestCase):
             jaar_vervangen=jaar_vervangen,
             beschikbare_ruimte_in_woning_m2=Decimal("999"),
             beschikbare_collectieve_ruimte_binnen_m2=Decimal("999"),
-            beschikbare_collectieve_ruimte_buiten_m2=Decimal("999"),
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("999"),
+            beschikbare_collectieve_ruimte_dak_m2=Decimal("0"),
         )
 
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)

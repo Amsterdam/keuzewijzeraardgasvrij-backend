@@ -12,8 +12,10 @@ from apps.calculations.models import GebruikersInvoer
 from apps.calculations.pdok_client import PandData
 from apps.calculations.serializers import GebruikersInvoerCreateSerializer
 from apps.kengetallen.models import (
+    AlgemeenKengetal,
     BuurtcodeWarmteprogramma,
     GasverbruikGegeven,
+    ScenarioKeuze,
     Warmteprogramma,
 )
 from apps.systemen.models import Hoofdsysteem
@@ -37,7 +39,8 @@ def _valid_payload():
         "buurtcode": "BU03636501",
         "beschikbare_ruimte_in_woning_m2": 1,
         "beschikbare_collectieve_ruimte_binnen_m2": 20,
-        "beschikbare_collectieve_ruimte_buiten_m2": 100,
+        "beschikbare_collectieve_ruimte_tuin_m2": 100,
+        "beschikbare_collectieve_ruimte_dak_m2": 0,
         "jaar_vervangen": 2040,
         "wtw_aanwezig": True,
     }
@@ -81,6 +84,8 @@ class CalculationInputCreateApiTest(TestCase):
                     "beschrijving_url",
                     "beschrijving_url_title",
                     "warmteprogramma_tekst",
+                    "isolatie_popup",
+                    "past_in_tuin",
                     "omgevingsvergunning",
                     "tco",
                     "score",
@@ -143,6 +148,67 @@ class CalculationInputCreateApiTest(TestCase):
 
         created = GebruikersInvoer.objects.get()
         self.assertEqual(created.bouwjaar, 1990)
+
+    def test_post_sets_isolatie_popup_true_when_above_drempelwaarde(self):
+        AlgemeenKengetal.objects.update_or_create(
+            scenario=ScenarioKeuze.MIDDEN,
+            naam="DREMPELWAARDE_ISOLATIESTOP",
+            defaults={
+                "omschrijving": "Drempelwaarde [kWth/m²]",
+                "waarde": Decimal("100"),
+            },
+        )
+
+        response = self.client.post(self.url, data=_valid_payload(), format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+        self.assertTrue(all(row["isolatie_popup"] is True for row in response.data))
+
+    def test_post_sets_isolatie_popup_false_when_below_drempelwaarde(self):
+        AlgemeenKengetal.objects.update_or_create(
+            scenario=ScenarioKeuze.MIDDEN,
+            naam="DREMPELWAARDE_ISOLATIESTOP",
+            defaults={
+                "omschrijving": "Drempelwaarde [kWth/m²]",
+                "waarde": Decimal("1000"),
+            },
+        )
+
+        response = self.client.post(self.url, data=_valid_payload(), format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+        self.assertTrue(all(row["isolatie_popup"] is False for row in response.data))
+
+    def test_post_sets_past_in_tuin_for_bodemsystemen(self):
+        response = self.client.post(self.url, data=_valid_payload(), format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+        by_name = {row["naam"]: row for row in response.data}
+        self.assertFalse(
+            by_name[
+                "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+            ]["past_in_tuin"]
+        )
+
+        payload = _valid_payload()
+        payload["aantal_woningen"] = 50
+        payload["beschikbare_collectieve_ruimte_tuin_m2"] = 250
+        response = self.client.post(self.url, data=payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+        by_name = {row["naam"]: row for row in response.data}
+        self.assertTrue(
+            by_name[
+                "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+            ]["past_in_tuin"]
+        )
+
+    def test_post_sets_past_in_tuin_null_for_non_bodemsystemen(self):
+        response = self.client.post(self.url, data=_valid_payload(), format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.data)
+        by_name = {row["naam"]: row for row in response.data}
+        self.assertIsNone(by_name["Particulier Externe warmtelevering"]["past_in_tuin"])
 
     def test_post_includes_warmteprogramma_text_based_on_matching_hoofdsysteem(self):
         warmteprogramma, _ = Warmteprogramma.objects.get_or_create(

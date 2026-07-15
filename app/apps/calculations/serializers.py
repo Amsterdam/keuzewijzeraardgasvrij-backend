@@ -49,7 +49,14 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
         max_value=Decimal("1000000"),
         required=False,
     )
-    beschikbare_collectieve_ruimte_buiten_m2 = serializers.DecimalField(
+    beschikbare_collectieve_ruimte_tuin_m2 = serializers.DecimalField(
+        max_digits=18,
+        decimal_places=9,
+        min_value=Decimal("0"),
+        max_value=Decimal("1000000"),
+        required=False,
+    )
+    beschikbare_collectieve_ruimte_dak_m2 = serializers.DecimalField(
         max_digits=18,
         decimal_places=9,
         min_value=Decimal("0"),
@@ -70,7 +77,8 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
             "gasverbruik_vve_totaal",
             "beschikbare_ruimte_in_woning_m2",
             "beschikbare_collectieve_ruimte_binnen_m2",
-            "beschikbare_collectieve_ruimte_buiten_m2",
+            "beschikbare_collectieve_ruimte_tuin_m2",
+            "beschikbare_collectieve_ruimte_dak_m2",
             "wens_tot_koelen",
             "koken_op_gas",
             "dubbel_glas",
@@ -97,6 +105,8 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     beschrijving_url = serializers.CharField(allow_blank=True)
     beschrijving_url_title = serializers.CharField(allow_blank=True)
     warmteprogramma_tekst = serializers.CharField(allow_blank=True)
+    isolatie_popup = serializers.BooleanField()
+    past_in_tuin = serializers.BooleanField(allow_null=True)
     omgevingsvergunning = serializers.CharField(allow_blank=True)
     tco = serializers.IntegerField()
     score = serializers.IntegerField()

@@ -11,6 +11,7 @@ from apps.kengetallen.models import (
     BuurtcodeWarmteprogramma,
     CollectieveRuimteBinnen,
     CollectieveRuimteBuiten,
+    CollectieveRuimteTuin,
     EliminatieKengetal,
     GelijktijdigheidCV,
     MultiCriteriaAnalyseKengetal,
@@ -43,6 +44,8 @@ class MultiCriteriaAnalyseRow(TypedDict):
     beschrijving_url: str
     beschrijving_url_title: str
     warmteprogramma_tekst: str
+    isolatie_popup: bool
+    past_in_tuin: bool | None
     omgevingsvergunning: str
     tco: float
     score: float
@@ -61,6 +64,7 @@ class Metrics:
     ruimte_in_woning: Decimal
     collectieve_ruimte_binnen_benodigd: Decimal
     collectieve_ruimte_buiten_benodigd: Decimal
+    collectieve_ruimte_tuin_benodigd: Decimal
     huidig_systeem: Decimal
     vloerverwarming: Decimal
 
@@ -974,8 +978,7 @@ class Eliminatie:
             )
 
         if (
-            calculation_input.beschikbare_collectieve_ruimte_buiten_m2 is not None
-            and calculation_input.beschikbare_collectieve_ruimte_buiten_m2
+            _beschikbare_collectieve_ruimte_buiten_m2(calculation_input)
             < collectief_ruimte_buiten_benodigd
         ):
             redenen.append(
@@ -1133,6 +1136,16 @@ class MultiCriteriaAnalyse:
                 aantal_woningen=calculation_input.aantal_woningen,
             )
         )
+        if self._is_bodemsysteem(hoofdsysteem):
+            collectieve_ruimte_tuin_benodigd = self._to_decimal(
+                _get_collectieve_ruimte(
+                    CollectieveRuimteTuin,
+                    hoofdsysteem_naam=hoofdsysteem.naam,
+                    aantal_woningen=calculation_input.aantal_woningen,
+                )
+            )
+        else:
+            collectieve_ruimte_tuin_benodigd = Decimal("0")
 
         mca_kengetal = MultiCriteriaAnalyseKengetal.objects.get(
             hoofdsysteem__naam=hoofdsysteem.naam
@@ -1158,6 +1171,7 @@ class MultiCriteriaAnalyse:
             ruimte_in_woning=ruimte_in_woning,
             collectieve_ruimte_binnen_benodigd=collectieve_ruimte_binnen_benodigd,
             collectieve_ruimte_buiten_benodigd=collectieve_ruimte_buiten_benodigd,
+            collectieve_ruimte_tuin_benodigd=collectieve_ruimte_tuin_benodigd,
             huidig_systeem=self._to_decimal(huidig_systeem),
             vloerverwarming=self._to_decimal(vloerverwarming),
         )
@@ -1175,6 +1189,10 @@ class MultiCriteriaAnalyse:
         metrics_by_hoofdsysteem_naam: dict[str, Metrics] = {}
         warmteprogramma_context = self._get_warmteprogramma_match_context(
             calculation_input
+        )
+        isolatie_popup = self._should_show_isolatie_popup(
+            calculation_input=calculation_input,
+            energie_calculation=energie_calculation,
         )
 
         for hoofdsysteem in hoofdsystemen_list:
@@ -1225,6 +1243,11 @@ class MultiCriteriaAnalyse:
                     "warmteprogramma_tekst": self._build_warmteprogramma_tekst(
                         warmteprogramma_context=warmteprogramma_context,
                         hoofdsysteem=hoofdsysteem,
+                    ),
+                    "isolatie_popup": isolatie_popup,
+                    "past_in_tuin": self._past_in_tuin(
+                        hoofdsysteem=hoofdsysteem,
+                        calculation_input=calculation_input,
                     ),
                     "omgevingsvergunning": self._build_omgevingsvergunning_text(
                         hoofdsysteem=hoofdsysteem,
@@ -1336,6 +1359,60 @@ class MultiCriteriaAnalyse:
             "Er is een kans dat u geen omgevingsvergunning nodig heeft."
         )
 
+    def _should_show_isolatie_popup(
+        self,
+        *,
+        calculation_input: GebruikersInvoer,
+        energie_calculation: EnergieCalculatorFullResult,
+    ) -> bool:
+        drempelwaarde = self._get_isolatie_popup_drempelwaarde()
+        if drempelwaarde is None:
+            return False
+
+        bruto_vloeroppervlak = self._to_decimal(calculation_input.bruto_vloeroppervlak)
+        if bruto_vloeroppervlak <= 0:
+            return False
+
+        cv_result = energie_calculation.by_scenario[str(ScenarioKeuze.MIDDEN)][
+            EnergieType.CV
+        ]
+        conversie_m3gas_naar_kwh = self._to_decimal(
+            Conversie.objects.get(naam="m3gas_naar_kwh").waarde
+        )
+        warmtevraag_kwh_gebouw = cv_result.gas_m3_per_year * conversie_m3gas_naar_kwh
+        warmtevraag_kwh_per_m2 = warmtevraag_kwh_gebouw / bruto_vloeroppervlak
+        return warmtevraag_kwh_per_m2 > drempelwaarde
+
+    def _get_isolatie_popup_drempelwaarde(self) -> Decimal | None:
+        row = AlgemeenKengetal.objects.filter(
+            scenario=ScenarioKeuze.MIDDEN,
+            naam="DREMPELWAARDE_ISOLATIESTOP",
+        ).first()
+        if row is None:
+            return None
+        return self._to_decimal(row.waarde)
+
+    def _past_in_tuin(
+        self,
+        *,
+        hoofdsysteem: Hoofdsysteem,
+        calculation_input: GebruikersInvoer,
+    ) -> bool | None:
+        if not self._is_bodemsysteem(hoofdsysteem):
+            return None
+
+        benodigde_tuinruimte = self._to_decimal(
+            _get_collectieve_ruimte(
+                CollectieveRuimteTuin,
+                hoofdsysteem_naam=hoofdsysteem.naam,
+                aantal_woningen=calculation_input.aantal_woningen,
+            )
+        )
+        beschikbare_tuinruimte = self._to_decimal(
+            calculation_input.beschikbare_collectieve_ruimte_tuin_m2
+        )
+        return benodigde_tuinruimte <= beschikbare_tuinruimte
+
     def _get_bodemzijdig_vermogen_kw(
         self,
         *,
@@ -1357,6 +1434,12 @@ class MultiCriteriaAnalyse:
                 return berekening.bodemzijdig_vermogen_kw
 
         return None
+
+    def _is_bodemsysteem(self, hoofdsysteem: Hoofdsysteem) -> bool:
+        return any(
+            subsysteem.calculation_method in {"openbron", "gbs"}
+            for subsysteem in hoofdsysteem.subsystemen.all()
+        )
 
     def _append_systeem_metrics(
         self,
@@ -1656,3 +1739,11 @@ def _get_collectieve_ruimte(
             f"Missing {model.__name__} for hoofdsysteem={hoofdsysteem_naam!r}, aantal_woningen={aantal_woningen}"
         )
     return value
+
+
+def _beschikbare_collectieve_ruimte_buiten_m2(
+    calculation_input: GebruikersInvoer,
+) -> Decimal:
+    return Decimal(
+        str(calculation_input.beschikbare_collectieve_ruimte_tuin_m2)
+    ) + Decimal(str(calculation_input.beschikbare_collectieve_ruimte_dak_m2))

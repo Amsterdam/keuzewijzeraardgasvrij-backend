@@ -4,9 +4,14 @@ from decimal import Decimal
 
 from django.test import TestCase
 
-from apps.calculations.calculator import EnergieCalculator, EnergieType
+from apps.calculations.calculator import (
+    EnergieCalculator,
+    EnergieType,
+    MultiCriteriaAnalyse,
+)
 from apps.calculations.models import Conversie, GebruikersInvoer
 from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
+from apps.systemen.models import Hoofdsysteem
 
 
 def _calculation_input(**overrides: object) -> GebruikersInvoer:
@@ -90,6 +95,89 @@ class EnergieCalculatorTest(TestCase):
                 self.assertEqual(
                     result.capaciteit_warmte_gj_per_year_per_woning, expected_gj
                 )
+
+    def test_multicriteria_metrics_include_collectieve_ruimte_tuin_for_bodemsystemen(
+        self,
+    ):
+        calc_input = _calculation_input(aantal_woningen=50)
+        energie = EnergieCalculator().calculate(calc_input)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+        )
+        full = hoofdsysteem.calculate(energie_calculation=energie)
+
+        metrics = MultiCriteriaAnalyse()._build_metrics(
+            hoofdsysteem=hoofdsysteem,
+            full=full,
+            calculation_input=calc_input,
+            tco=full.by_scenario[ScenarioKeuze.MIDDEN].tco,
+        )
+
+        self.assertEqual(metrics.collectieve_ruimte_tuin_benodigd, Decimal("200"))
+
+    def test_multicriteria_metrics_keep_collectieve_ruimte_tuin_zero_for_non_bodemsystemen(
+        self,
+    ):
+        calc_input = _calculation_input(aantal_woningen=50)
+        energie = EnergieCalculator().calculate(calc_input)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Particulier Externe warmtelevering"
+        )
+        full = hoofdsysteem.calculate(energie_calculation=energie)
+
+        metrics = MultiCriteriaAnalyse()._build_metrics(
+            hoofdsysteem=hoofdsysteem,
+            full=full,
+            calculation_input=calc_input,
+            tco=full.by_scenario[ScenarioKeuze.MIDDEN].tco,
+        )
+
+        self.assertEqual(metrics.collectieve_ruimte_tuin_benodigd, Decimal("0"))
+
+    def test_past_in_tuin_is_true_when_bodemsysteem_fits(self):
+        calc_input = _calculation_input(
+            aantal_woningen=50,
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("250"),
+        )
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+        )
+
+        result = MultiCriteriaAnalyse()._past_in_tuin(
+            hoofdsysteem=hoofdsysteem,
+            calculation_input=calc_input,
+        )
+
+        self.assertTrue(result)
+
+    def test_past_in_tuin_is_false_when_bodemsysteem_does_not_fit(self):
+        calc_input = _calculation_input(
+            aantal_woningen=50,
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("100"),
+        )
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+        )
+
+        result = MultiCriteriaAnalyse()._past_in_tuin(
+            hoofdsysteem=hoofdsysteem,
+            calculation_input=calc_input,
+        )
+
+        self.assertFalse(result)
+
+    def test_past_in_tuin_is_none_for_non_bodemsysteem(self):
+        calc_input = _calculation_input(aantal_woningen=50)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Particulier Externe warmtelevering"
+        )
+
+        result = MultiCriteriaAnalyse()._past_in_tuin(
+            hoofdsysteem=hoofdsysteem,
+            calculation_input=calc_input,
+        )
+
+        self.assertIsNone(result)
 
     def test_cv_all_scenarios_tapwater_true_and_false(self):
         aantal_woningen = 200
