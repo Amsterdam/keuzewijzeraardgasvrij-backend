@@ -108,6 +108,28 @@ class CollectieveRuimteBuiten(models.Model):
         return f"{self.hoofdsysteem.naam}: {self.n_min}–{max_label} woningen → {self.vereiste_m2} m²"
 
 
+class CollectieveRuimteTuin(models.Model):
+    hoofdsysteem = models.ForeignKey(
+        "systemen.Hoofdsysteem",
+        on_delete=models.CASCADE,
+        related_name="collectieve_ruimte_tuin",
+    )
+
+    n_min = models.IntegerField()
+    n_max = models.IntegerField(blank=True, null=True)
+    vereiste_m2 = models.DecimalField(max_digits=18, decimal_places=9)
+
+    class Meta:
+        verbose_name = "Collectieve ruimte tuin"
+        verbose_name_plural = "Collectieve ruimte tuin"
+        ordering = ["hoofdsysteem", "n_min"]
+        constraints = _collectieve_ruimte_constraints(scope="tuin")
+
+    def __str__(self) -> str:
+        max_label = "∞" if self.n_max is None else str(self.n_max)
+        return f"{self.hoofdsysteem.naam}: {self.n_min}–{max_label} woningen → {self.vereiste_m2} m²"
+
+
 class EliminatieKengetal(models.Model):
     naam = models.CharField(max_length=255, unique=True)
 

@@ -8,6 +8,7 @@ from .models import (
     BuurtcodeWarmteprogramma,
     CollectieveRuimteBinnen,
     CollectieveRuimteBuiten,
+    CollectieveRuimteTuin,
     CollectieveWarmtepompKengetal,
     EliminatieKengetal,
     GasverbruikGegeven,
@@ -42,6 +43,11 @@ ADMIN_FIELD_LABELS = {
         "n_min": "Minimum aantal woningen",
         "n_max": "Maximum aantal woningen",
         "vereiste_m2": "Vereiste ruimte buiten (m2)",
+    },
+    CollectieveRuimteTuin: {
+        "n_min": "Minimum aantal woningen",
+        "n_max": "Maximum aantal woningen",
+        "vereiste_m2": "Vereiste ruimte tuin (m2)",
     },
     EliminatieKengetal: {
         "woningen_min": "Minimum aantal woningen",
@@ -158,6 +164,12 @@ class CollectieveRuimteBinnenAdmin(admin.ModelAdmin):
 @admin.register(CollectieveRuimteBuiten)
 class CollectieveRuimteBuitenAdmin(admin.ModelAdmin):
     list_display = get_all_field_names(CollectieveRuimteBuiten)
+    list_select_related = True
+
+
+@admin.register(CollectieveRuimteTuin)
+class CollectieveRuimteTuinAdmin(admin.ModelAdmin):
+    list_display = get_all_field_names(CollectieveRuimteTuin)
     list_select_related = True
 
 

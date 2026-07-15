@@ -1239,6 +1239,11 @@
     "pk": 9,
     "fields": {"scenario": "hoog", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.7"}
   },
+  {
+    "model": "kengetallen.algemeenkengetal",
+    "pk": 10,
+    "fields": {"scenario": "midden", "naam": "DREMPELWAARDE_ISOLATIESTOP", "omschrijving": "Drempelwaarde [kWth/m²]", "waarde": "65"}
+  },
 
   {
     "model": "kengetallen.gelijktijdigheidcv",
@@ -4040,6 +4045,682 @@
       "kan_koelen": true,
       "laag_energieverbruik": false
     }
+  },
+
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 1,
+    "fields": {"hoofdsysteem": 3, "n_min": 1, "n_max": 2, "vereiste_m2": "74"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 2,
+    "fields": {"hoofdsysteem": 4, "n_min": 1, "n_max": 2, "vereiste_m2": "73.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 3,
+    "fields": {"hoofdsysteem": 5, "n_min": 1, "n_max": 2, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 4,
+    "fields": {"hoofdsysteem": 9, "n_min": 1, "n_max": 2, "vereiste_m2": "73.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 5,
+    "fields": {"hoofdsysteem": 10, "n_min": 1, "n_max": 2, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 6,
+    "fields": {"hoofdsysteem": 3, "n_min": 3, "n_max": 4, "vereiste_m2": "172"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 7,
+    "fields": {"hoofdsysteem": 4, "n_min": 3, "n_max": 4, "vereiste_m2": "171.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 8,
+    "fields": {"hoofdsysteem": 5, "n_min": 3, "n_max": 4, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 9,
+    "fields": {"hoofdsysteem": 9, "n_min": 3, "n_max": 4, "vereiste_m2": "171.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 10,
+    "fields": {"hoofdsysteem": 10, "n_min": 3, "n_max": 4, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 11,
+    "fields": {"hoofdsysteem": 3, "n_min": 5, "n_max": 6, "vereiste_m2": "270"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 12,
+    "fields": {"hoofdsysteem": 4, "n_min": 5, "n_max": 6, "vereiste_m2": "269.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 13,
+    "fields": {"hoofdsysteem": 5, "n_min": 5, "n_max": 6, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 14,
+    "fields": {"hoofdsysteem": 9, "n_min": 5, "n_max": 6, "vereiste_m2": "269.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 15,
+    "fields": {"hoofdsysteem": 10, "n_min": 5, "n_max": 6, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 16,
+    "fields": {"hoofdsysteem": 3, "n_min": 7, "n_max": 8, "vereiste_m2": "368"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 17,
+    "fields": {"hoofdsysteem": 4, "n_min": 7, "n_max": 8, "vereiste_m2": "367.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 18,
+    "fields": {"hoofdsysteem": 5, "n_min": 7, "n_max": 8, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 19,
+    "fields": {"hoofdsysteem": 9, "n_min": 7, "n_max": 8, "vereiste_m2": "367.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 20,
+    "fields": {"hoofdsysteem": 10, "n_min": 7, "n_max": 8, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 21,
+    "fields": {"hoofdsysteem": 3, "n_min": 9, "n_max": 10, "vereiste_m2": "466"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 22,
+    "fields": {"hoofdsysteem": 4, "n_min": 9, "n_max": 10, "vereiste_m2": "465.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 23,
+    "fields": {"hoofdsysteem": 5, "n_min": 9, "n_max": 10, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 24,
+    "fields": {"hoofdsysteem": 9, "n_min": 9, "n_max": 10, "vereiste_m2": "465.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 25,
+    "fields": {"hoofdsysteem": 10, "n_min": 9, "n_max": 10, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 26,
+    "fields": {"hoofdsysteem": 3, "n_min": 11, "n_max": 12, "vereiste_m2": "564"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 27,
+    "fields": {"hoofdsysteem": 4, "n_min": 11, "n_max": 12, "vereiste_m2": "563.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 28,
+    "fields": {"hoofdsysteem": 5, "n_min": 11, "n_max": 12, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 29,
+    "fields": {"hoofdsysteem": 9, "n_min": 11, "n_max": 12, "vereiste_m2": "563.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 30,
+    "fields": {"hoofdsysteem": 10, "n_min": 11, "n_max": 12, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 31,
+    "fields": {"hoofdsysteem": 3, "n_min": 13, "n_max": 14, "vereiste_m2": "662"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 32,
+    "fields": {"hoofdsysteem": 4, "n_min": 13, "n_max": 14, "vereiste_m2": "661.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 33,
+    "fields": {"hoofdsysteem": 5, "n_min": 13, "n_max": 14, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 34,
+    "fields": {"hoofdsysteem": 9, "n_min": 13, "n_max": 14, "vereiste_m2": "661.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 35,
+    "fields": {"hoofdsysteem": 10, "n_min": 13, "n_max": 14, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 36,
+    "fields": {"hoofdsysteem": 3, "n_min": 15, "n_max": 16, "vereiste_m2": "760"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 37,
+    "fields": {"hoofdsysteem": 4, "n_min": 15, "n_max": 16, "vereiste_m2": "759.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 38,
+    "fields": {"hoofdsysteem": 5, "n_min": 15, "n_max": 16, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 39,
+    "fields": {"hoofdsysteem": 9, "n_min": 15, "n_max": 16, "vereiste_m2": "759.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 40,
+    "fields": {"hoofdsysteem": 10, "n_min": 15, "n_max": 16, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 41,
+    "fields": {"hoofdsysteem": 3, "n_min": 17, "n_max": 18, "vereiste_m2": "858"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 42,
+    "fields": {"hoofdsysteem": 4, "n_min": 17, "n_max": 18, "vereiste_m2": "857.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 43,
+    "fields": {"hoofdsysteem": 5, "n_min": 17, "n_max": 18, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 44,
+    "fields": {"hoofdsysteem": 9, "n_min": 17, "n_max": 18, "vereiste_m2": "857.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 45,
+    "fields": {"hoofdsysteem": 10, "n_min": 17, "n_max": 18, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 46,
+    "fields": {"hoofdsysteem": 3, "n_min": 19, "n_max": 20, "vereiste_m2": "956"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 47,
+    "fields": {"hoofdsysteem": 4, "n_min": 19, "n_max": 20, "vereiste_m2": "955.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 48,
+    "fields": {"hoofdsysteem": 5, "n_min": 19, "n_max": 20, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 49,
+    "fields": {"hoofdsysteem": 9, "n_min": 19, "n_max": 20, "vereiste_m2": "955.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 50,
+    "fields": {"hoofdsysteem": 10, "n_min": 19, "n_max": 20, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 51,
+    "fields": {"hoofdsysteem": 3, "n_min": 21, "n_max": 30, "vereiste_m2": "1250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 52,
+    "fields": {"hoofdsysteem": 4, "n_min": 21, "n_max": 30, "vereiste_m2": "1249.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 53,
+    "fields": {"hoofdsysteem": 5, "n_min": 21, "n_max": 30, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 54,
+    "fields": {"hoofdsysteem": 9, "n_min": 21, "n_max": 30, "vereiste_m2": "1249.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 55,
+    "fields": {"hoofdsysteem": 10, "n_min": 21, "n_max": 30, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 56,
+    "fields": {"hoofdsysteem": 3, "n_min": 31, "n_max": 40, "vereiste_m2": "1740"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 57,
+    "fields": {"hoofdsysteem": 4, "n_min": 31, "n_max": 40, "vereiste_m2": "1739.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 58,
+    "fields": {"hoofdsysteem": 5, "n_min": 31, "n_max": 40, "vereiste_m2": "100"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 59,
+    "fields": {"hoofdsysteem": 9, "n_min": 31, "n_max": 40, "vereiste_m2": "1739.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 60,
+    "fields": {"hoofdsysteem": 10, "n_min": 31, "n_max": 40, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 61,
+    "fields": {"hoofdsysteem": 3, "n_min": 41, "n_max": 50, "vereiste_m2": "2230"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 62,
+    "fields": {"hoofdsysteem": 4, "n_min": 41, "n_max": 50, "vereiste_m2": "2229.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 63,
+    "fields": {"hoofdsysteem": 5, "n_min": 41, "n_max": 50, "vereiste_m2": "150"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 64,
+    "fields": {"hoofdsysteem": 9, "n_min": 41, "n_max": 50, "vereiste_m2": "2229.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 65,
+    "fields": {"hoofdsysteem": 10, "n_min": 41, "n_max": 50, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 66,
+    "fields": {"hoofdsysteem": 3, "n_min": 51, "n_max": 60, "vereiste_m2": "2720"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 67,
+    "fields": {"hoofdsysteem": 4, "n_min": 51, "n_max": 60, "vereiste_m2": "2719.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 68,
+    "fields": {"hoofdsysteem": 5, "n_min": 51, "n_max": 60, "vereiste_m2": "150"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 69,
+    "fields": {"hoofdsysteem": 9, "n_min": 51, "n_max": 60, "vereiste_m2": "2719.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 70,
+    "fields": {"hoofdsysteem": 10, "n_min": 51, "n_max": 60, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 71,
+    "fields": {"hoofdsysteem": 3, "n_min": 61, "n_max": 70, "vereiste_m2": "3210"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 72,
+    "fields": {"hoofdsysteem": 4, "n_min": 61, "n_max": 70, "vereiste_m2": "3209.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 73,
+    "fields": {"hoofdsysteem": 5, "n_min": 61, "n_max": 70, "vereiste_m2": "150"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 74,
+    "fields": {"hoofdsysteem": 9, "n_min": 61, "n_max": 70, "vereiste_m2": "3209.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 75,
+    "fields": {"hoofdsysteem": 10, "n_min": 61, "n_max": 70, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 76,
+    "fields": {"hoofdsysteem": 3, "n_min": 71, "n_max": 80, "vereiste_m2": "3700"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 77,
+    "fields": {"hoofdsysteem": 4, "n_min": 71, "n_max": 80, "vereiste_m2": "3699.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 78,
+    "fields": {"hoofdsysteem": 5, "n_min": 71, "n_max": 80, "vereiste_m2": "150"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 79,
+    "fields": {"hoofdsysteem": 9, "n_min": 71, "n_max": 80, "vereiste_m2": "3699.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 80,
+    "fields": {"hoofdsysteem": 10, "n_min": 71, "n_max": 80, "vereiste_m2": "200"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 81,
+    "fields": {"hoofdsysteem": 3, "n_min": 81, "n_max": 90, "vereiste_m2": "4190"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 82,
+    "fields": {"hoofdsysteem": 4, "n_min": 81, "n_max": 90, "vereiste_m2": "4189.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 83,
+    "fields": {"hoofdsysteem": 5, "n_min": 81, "n_max": 90, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 84,
+    "fields": {"hoofdsysteem": 9, "n_min": 81, "n_max": 90, "vereiste_m2": "4189.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 85,
+    "fields": {"hoofdsysteem": 10, "n_min": 81, "n_max": 90, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 86,
+    "fields": {"hoofdsysteem": 3, "n_min": 91, "n_max": 100, "vereiste_m2": "4680"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 87,
+    "fields": {"hoofdsysteem": 4, "n_min": 91, "n_max": 100, "vereiste_m2": "4679.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 88,
+    "fields": {"hoofdsysteem": 5, "n_min": 91, "n_max": 100, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 89,
+    "fields": {"hoofdsysteem": 9, "n_min": 91, "n_max": 100, "vereiste_m2": "4679.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 90,
+    "fields": {"hoofdsysteem": 10, "n_min": 91, "n_max": 100, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 91,
+    "fields": {"hoofdsysteem": 3, "n_min": 101, "n_max": 110, "vereiste_m2": "5170"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 92,
+    "fields": {"hoofdsysteem": 4, "n_min": 101, "n_max": 110, "vereiste_m2": "5169.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 93,
+    "fields": {"hoofdsysteem": 5, "n_min": 101, "n_max": 110, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 94,
+    "fields": {"hoofdsysteem": 9, "n_min": 101, "n_max": 110, "vereiste_m2": "5169.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 95,
+    "fields": {"hoofdsysteem": 10, "n_min": 101, "n_max": 110, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 96,
+    "fields": {"hoofdsysteem": 3, "n_min": 111, "n_max": 120, "vereiste_m2": "5660"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 97,
+    "fields": {"hoofdsysteem": 4, "n_min": 111, "n_max": 120, "vereiste_m2": "5659.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 98,
+    "fields": {"hoofdsysteem": 5, "n_min": 111, "n_max": 120, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 99,
+    "fields": {"hoofdsysteem": 9, "n_min": 111, "n_max": 120, "vereiste_m2": "5659.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 100,
+    "fields": {"hoofdsysteem": 10, "n_min": 111, "n_max": 120, "vereiste_m2": "250"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 101,
+    "fields": {"hoofdsysteem": 3, "n_min": 121, "n_max": 130, "vereiste_m2": "6150"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 102,
+    "fields": {"hoofdsysteem": 4, "n_min": 121, "n_max": 130, "vereiste_m2": "6149.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 103,
+    "fields": {"hoofdsysteem": 5, "n_min": 121, "n_max": 130, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 104,
+    "fields": {"hoofdsysteem": 9, "n_min": 121, "n_max": 130, "vereiste_m2": "6149.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 105,
+    "fields": {"hoofdsysteem": 10, "n_min": 121, "n_max": 130, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 106,
+    "fields": {"hoofdsysteem": 3, "n_min": 131, "n_max": 140, "vereiste_m2": "6640"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 107,
+    "fields": {"hoofdsysteem": 4, "n_min": 131, "n_max": 140, "vereiste_m2": "6639.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 108,
+    "fields": {"hoofdsysteem": 5, "n_min": 131, "n_max": 140, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 109,
+    "fields": {"hoofdsysteem": 9, "n_min": 131, "n_max": 140, "vereiste_m2": "6639.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 110,
+    "fields": {"hoofdsysteem": 10, "n_min": 131, "n_max": 140, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 111,
+    "fields": {"hoofdsysteem": 3, "n_min": 141, "n_max": 150, "vereiste_m2": "7130"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 112,
+    "fields": {"hoofdsysteem": 4, "n_min": 141, "n_max": 150, "vereiste_m2": "7129.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 113,
+    "fields": {"hoofdsysteem": 5, "n_min": 141, "n_max": 150, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 114,
+    "fields": {"hoofdsysteem": 9, "n_min": 141, "n_max": 150, "vereiste_m2": "7129.5"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 115,
+    "fields": {"hoofdsysteem": 10, "n_min": 141, "n_max": 150, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 116,
+    "fields": {"hoofdsysteem": 3, "n_min": 151, "n_max": 350, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 117,
+    "fields": {"hoofdsysteem": 4, "n_min": 151, "n_max": 350, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 118,
+    "fields": {"hoofdsysteem": 5, "n_min": 151, "n_max": 350, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 119,
+    "fields": {"hoofdsysteem": 9, "n_min": 151, "n_max": 350, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 120,
+    "fields": {"hoofdsysteem": 10, "n_min": 151, "n_max": 350, "vereiste_m2": "300"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 121,
+    "fields": {"hoofdsysteem": 3, "n_min": 351, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 122,
+    "fields": {"hoofdsysteem": 4, "n_min": 351, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 123,
+    "fields": {"hoofdsysteem": 5, "n_min": 351, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 124,
+    "fields": {"hoofdsysteem": 9, "n_min": 351, "n_max": 700, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 125,
+    "fields": {"hoofdsysteem": 10, "n_min": 351, "n_max": 700, "vereiste_m2": "400"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 126,
+    "fields": {"hoofdsysteem": 3, "n_min": 701, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 127,
+    "fields": {"hoofdsysteem": 4, "n_min": 701, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 128,
+    "fields": {"hoofdsysteem": 5, "n_min": 701, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 129,
+    "fields": {"hoofdsysteem": 9, "n_min": 701, "n_max": 1000, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 130,
+    "fields": {"hoofdsysteem": 10, "n_min": 701, "n_max": 1000, "vereiste_m2": "600"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 131,
+    "fields": {"hoofdsysteem": 3, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 132,
+    "fields": {"hoofdsysteem": 4, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 133,
+    "fields": {"hoofdsysteem": 5, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 134,
+    "fields": {"hoofdsysteem": 9, "n_min": 1001, "n_max": null, "vereiste_m2": "0"}
+  },
+  {
+    "model": "kengetallen.collectieveruimtetuin",
+    "pk": 135,
+    "fields": {"hoofdsysteem": 10, "n_min": 1001, "n_max": null, "vereiste_m2": "1000"}
   },
 
   {
