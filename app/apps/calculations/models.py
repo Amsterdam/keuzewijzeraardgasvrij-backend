@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from django.db import models
 
+from apps.auditlog.models import AuditedModel
+
 
 class HuidigSysteemChoices(models.TextChoices):
     COLLECTIEF = "collectief", "Collectief"
@@ -58,7 +60,7 @@ class GebruikersInvoer(models.Model):
         return f"GebruikersInvoer {self.pk or '-'} ({self.bouwjaar})"
 
 
-class Conversie(models.Model):
+class Conversie(AuditedModel):
     """Conversion factors used by calculation logic.
 
     Values are stored in the database and typically loaded via fixtures.
@@ -75,7 +77,7 @@ class Conversie(models.Model):
         return f"{self.naam}={self.waarde}"
 
 
-class EnergiePrijs(models.Model):
+class EnergiePrijs(AuditedModel):
     """Energy price per GJ.
 
     Values are stored in the database and typically loaded via fixtures.

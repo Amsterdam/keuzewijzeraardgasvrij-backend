@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
 
+from apps.auditlog.admin import AuditedAdmin
 from .models import CalculationDashboard, Conversie, EnergiePrijs, GebruikersInvoer
 from .calculator import (
     EnergieCalculator,
@@ -484,10 +485,10 @@ class CalculationDashboardAdmin(admin.ModelAdmin):
 
 
 @admin.register(Conversie)
-class ConversieAdmin(admin.ModelAdmin):
+class ConversieAdmin(AuditedAdmin):
     list_display = get_all_field_names(Conversie)
 
 
 @admin.register(EnergiePrijs)
-class EnergiePrijsAdmin(admin.ModelAdmin):
+class EnergiePrijsAdmin(AuditedAdmin):
     list_display = get_all_field_names(EnergiePrijs)
