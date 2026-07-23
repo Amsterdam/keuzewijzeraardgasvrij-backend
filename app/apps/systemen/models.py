@@ -6,6 +6,7 @@ from decimal import Decimal
 
 from django.db import models
 
+from apps.auditlog.models import AuditedModel
 from apps.calculations.subsysteem_calculations import (
     SubsysteemCalculationMethod,
     SubsysteemFullResult,
@@ -61,7 +62,7 @@ class HoofdsysteemFullResult:
     by_scenario: dict[str, HoofdsysteemScenarioResult]
 
 
-class Hoofdsysteem(models.Model):
+class Hoofdsysteem(AuditedModel):
     naam = models.CharField(max_length=255)
     beschrijving = models.TextField(blank=True, null=True)
     subsystemen = models.ManyToManyField("Subsysteem", related_name="hoofdsystemen")
@@ -239,7 +240,7 @@ class SubsysteemType(models.TextChoices):
     STADSWARMTE = "stadswarmte", "Stadswarmte"
 
 
-class Subsysteem(models.Model):
+class Subsysteem(AuditedModel):
     naam = models.CharField(max_length=255)
 
     type = models.CharField(

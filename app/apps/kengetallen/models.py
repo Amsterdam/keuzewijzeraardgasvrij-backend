@@ -5,6 +5,8 @@ from decimal import Decimal
 from django.db import models
 from django.db.models.functions import Replace, Upper
 
+from apps.auditlog.models import AuditedModel
+
 
 class ScenarioKeuze(models.TextChoices):
     LAAG = "laag", "Laag"
@@ -12,7 +14,7 @@ class ScenarioKeuze(models.TextChoices):
     HOOG = "hoog", "Hoog"
 
 
-class Kengetal(models.Model):
+class Kengetal(AuditedModel):
     SCENARIO_KEUZES = [
         (ScenarioKeuze.LAAG, "Laag"),
         (ScenarioKeuze.MIDDEN, "Midden"),
@@ -64,7 +66,7 @@ def _collectieve_ruimte_constraints(*, scope: str) -> list[models.BaseConstraint
     ]
 
 
-class CollectieveRuimteBinnen(models.Model):
+class CollectieveRuimteBinnen(AuditedModel):
     hoofdsysteem = models.ForeignKey(
         "systemen.Hoofdsysteem",
         on_delete=models.CASCADE,
@@ -86,7 +88,7 @@ class CollectieveRuimteBinnen(models.Model):
         return f"{self.hoofdsysteem.naam}: {self.n_min}–{max_label} woningen → {self.vereiste_m2} m²"
 
 
-class CollectieveRuimteBuiten(models.Model):
+class CollectieveRuimteBuiten(AuditedModel):
     hoofdsysteem = models.ForeignKey(
         "systemen.Hoofdsysteem",
         on_delete=models.CASCADE,
@@ -108,7 +110,7 @@ class CollectieveRuimteBuiten(models.Model):
         return f"{self.hoofdsysteem.naam}: {self.n_min}–{max_label} woningen → {self.vereiste_m2} m²"
 
 
-class CollectieveRuimteTuin(models.Model):
+class CollectieveRuimteTuin(AuditedModel):
     hoofdsysteem = models.ForeignKey(
         "systemen.Hoofdsysteem",
         on_delete=models.CASCADE,
@@ -130,7 +132,7 @@ class CollectieveRuimteTuin(models.Model):
         return f"{self.hoofdsysteem.naam}: {self.n_min}–{max_label} woningen → {self.vereiste_m2} m²"
 
 
-class EliminatieKengetal(models.Model):
+class EliminatieKengetal(AuditedModel):
     naam = models.CharField(max_length=255, unique=True)
 
     woningen_min = models.IntegerField()
@@ -160,7 +162,7 @@ class EliminatieKengetal(models.Model):
         return f"{self.naam}: {self.woningen_min}–{max_label} woningen"
 
 
-class MultiCriteriaAnalyseKengetal(models.Model):
+class MultiCriteriaAnalyseKengetal(AuditedModel):
     hoofdsysteem = models.OneToOneField(
         "systemen.Hoofdsysteem",
         on_delete=models.CASCADE,
@@ -183,7 +185,7 @@ class MultiCriteriaAnalyseKengetal(models.Model):
         return f"{self.hoofdsysteem.naam} (MCA)"
 
 
-class McdaHoofdcriterium(models.Model):
+class McdaHoofdcriterium(AuditedModel):
     naam = models.CharField(max_length=255, unique=True)
     wegingsfactor = models.DecimalField(max_digits=18, decimal_places=9)
 
@@ -196,7 +198,7 @@ class McdaHoofdcriterium(models.Model):
         return f"{self.naam} ({self.wegingsfactor})"
 
 
-class McdaSubcriterium(models.Model):
+class McdaSubcriterium(AuditedModel):
     hoofdcriterium = models.ForeignKey(
         McdaHoofdcriterium,
         on_delete=models.CASCADE,
@@ -275,8 +277,11 @@ class AlgemeenKengetal(Kengetal):
         verbose_name = "Algemeen kengetal"
         verbose_name_plural = "Algemene kengetallen"
 
+    def __str__(self):
+        return f"{self.naam}={self.waarde}"
 
-class GelijktijdigheidCV(models.Model):
+
+class GelijktijdigheidCV(AuditedModel):
     n_min = models.IntegerField()
     n_max = models.IntegerField(blank=True, null=True)
     factor = models.DecimalField(max_digits=18, decimal_places=9)
@@ -297,7 +302,7 @@ class GelijktijdigheidCV(models.Model):
         return f"{self.n_min}–{max_label}: {self.factor}"
 
 
-class CollectieveWarmtepompKengetal(models.Model):
+class CollectieveWarmtepompKengetal(AuditedModel):
     """Kengetallen for the collective warmtepomp sizing/cost formula."""
 
     naam = models.CharField(max_length=64, unique=True)
@@ -312,7 +317,7 @@ class CollectieveWarmtepompKengetal(models.Model):
         return f"{self.naam}={self.waarde}"
 
 
-class Warmteprogramma(models.Model):
+class Warmteprogramma(AuditedModel):
     categorie = models.CharField(max_length=255, unique=True, blank=True, null=True)
     warmtenet_start = models.IntegerField(blank=True, null=True)
     warmtenet_stop = models.IntegerField(blank=True, null=True)
@@ -332,7 +337,7 @@ class Warmteprogramma(models.Model):
         return f"{categorie} ({self.warmtenet_start}–{self.warmtenet_stop})"
 
 
-class BuurtcodeWarmteprogramma(models.Model):
+class BuurtcodeWarmteprogramma(AuditedModel):
     buurtcode = models.CharField(max_length=16, unique=True)
     warmteprogramma = models.ForeignKey(
         Warmteprogramma,
@@ -377,7 +382,7 @@ class StadsverwarmingVermogenBerekenenOp(models.TextChoices):
     KOUDE = "koude", "Koude"
 
 
-class StadsverwarmingKengetal(models.Model):
+class StadsverwarmingKengetal(AuditedModel):
     klanttype = models.CharField(
         max_length=20, choices=StadsverwarmingKlantType.choices
     )
@@ -430,7 +435,7 @@ class StadsverwarmingKengetal(models.Model):
         return f"{self.klanttype}/{self.producttype} - {self.kostetype}{kw_range}"
 
 
-class GasverbruikGegeven(models.Model):
+class GasverbruikGegeven(AuditedModel):
     postcode_start = models.CharField(max_length=7)
     postcode_eind = models.CharField(max_length=7)
     gemiddeld_verbruik = models.DecimalField(max_digits=18, decimal_places=9)

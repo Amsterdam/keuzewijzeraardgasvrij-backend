@@ -3,6 +3,7 @@ from typing import Any
 
 from django.contrib import admin
 
+from apps.auditlog.admin import AuditedAdmin
 from .models import (
     AlgemeenKengetal,
     BuurtcodeWarmteprogramma,
@@ -124,62 +125,62 @@ def format(value: Decimal | None) -> str:
 
 
 @admin.register(Hoofdkengetal)
-class HoofdkengetalAdmin(admin.ModelAdmin):
+class HoofdkengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(Hoofdkengetal)
     list_select_related = True
 
 
 @admin.register(Subkengetal)
-class SubkengetalAdmin(admin.ModelAdmin):
+class SubkengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(Subkengetal)
     list_select_related = True
 
 
 @admin.register(AlgemeenKengetal)
-class AlgemeenKengetalAdmin(admin.ModelAdmin):
+class AlgemeenKengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(AlgemeenKengetal)
 
 
 @admin.register(GelijktijdigheidCV)
-class GelijktijdigheidCVAdmin(admin.ModelAdmin):
+class GelijktijdigheidCVAdmin(AuditedAdmin):
     list_display = get_all_field_names(GelijktijdigheidCV)
 
 
 @admin.register(GasverbruikGegeven)
-class GasverbruikGegevenAdmin(admin.ModelAdmin):
+class GasverbruikGegevenAdmin(AuditedAdmin):
     list_display = get_all_field_names(GasverbruikGegeven)
 
 
 @admin.register(CollectieveWarmtepompKengetal)
-class CollectieveWarmtepompKengetalAdmin(admin.ModelAdmin):
+class CollectieveWarmtepompKengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(CollectieveWarmtepompKengetal)
 
 
 @admin.register(CollectieveRuimteBinnen)
-class CollectieveRuimteBinnenAdmin(admin.ModelAdmin):
+class CollectieveRuimteBinnenAdmin(AuditedAdmin):
     list_display = get_all_field_names(CollectieveRuimteBinnen)
     list_select_related = True
 
 
 @admin.register(CollectieveRuimteBuiten)
-class CollectieveRuimteBuitenAdmin(admin.ModelAdmin):
+class CollectieveRuimteBuitenAdmin(AuditedAdmin):
     list_display = get_all_field_names(CollectieveRuimteBuiten)
     list_select_related = True
 
 
 @admin.register(CollectieveRuimteTuin)
-class CollectieveRuimteTuinAdmin(admin.ModelAdmin):
+class CollectieveRuimteTuinAdmin(AuditedAdmin):
     list_display = get_all_field_names(CollectieveRuimteTuin)
     list_select_related = True
 
 
 @admin.register(EliminatieKengetal)
-class EliminatieKengetalAdmin(admin.ModelAdmin):
+class EliminatieKengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(EliminatieKengetal)
 
 
 @admin.register(MultiCriteriaAnalyseKengetal)
-class MultiCriteriaAnalyseKengetalAdmin(admin.ModelAdmin):
+class MultiCriteriaAnalyseKengetalAdmin(AuditedAdmin):
     list_display = (
         "id",
         "hoofdsysteem",
@@ -212,7 +213,7 @@ class MultiCriteriaAnalyseKengetalAdmin(admin.ModelAdmin):
 
 
 @admin.register(McdaHoofdcriterium)
-class McdaHoofdcriteriumAdmin(admin.ModelAdmin):
+class McdaHoofdcriteriumAdmin(AuditedAdmin):
     list_display = ("id", "naam", "wegingsfactor_2dp")
 
     @admin.display(description="Wegingsfactor")
@@ -221,7 +222,7 @@ class McdaHoofdcriteriumAdmin(admin.ModelAdmin):
 
 
 @admin.register(McdaSubcriterium)
-class McdaSubcriteriumAdmin(admin.ModelAdmin):
+class McdaSubcriteriumAdmin(AuditedAdmin):
     list_display = ("id", "hoofdcriterium", "naam", "relatieve_wegingsfactor_2dp")
     list_select_related = True
 
@@ -231,17 +232,17 @@ class McdaSubcriteriumAdmin(admin.ModelAdmin):
 
 
 @admin.register(Warmteprogramma)
-class WarmteprogrammaAdmin(admin.ModelAdmin):
+class WarmteprogrammaAdmin(AuditedAdmin):
     list_display = get_all_field_names(Warmteprogramma)
     filter_horizontal = ("hoofdsystemen",)
 
 
 @admin.register(BuurtcodeWarmteprogramma)
-class BuurtcodeWarmteprogrammaAdmin(admin.ModelAdmin):
+class BuurtcodeWarmteprogrammaAdmin(AuditedAdmin):
     list_display = get_all_field_names(BuurtcodeWarmteprogramma)
     list_select_related = True
 
 
 @admin.register(StadsverwarmingKengetal)
-class StadsverwarmingKengetalAdmin(admin.ModelAdmin):
+class StadsverwarmingKengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(StadsverwarmingKengetal)

@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from apps.auditlog.admin import AuditedAdmin
 from .models import Hoofdsysteem, Subsysteem
 
 
@@ -8,7 +9,7 @@ def get_all_field_names(model):
 
 
 @admin.register(Hoofdsysteem)
-class HoofdsysteemAdmin(admin.ModelAdmin):
+class HoofdsysteemAdmin(AuditedAdmin):
     list_display = get_all_field_names(Hoofdsysteem) + ["toon_subsystemen"]
 
     def get_queryset(self, request):
@@ -22,7 +23,7 @@ class HoofdsysteemAdmin(admin.ModelAdmin):
 
 
 @admin.register(Subsysteem)
-class SubsysteemAdmin(admin.ModelAdmin):
+class SubsysteemAdmin(AuditedAdmin):
     list_display = get_all_field_names(Subsysteem)
 
     fields = ("naam", "type", "calculation_method")
