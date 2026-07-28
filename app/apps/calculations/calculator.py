@@ -113,14 +113,12 @@ class RedenenScoreMessages:
 
     # Elektrisch vermogen
     ELEKTRISCH_BEST: Final[str] = (
-        "Deze oplossing heeft een lage impact op het elekriciteitsnet."
+        "Deze oplossing heeft een lage hoeveelheid stroom nodig."
     )
     ELEKTRISCH_AVERAGE: Final[str] = (
-        "Deze oplossing heeft een gemiddelde impact op het elekriciteitsnet."
+        "Deze oplossing heeft een gemiddelde hoeveelheid stroom nodig."
     )
-    ELEKTRISCH_WORST: Final[str] = (
-        "Deze oplossing heeft een hoge impact op het elekriciteitsnet."
-    )
+    ELEKTRISCH_WORST: Final[str] = "Deze oplossing heeft veel extra stroom nodig."
 
     # Ruimte
     RUIMTE_BEST: Final[str] = "Deze oplossing neemt weining ruimte in."
