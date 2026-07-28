@@ -10,7 +10,10 @@ from rest_framework.test import APIClient
 from apps.calculations.calculator import RedenenScoreMessages
 from apps.calculations.models import GebruikersInvoer
 from apps.calculations.pdok_client import PandData
-from apps.calculations.serializers import GebruikersInvoerCreateSerializer
+from apps.calculations.serializers import (
+    GebruikersInvoerCreateSerializer,
+    HoofdsysteemCalculationResultSerializer,
+)
 from apps.kengetallen.models import (
     AlgemeenKengetal,
     BuurtcodeWarmteprogramma,
@@ -386,3 +389,30 @@ class GebruikersInvoerCreateSerializerTest(TestCase):
         serializer = GebruikersInvoerCreateSerializer(data=payload)
         self.assertFalse(serializer.is_valid())
         self.assertIn("beschikbare_collectieve_ruimte_binnen_m2", serializer.errors)
+
+
+class HoofdsysteemCalculationResultSerializerTest(TestCase):
+    def test_rounds_kosten_range_at_serialization_time(self):
+        serializer = HoofdsysteemCalculationResultSerializer(
+            {
+                "naam": "Test",
+                "beschrijving": "",
+                "beschrijving_url": "",
+                "beschrijving_url_title": "",
+                "warmteprogramma_tekst": "",
+                "isolatie_popup": False,
+                "past_in_tuin": None,
+                "omgevingsvergunning": "",
+                "tco": 1000,
+                "score": 0,
+                "is_mogelijk": True,
+                "redenen_niet_mogelijk": [],
+                "kosten_per_woning_per_jaar": 100,
+                "kosten_per_woning_per_jaar_laag": Decimal("100.99"),
+                "kosten_per_woning_per_jaar_hoog": Decimal("100.01"),
+                "redenen_score": [],
+            }
+        )
+
+        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_laag"], 100)
+        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_hoog"], 101)

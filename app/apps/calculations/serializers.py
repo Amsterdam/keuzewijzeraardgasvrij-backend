@@ -1,5 +1,5 @@
 import math
-from decimal import Decimal
+from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal
 
 from django.utils import timezone
 from rest_framework import serializers
@@ -17,6 +17,19 @@ def _validate_finite_number(value, _: str):
     if not math.isfinite(value):
         raise serializers.ValidationError("Must be a finite number.")
     return value
+
+
+class RoundedIntegerField(serializers.IntegerField):
+    def __init__(self, *, rounding: str, **kwargs):
+        self.rounding = rounding
+        super().__init__(**kwargs)
+
+    def to_representation(self, value):
+        if isinstance(value, Decimal):
+            decimal_value = value
+        else:
+            decimal_value = Decimal(str(value))
+        return int(decimal_value.quantize(Decimal("1"), rounding=self.rounding))
 
 
 class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
@@ -113,8 +126,8 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     is_mogelijk = serializers.BooleanField()
     redenen_niet_mogelijk = serializers.ListField(child=serializers.CharField())
     kosten_per_woning_per_jaar = serializers.IntegerField()
-    kosten_per_woning_per_jaar_laag = serializers.IntegerField()
-    kosten_per_woning_per_jaar_hoog = serializers.IntegerField()
+    kosten_per_woning_per_jaar_laag = RoundedIntegerField(rounding=ROUND_FLOOR)
+    kosten_per_woning_per_jaar_hoog = RoundedIntegerField(rounding=ROUND_CEILING)
     redenen_score = serializers.ListField(child=serializers.CharField())
 
 

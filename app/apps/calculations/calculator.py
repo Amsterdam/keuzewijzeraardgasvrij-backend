@@ -1256,8 +1256,8 @@ class MultiCriteriaAnalyse:
                     "tco": float(tco_midden),
                     "score": round(Decimal("0")),
                     "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
-                    "kosten_per_woning_per_jaar_laag": round(tco_laag / Decimal("30")),
-                    "kosten_per_woning_per_jaar_hoog": round(tco_hoog / Decimal("30")),
+                    "kosten_per_woning_per_jaar_laag": tco_laag / Decimal("30"),
+                    "kosten_per_woning_per_jaar_hoog": tco_hoog / Decimal("30"),
                     "is_mogelijk": is_mogelijk,
                     "redenen_niet_mogelijk": redenen,
                 }
