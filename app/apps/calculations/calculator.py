@@ -113,14 +113,12 @@ class RedenenScoreMessages:
 
     # Elektrisch vermogen
     ELEKTRISCH_BEST: Final[str] = (
-        "Deze oplossing heeft een lage impact op het elekriciteitsnet."
+        "Deze oplossing heeft een lage hoeveelheid stroom nodig."
     )
     ELEKTRISCH_AVERAGE: Final[str] = (
-        "Deze oplossing heeft een gemiddelde impact op het elekriciteitsnet."
+        "Deze oplossing heeft een gemiddelde hoeveelheid stroom nodig."
     )
-    ELEKTRISCH_WORST: Final[str] = (
-        "Deze oplossing heeft een hoge impact op het elekriciteitsnet."
-    )
+    ELEKTRISCH_WORST: Final[str] = "Deze oplossing heeft veel extra stroom nodig."
 
     # Ruimte
     RUIMTE_BEST: Final[str] = "Deze oplossing neemt weining ruimte in."
@@ -1258,8 +1256,8 @@ class MultiCriteriaAnalyse:
                     "tco": float(tco_midden),
                     "score": round(Decimal("0")),
                     "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
-                    "kosten_per_woning_per_jaar_laag": round(tco_laag / Decimal("30")),
-                    "kosten_per_woning_per_jaar_hoog": round(tco_hoog / Decimal("30")),
+                    "kosten_per_woning_per_jaar_laag": tco_laag / Decimal("30"),
+                    "kosten_per_woning_per_jaar_hoog": tco_hoog / Decimal("30"),
                     "is_mogelijk": is_mogelijk,
                     "redenen_niet_mogelijk": redenen,
                 }
