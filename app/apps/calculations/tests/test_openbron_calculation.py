@@ -129,3 +129,23 @@ class OpenbronCalculationTest(TestCase):
                 via_model.onderhoud_eur_per_woning_per_jaar,
                 direct.onderhoud_eur_per_woning_per_jaar,
             )
+
+    def test_calculate_openbron_systeem_uses_vve_vermogen_for_bodemzijdig_vermogen(
+        self,
+    ):
+        subsysteem = Subsysteem.objects.get(naam="Open bron (mono 35m³/h)")
+        subkengetal = Subkengetal.objects.get(
+            subsysteem=subsysteem, scenario=ScenarioKeuze.MIDDEN
+        )
+        energie = EnergieCalculator().calculate(_calculation_input(aantal_woningen=200))
+        cv_row = energie.by_scenario[str(ScenarioKeuze.MIDDEN)][EnergieType.CV]
+
+        result = calculate_openbron_systeem(
+            subkengetal,
+            cv_energie_calculation=cv_row,
+        )
+
+        self.assertEqual(
+            result.bodemzijdig_vermogen_kw,
+            cv_row.vermogen_warmte_kw_per_vve * subkengetal.verhouding_vermogen_bron,
+        )
