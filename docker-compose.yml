@@ -3,7 +3,7 @@ services:
   keuzewijzeraardgasvrij-backend:
     build: app
     hostname: keuzewijzeraardgasvrij-backend
-    image: ${REGISTRY:-127.0.0.1:5001}/${REPOSITORY:-salmagundi/keuzewijzeraardgasvrij-backend}:${VERSION:-latest}
+    image: ${REGISTRY:-127.0.0.1:5001}/${REPOSITORY:-ams-woon/keuzewijzeraardgasvrij/backend}:${VERSION:-latest}
     ports:
       - 8082:8000
     networks:
