@@ -3882,7 +3882,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 1,
     "fields": {
-      "naam": "Individuele Luchtwarmtepomp op Ventilatie",
+      "hoofdsysteem": 1,
       "woningen_min": 1,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "1",
@@ -3896,7 +3896,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 2,
     "fields": {
-      "naam": "Individuele Luchtwarmtepomp op Buitenlucht",
+      "hoofdsysteem": 2,
       "woningen_min": 1,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "1",
@@ -3910,7 +3910,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 3,
     "fields": {
-      "naam": "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "hoofdsysteem": 3,
       "woningen_min": 1,
       "woningen_max": 20,
       "benodigde_ruimte_in_woning_m2": "1",
@@ -3924,7 +3924,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 4,
     "fields": {
-      "naam": "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "hoofdsysteem": 4,
       "woningen_min": 20,
       "woningen_max": 150,
       "benodigde_ruimte_in_woning_m2": "1",
@@ -3938,7 +3938,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 5,
     "fields": {
-      "naam": "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
+      "hoofdsysteem": 5,
       "woningen_min": 120,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "1",
@@ -3952,7 +3952,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 6,
     "fields": {
-      "naam": "Particulier Externe warmtelevering",
+      "hoofdsysteem": 6,
       "woningen_min": 1,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",
@@ -3966,7 +3966,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 7,
     "fields": {
-      "naam": "Particulier Externe warmtelevering + externe koeling",
+      "hoofdsysteem": 7,
       "woningen_min": 1,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",
@@ -3980,7 +3980,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 8,
     "fields": {
-      "naam": "Collectieve Luchtwarmtepomp op Buitenlucht",
+      "hoofdsysteem": 8,
       "woningen_min": 10,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",
@@ -3994,7 +3994,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 9,
     "fields": {
-      "naam": "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
+      "hoofdsysteem": 9,
       "woningen_min": 20,
       "woningen_max": 150,
       "benodigde_ruimte_in_woning_m2": "0.5",
@@ -4008,7 +4008,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 10,
     "fields": {
-      "naam": "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
+      "hoofdsysteem": 10,
       "woningen_min": 120,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",
@@ -4022,7 +4022,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 11,
     "fields": {
-      "naam": "Zakelijk Collectief Externe warmtelevering",
+      "hoofdsysteem": 11,
       "woningen_min": 25,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",
@@ -4036,7 +4036,7 @@
     "model": "kengetallen.eliminatiekengetal",
     "pk": 12,
     "fields": {
-      "naam": "Zakelijk Collectief Externe warmtelevering + externe koeling",
+      "hoofdsysteem": 12,
       "woningen_min": 25,
       "woningen_max": null,
       "benodigde_ruimte_in_woning_m2": "0.5",

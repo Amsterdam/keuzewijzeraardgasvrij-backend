@@ -937,7 +937,9 @@ class Eliminatie:
             )
         )
 
-        eliminatie_kengetal = EliminatieKengetal.objects.get(naam=hoofdsysteem_naam)
+        eliminatie_kengetal = EliminatieKengetal.objects.get(
+            hoofdsysteem__naam=hoofdsysteem_naam
+        )
 
         redenen: list[str] = []
 
@@ -1116,7 +1118,7 @@ class MultiCriteriaAnalyse:
         calculation_input: GebruikersInvoer,
         tco: Decimal,
     ) -> Metrics:
-        eliminatie_kengetal = EliminatieKengetal.objects.get(naam=hoofdsysteem.naam)
+        eliminatie_kengetal = EliminatieKengetal.objects.get(hoofdsysteem=hoofdsysteem)
         ruimte_in_woning = self._to_decimal(
             eliminatie_kengetal.benodigde_ruimte_in_woning_m2
         )
