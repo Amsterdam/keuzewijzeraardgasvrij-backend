@@ -1226,21 +1226,6 @@
 
   {
     "model": "kengetallen.algemeenkengetal",
-    "pk": 7,
-    "fields": {"scenario": "laag", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.8"}
-  },
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 8,
-    "fields": {"scenario": "midden", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.7"}
-  },
-  {
-    "model": "kengetallen.algemeenkengetal",
-    "pk": 9,
-    "fields": {"scenario": "hoog", "naam": "gelijktijdigheid_cv", "omschrijving": "Gelijktijdigheidsfactor ruimteverwarming collectief", "waarde": "0.7"}
-  },
-  {
-    "model": "kengetallen.algemeenkengetal",
     "pk": 10,
     "fields": {"scenario": "midden", "naam": "DREMPELWAARDE_ISOLATIESTOP", "omschrijving": "Drempelwaarde [kWth/m²]", "waarde": "65"}
   },

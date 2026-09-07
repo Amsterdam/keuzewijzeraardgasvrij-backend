@@ -401,7 +401,6 @@ class EnergieCalculator:
             [
                 "percentage_ruimteverwarming",
                 "rendement_gasketel",
-                "gelijktijdigheid_cv",
                 "gasvraag_koken",
                 "vermogen_cv_max",
                 "vermogen_cv_matig",
@@ -414,7 +413,6 @@ class EnergieCalculator:
         rendement_gasketel = kengetallen["rendement_gasketel"]
         gelijktijdigheid_cv = self._get_gelijktijdigheidcv_factor(
             aantal_woningen=calculation_input.aantal_woningen,
-            fallback=kengetallen["gelijktijdigheid_cv"],
         )
 
         vermogen_cv = kengetallen["vermogen_cv_min"]
@@ -550,7 +548,6 @@ class EnergieCalculator:
         self,
         *,
         aantal_woningen: int,
-        fallback: Decimal,
     ) -> Decimal:
         row = (
             GelijktijdigheidCV.objects.filter(n_min__lte=aantal_woningen)
@@ -559,7 +556,11 @@ class EnergieCalculator:
             .values_list("factor", flat=True)
             .first()
         )
-        return fallback if row is None else self._to_decimal(row)
+        if row is None:
+            raise GelijktijdigheidCV.DoesNotExist(
+                f"Missing GelijktijdigheidCV for aantal_woningen={aantal_woningen}"
+            )
+        return self._to_decimal(row)
 
 
 class StadsverwarmingCalculator:
