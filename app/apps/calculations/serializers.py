@@ -20,8 +20,9 @@ def _validate_finite_number(value, _: str):
 
 
 class RoundedIntegerField(serializers.IntegerField):
-    def __init__(self, *, rounding: str, **kwargs):
+    def __init__(self, *, rounding: str, base: int = 1, **kwargs):
         self.rounding = rounding
+        self.base = Decimal(base)
         super().__init__(**kwargs)
 
     def to_representation(self, value):
@@ -29,7 +30,10 @@ class RoundedIntegerField(serializers.IntegerField):
             decimal_value = value
         else:
             decimal_value = Decimal(str(value))
-        return int(decimal_value.quantize(Decimal("1"), rounding=self.rounding))
+        steps = (decimal_value / self.base).quantize(
+            Decimal("1"), rounding=self.rounding
+        )
+        return int(steps * self.base)
 
 
 class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
@@ -126,8 +130,12 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     is_mogelijk = serializers.BooleanField()
     redenen_niet_mogelijk = serializers.ListField(child=serializers.CharField())
     kosten_per_woning_per_jaar = serializers.IntegerField()
-    kosten_per_woning_per_jaar_laag = RoundedIntegerField(rounding=ROUND_FLOOR)
-    kosten_per_woning_per_jaar_hoog = RoundedIntegerField(rounding=ROUND_CEILING)
+    kosten_per_woning_per_jaar_laag = RoundedIntegerField(
+        rounding=ROUND_FLOOR, base=100
+    )
+    kosten_per_woning_per_jaar_hoog = RoundedIntegerField(
+        rounding=ROUND_CEILING, base=100
+    )
     redenen_score = serializers.ListField(child=serializers.CharField())
 
 
