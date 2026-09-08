@@ -189,9 +189,6 @@ class EnergieCalculatorTest(TestCase):
         conversie_kwh_naar_gj = self._conversie("kwh_naar_gj")
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
-            gelijktijdigheid_cv_fallback = self._kengetal(
-                scenario, "gelijktijdigheid_cv"
-            )
             percentage_ruimteverwarming = self._kengetal(
                 scenario, "percentage_ruimteverwarming"
             )
@@ -199,7 +196,6 @@ class EnergieCalculatorTest(TestCase):
 
             gelijktijdigheid_cv = calculator._get_gelijktijdigheidcv_factor(
                 aantal_woningen=aantal_woningen,
-                fallback=gelijktijdigheid_cv_fallback,
             )
 
             vermogen_cv_max = self._kengetal(scenario, "vermogen_cv_max")
