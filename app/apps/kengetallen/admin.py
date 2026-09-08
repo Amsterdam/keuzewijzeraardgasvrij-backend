@@ -177,6 +177,7 @@ class CollectieveRuimteTuinAdmin(AuditedAdmin):
 @admin.register(EliminatieKengetal)
 class EliminatieKengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(EliminatieKengetal)
+    list_select_related = True
 
 
 @admin.register(MultiCriteriaAnalyseKengetal)
