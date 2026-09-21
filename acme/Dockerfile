@@ -1,0 +1,1 @@
+FROM goacme/lego:latest

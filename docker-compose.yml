@@ -14,6 +14,32 @@ services:
     stdin_open: true
     tty: true
 
+  keuzewijzeraardgasvrij-acme:
+    build:
+      context: acme
+    image: ${REGISTRY:-127.0.0.1:5001}/${REPOSITORY:-ams-woon/keuzewijzeraardgasvrij/backend/acme}:${VERSION:-latest}
+    ports:
+      - "80:80"
+    networks:
+      - keuzewijzeraardgasvrij_network
+    volumes:
+      - acme-data:/data
+    command:
+      - run
+      - --accept-tos
+      - --email
+      - n.van.der.laan@amsterdam.nl
+      - --domains
+      - acc.api.keuzewijzeraardgasvrij.amsterdam.nl
+      - --http
+      - --path
+      - /data
+
+
 networks:
   keuzewijzeraardgasvrij_network:
     external: true
+
+volumes:
+  postgresql-data:
+  acme-data:
