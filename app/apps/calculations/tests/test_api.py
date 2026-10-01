@@ -425,6 +425,11 @@ class HoofdsysteemCalculationResultSerializerTest(TestCase):
                 "kosten_per_woning_per_jaar": 100,
                 "kosten_per_woning_per_jaar_laag": Decimal("1250.99"),
                 "kosten_per_woning_per_jaar_hoog": Decimal("1200.01"),
+                "ruimtevraag": {
+                    "installatieruimte_in_woning": 1,
+                    "installatieruimte_in_gebouw": 2,
+                    "installatieruimte_buiten": 3,
+                },
                 "redenen_score": [],
             }
         )
