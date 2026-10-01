@@ -8,6 +8,7 @@ from apps.calculations.calculator import (
     EnergieCalculator,
     EnergieType,
     MultiCriteriaAnalyse,
+    _build_ruimtevraag,
 )
 from apps.calculations.models import Conversie, GebruikersInvoer
 from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
@@ -133,6 +134,39 @@ class EnergieCalculatorTest(TestCase):
         )
 
         self.assertEqual(metrics.collectieve_ruimte_tuin_benodigd, Decimal("0"))
+
+    def test_build_ruimtevraag_uses_only_collectieve_buitenruimte(self):
+        calc_input = _calculation_input(aantal_woningen=50)
+        energie = EnergieCalculator().calculate(calc_input)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+        )
+        full = hoofdsysteem.calculate(energie_calculation=energie)
+
+        metrics = MultiCriteriaAnalyse()._build_metrics(
+            hoofdsysteem=hoofdsysteem,
+            full=full,
+            calculation_input=calc_input,
+            tco=full.by_scenario[ScenarioKeuze.MIDDEN].tco,
+        )
+
+        ruimtevraag = _build_ruimtevraag(metrics=metrics)
+
+        self.assertEqual(
+            ruimtevraag["installatieruimte_in_woning"],
+            round(metrics.ruimte_in_woning),
+        )
+        self.assertEqual(
+            ruimtevraag["installatieruimte_in_gebouw"],
+            round(metrics.collectieve_ruimte_binnen_benodigd),
+        )
+        self.assertEqual(
+            ruimtevraag["installatieruimte_buiten"],
+            round(
+                metrics.collectieve_ruimte_buiten_benodigd
+                + metrics.collectieve_ruimte_tuin_benodigd
+            ),
+        )
 
     def test_past_in_tuin_is_true_when_bodemsysteem_fits(self):
         calc_input = _calculation_input(

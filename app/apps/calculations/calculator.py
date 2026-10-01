@@ -38,6 +38,12 @@ EnergieTypeValue = Literal["tapwater", "cv", "gkw"]
 MultiCriteriaAnalyseSortKey: TypeAlias = tuple[bool, Decimal, str]
 
 
+class Ruimtevraag(TypedDict):
+    installatieruimte_in_woning: int
+    installatieruimte_in_gebouw: int
+    installatieruimte_buiten: int
+
+
 class MultiCriteriaAnalyseRow(TypedDict):
     naam: str
     beschrijving: str
@@ -52,6 +58,7 @@ class MultiCriteriaAnalyseRow(TypedDict):
     kosten_per_woning_per_jaar: float
     kosten_per_woning_per_jaar_laag: float
     kosten_per_woning_per_jaar_hoog: float
+    ruimtevraag: Ruimtevraag
     is_mogelijk: bool
     redenen_niet_mogelijk: list[str]
     redenen_score: list[str]
@@ -86,6 +93,19 @@ class Weights:
 class PreparedRowsAndMetrics:
     rows: list[MultiCriteriaAnalyseRow]
     metrics_by_hoofdsysteem_naam: dict[str, Metrics]
+
+
+def _build_ruimtevraag(*, metrics: Metrics) -> Ruimtevraag:
+    return {
+        "installatieruimte_in_woning": round(metrics.ruimte_in_woning),
+        "installatieruimte_in_gebouw": round(
+            metrics.collectieve_ruimte_binnen_benodigd
+        ),
+        "installatieruimte_buiten": round(
+            metrics.collectieve_ruimte_buiten_benodigd
+            + metrics.collectieve_ruimte_tuin_benodigd
+        ),
+    }
 
 
 @dataclass(frozen=True, slots=True)
@@ -1227,6 +1247,13 @@ class MultiCriteriaAnalyse:
                 full.by_scenario[ScenarioKeuze.HOOG].tco + subsysteem_tco_hoog
             ).quantize(Decimal("0.01"))
 
+            metrics = self._build_metrics(
+                hoofdsysteem=hoofdsysteem,
+                full=full,
+                calculation_input=calculation_input,
+                tco=tco_midden,
+            )
+
             is_mogelijk, redenen = self._calculate_eliminatie(
                 eliminatie=eliminatie,
                 calculation_input=calculation_input,
@@ -1261,17 +1288,13 @@ class MultiCriteriaAnalyse:
                     "kosten_per_woning_per_jaar": round(tco_midden / Decimal("30")),
                     "kosten_per_woning_per_jaar_laag": tco_laag / Decimal("30"),
                     "kosten_per_woning_per_jaar_hoog": tco_hoog / Decimal("30"),
+                    "ruimtevraag": _build_ruimtevraag(metrics=metrics),
                     "is_mogelijk": is_mogelijk,
                     "redenen_niet_mogelijk": redenen,
                 }
             )
 
-            metrics_by_hoofdsysteem_naam[hoofdsysteem.naam] = self._build_metrics(
-                hoofdsysteem=hoofdsysteem,
-                full=full,
-                calculation_input=calculation_input,
-                tco=tco_midden,
-            )
+            metrics_by_hoofdsysteem_naam[hoofdsysteem.naam] = metrics
 
         return PreparedRowsAndMetrics(
             rows=rows,
@@ -1437,9 +1460,12 @@ class MultiCriteriaAnalyse:
         return None
 
     def _is_bodemsysteem(self, hoofdsysteem: Hoofdsysteem) -> bool:
-        return any(
-            subsysteem.calculation_method in {"openbron", "gbs"}
-            for subsysteem in hoofdsysteem.subsystemen.all()
+        return (
+            any(
+                subsysteem.calculation_method in {"openbron", "gbs"}
+                for subsysteem in hoofdsysteem.subsystemen.all()
+            )
+            or "Individuele bodemlus" in hoofdsysteem.naam
         )
 
     def _append_systeem_metrics(

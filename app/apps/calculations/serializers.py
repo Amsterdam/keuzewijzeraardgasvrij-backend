@@ -117,6 +117,11 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
 
 
 class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
+    class RuimtevraagSerializer(serializers.Serializer):
+        installatieruimte_in_woning = serializers.IntegerField()
+        installatieruimte_in_gebouw = serializers.IntegerField()
+        installatieruimte_buiten = serializers.IntegerField()
+
     naam = serializers.CharField()
     beschrijving = serializers.CharField(allow_blank=True)
     beschrijving_url = serializers.CharField(allow_blank=True)
@@ -136,6 +141,7 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     kosten_per_woning_per_jaar_hoog = RoundedIntegerField(
         rounding=ROUND_CEILING, base=100
     )
+    ruimtevraag = RuimtevraagSerializer()
     redenen_score = serializers.ListField(child=serializers.CharField())
 
 

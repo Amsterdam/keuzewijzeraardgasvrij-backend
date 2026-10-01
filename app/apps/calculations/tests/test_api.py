@@ -96,11 +96,26 @@ class CalculationInputCreateApiTest(TestCase):
                     "kosten_per_woning_per_jaar",
                     "kosten_per_woning_per_jaar_laag",
                     "kosten_per_woning_per_jaar_hoog",
+                    "ruimtevraag",
                     "redenen_niet_mogelijk",
                     "redenen_score",
                 ]
             ),
         )
+
+        ruimtevraag = first.get("ruimtevraag")
+        self.assertIsInstance(ruimtevraag, dict)
+        self.assertEqual(
+            sorted(ruimtevraag.keys()),
+            sorted(
+                [
+                    "installatieruimte_in_woning",
+                    "installatieruimte_in_gebouw",
+                    "installatieruimte_buiten",
+                ]
+            ),
+        )
+        self.assertTrue(all(isinstance(value, int) for value in ruimtevraag.values()))
 
         redenen_score = first.get("redenen_score")
         self.assertIsInstance(redenen_score, list)
