@@ -118,9 +118,15 @@ class GebruikersInvoerCreateSerializer(serializers.ModelSerializer):
 
 class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     class RuimtevraagSerializer(serializers.Serializer):
-        installatieruimte_in_woning = serializers.IntegerField()
-        installatieruimte_in_gebouw = serializers.IntegerField()
-        installatieruimte_buiten = serializers.IntegerField()
+        installatieruimte_in_woning = serializers.DecimalField(
+            max_digits=18, decimal_places=1
+        )
+        installatieruimte_in_gebouw = serializers.DecimalField(
+            max_digits=18, decimal_places=1
+        )
+        installatieruimte_buiten = serializers.DecimalField(
+            max_digits=18, decimal_places=1
+        )
 
     naam = serializers.CharField()
     beschrijving = serializers.CharField(allow_blank=True)
