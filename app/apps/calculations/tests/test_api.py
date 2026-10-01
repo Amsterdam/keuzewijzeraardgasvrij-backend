@@ -115,7 +115,6 @@ class CalculationInputCreateApiTest(TestCase):
                 ]
             ),
         )
-        self.assertTrue(all(isinstance(value, int) for value in ruimtevraag.values()))
 
         redenen_score = first.get("redenen_score")
         self.assertIsInstance(redenen_score, list)

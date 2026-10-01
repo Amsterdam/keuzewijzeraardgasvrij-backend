@@ -39,9 +39,9 @@ MultiCriteriaAnalyseSortKey: TypeAlias = tuple[bool, Decimal, str]
 
 
 class Ruimtevraag(TypedDict):
-    installatieruimte_in_woning: int
-    installatieruimte_in_gebouw: int
-    installatieruimte_buiten: int
+    installatieruimte_in_woning: Decimal
+    installatieruimte_in_gebouw: Decimal
+    installatieruimte_buiten: Decimal
 
 
 class MultiCriteriaAnalyseRow(TypedDict):
@@ -97,14 +97,11 @@ class PreparedRowsAndMetrics:
 
 def _build_ruimtevraag(*, metrics: Metrics) -> Ruimtevraag:
     return {
-        "installatieruimte_in_woning": round(metrics.ruimte_in_woning),
-        "installatieruimte_in_gebouw": round(
-            metrics.collectieve_ruimte_binnen_benodigd
+        "installatieruimte_in_woning": Decimal(metrics.ruimte_in_woning),
+        "installatieruimte_in_gebouw": Decimal(
+            round(metrics.collectieve_ruimte_binnen_benodigd)
         ),
-        "installatieruimte_buiten": round(
-            metrics.collectieve_ruimte_buiten_benodigd
-            + metrics.collectieve_ruimte_tuin_benodigd
-        ),
+        "installatieruimte_buiten": Decimal(metrics.collectieve_ruimte_buiten_benodigd),
     }
 
 
