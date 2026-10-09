@@ -96,8 +96,22 @@ class CalculationInputCreateApiTest(TestCase):
                     "kosten_per_woning_per_jaar",
                     "kosten_per_woning_per_jaar_laag",
                     "kosten_per_woning_per_jaar_hoog",
+                    "ruimtevraag",
                     "redenen_niet_mogelijk",
                     "redenen_score",
+                ]
+            ),
+        )
+
+        ruimtevraag = first.get("ruimtevraag")
+        self.assertIsInstance(ruimtevraag, dict)
+        self.assertEqual(
+            sorted(ruimtevraag.keys()),
+            sorted(
+                [
+                    "installatieruimte_in_woning",
+                    "installatieruimte_in_gebouw",
+                    "installatieruimte_buiten",
                 ]
             ),
         )
@@ -408,11 +422,16 @@ class HoofdsysteemCalculationResultSerializerTest(TestCase):
                 "is_mogelijk": True,
                 "redenen_niet_mogelijk": [],
                 "kosten_per_woning_per_jaar": 100,
-                "kosten_per_woning_per_jaar_laag": Decimal("100.99"),
-                "kosten_per_woning_per_jaar_hoog": Decimal("100.01"),
+                "kosten_per_woning_per_jaar_laag": Decimal("1250.99"),
+                "kosten_per_woning_per_jaar_hoog": Decimal("1200.01"),
+                "ruimtevraag": {
+                    "installatieruimte_in_woning": 1,
+                    "installatieruimte_in_gebouw": 2,
+                    "installatieruimte_buiten": 3,
+                },
                 "redenen_score": [],
             }
         )
 
-        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_laag"], 100)
-        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_hoog"], 101)
+        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_laag"], 1200)
+        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_hoog"], 1300)

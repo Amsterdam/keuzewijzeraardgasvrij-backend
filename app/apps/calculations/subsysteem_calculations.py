@@ -108,8 +108,9 @@ def calculate_openbron_systeem(
     investering_eur_per_woning = (
         subkengetal.investeringskosten / aantal_woningen_op_bron
     )
+
     bodemzijdig_vermogen = (
-        cv_energie_calculation.vermogen_warmte_kw_per_woning * verhouding_vermogen_bron
+        cv_energie_calculation.vermogen_warmte_kw_per_vve * verhouding_vermogen_bron
     )
     jaren_tco = get_jaren_tco()
 

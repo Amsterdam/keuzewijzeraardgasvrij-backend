@@ -133,7 +133,11 @@ class CollectieveRuimteTuin(AuditedModel):
 
 
 class EliminatieKengetal(AuditedModel):
-    naam = models.CharField(max_length=255, unique=True)
+    hoofdsysteem = models.OneToOneField(
+        "systemen.Hoofdsysteem",
+        on_delete=models.CASCADE,
+        related_name="eliminatie_kengetal",
+    )
 
     woningen_min = models.IntegerField()
     woningen_max = models.IntegerField(blank=True, null=True)
@@ -148,7 +152,7 @@ class EliminatieKengetal(AuditedModel):
     class Meta:
         verbose_name = "Eliminatie kengetal"
         verbose_name_plural = "Eliminatie kengetallen"
-        ordering = ["naam", "woningen_min"]
+        ordering = ["hoofdsysteem", "woningen_min"]
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(woningen_max__isnull=True)
@@ -159,7 +163,7 @@ class EliminatieKengetal(AuditedModel):
 
     def __str__(self) -> str:
         max_label = "∞" if self.woningen_max is None else str(self.woningen_max)
-        return f"{self.naam}: {self.woningen_min}–{max_label} woningen"
+        return f"{self.hoofdsysteem.naam}: {self.woningen_min}–{max_label} woningen"
 
 
 class MultiCriteriaAnalyseKengetal(AuditedModel):

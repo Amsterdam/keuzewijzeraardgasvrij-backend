@@ -58,6 +58,28 @@ python manage.py migrate
 name_of_apps is the model you would like to change like: cases, events, workflow or schedules.
 You can use the `---empty` flag to create a custom migration.
 
+## Fixtures
+
+Reference data (kengetallen, systemen, conversies, prijzen, etc.) lives in
+`apps/*/fixtures/fixtures.json`. These fixtures are **not** loaded automatically
+on container startup anymore &mdash; the `loaddata` step was removed from
+`app/deploy/docker-entrypoint.sh` so that values edited through the Django admin
+are not overwritten on every restart.
+
+This means a fresh database, or a database that existed before new fixture data
+was added, will be missing that data. Symptoms are `DoesNotExist` errors during a
+calculation (e.g. `Missing CollectieveRuimteTuin for hoofdsysteem=...`).
+
+Load or refresh all fixtures manually:
+
+```bash
+docker compose exec keuzewijzeraardgasvrij-backend python manage.py loaddata fixtures
+```
+
+> Note: this reloads **every** fixture and overwrites any values that were
+> changed via the admin. Run it on a fresh database, or after pulling changes
+> that add new fixture rows.
+
 ## Dependency management & upgrading
 This project uses [Poetry](https://python-poetry.org/docs/cli/) for dependency management. You can either manage this locally on your CLI, or do it inside the backend container.
 

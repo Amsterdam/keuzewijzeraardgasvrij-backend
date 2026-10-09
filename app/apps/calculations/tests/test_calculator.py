@@ -8,6 +8,7 @@ from apps.calculations.calculator import (
     EnergieCalculator,
     EnergieType,
     MultiCriteriaAnalyse,
+    _build_ruimtevraag,
 )
 from apps.calculations.models import Conversie, GebruikersInvoer
 from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
@@ -134,6 +135,36 @@ class EnergieCalculatorTest(TestCase):
 
         self.assertEqual(metrics.collectieve_ruimte_tuin_benodigd, Decimal("0"))
 
+    def test_build_ruimtevraag_uses_only_collectieve_buitenruimte(self):
+        calc_input = _calculation_input(aantal_woningen=50)
+        energie = EnergieCalculator().calculate(calc_input)
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+        )
+        full = hoofdsysteem.calculate(energie_calculation=energie)
+
+        metrics = MultiCriteriaAnalyse()._build_metrics(
+            hoofdsysteem=hoofdsysteem,
+            full=full,
+            calculation_input=calc_input,
+            tco=full.by_scenario[ScenarioKeuze.MIDDEN].tco,
+        )
+
+        ruimtevraag = _build_ruimtevraag(metrics=metrics)
+
+        self.assertEqual(
+            ruimtevraag["installatieruimte_in_woning"],
+            metrics.ruimte_in_woning,
+        )
+        self.assertEqual(
+            ruimtevraag["installatieruimte_in_gebouw"],
+            metrics.collectieve_ruimte_binnen_benodigd,
+        )
+        self.assertEqual(
+            ruimtevraag["installatieruimte_buiten"],
+            metrics.collectieve_ruimte_buiten_benodigd,
+        )
+
     def test_past_in_tuin_is_true_when_bodemsysteem_fits(self):
         calc_input = _calculation_input(
             aantal_woningen=50,
@@ -189,9 +220,6 @@ class EnergieCalculatorTest(TestCase):
         conversie_kwh_naar_gj = self._conversie("kwh_naar_gj")
 
         for scenario in (ScenarioKeuze.LAAG, ScenarioKeuze.MIDDEN, ScenarioKeuze.HOOG):
-            gelijktijdigheid_cv_fallback = self._kengetal(
-                scenario, "gelijktijdigheid_cv"
-            )
             percentage_ruimteverwarming = self._kengetal(
                 scenario, "percentage_ruimteverwarming"
             )
@@ -199,7 +227,6 @@ class EnergieCalculatorTest(TestCase):
 
             gelijktijdigheid_cv = calculator._get_gelijktijdigheidcv_factor(
                 aantal_woningen=aantal_woningen,
-                fallback=gelijktijdigheid_cv_fallback,
             )
 
             vermogen_cv_max = self._kengetal(scenario, "vermogen_cv_max")
