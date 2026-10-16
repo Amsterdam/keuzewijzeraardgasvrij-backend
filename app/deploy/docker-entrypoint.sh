@@ -4,7 +4,7 @@ set -e   # stop on any error
 set -x
 
 echo Collecting static files
-python manage.py collectstatic --no-input
+python manage.py collectstatic --no-input --ignore "rest_framework"
 
 echo Apply migrations
 python manage.py migrate --noinput

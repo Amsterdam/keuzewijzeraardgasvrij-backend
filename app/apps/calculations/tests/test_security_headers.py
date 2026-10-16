@@ -37,6 +37,11 @@ class SecurityHeadersTest(TestCase):
         # The split view serves its init script separately, so no inline script.
         self.assertNotIn(b"<script>", response.content)
 
+    def test_browsable_api_is_disabled(self):
+        response = self.client.get("/api/v1/", headers={"Accept": "text/html"})
+
+        self.assertEqual(response.headers["Content-Type"], "application/json")
+
     def test_api_responses_are_not_cached(self):
         response = self.client.get("/api/schema/")
 
