@@ -2,6 +2,9 @@ import os
 import sys
 from os.path import join
 from pathlib import Path
+
+from django.utils.csp import CSP
+
 from .azure_settings import Azure
 
 azure = Azure()
@@ -45,6 +48,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 100,
     "DEFAULT_AUTHENTICATION_CLASSES": [],
+    # No browsable API: it ships outdated Bootstrap 3 and jQuery assets.
+    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
     ],
@@ -65,6 +70,8 @@ SPECTACULAR_SETTINGS = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.csp.ContentSecurityPolicyMiddleware",
+    "utils.middleware.ApiNoStoreMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -73,6 +80,29 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# TLS is terminated at the Azure Application Gateway, which forwards the
+# original scheme. Without this Django treats every request as HTTP and
+# never sends the HSTS header.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_HSTS_SECONDS = 60 * 60 * 24 * 365
+
+SECURE_CSP = {
+    "default-src": [CSP.SELF],
+    "object-src": [CSP.NONE],
+    "base-uri": [CSP.SELF],
+    "form-action": [CSP.SELF],
+    "frame-ancestors": [CSP.NONE],
+}
+
+# Swagger UI is loaded from jsDelivr and uses inline styles and data: images.
+SWAGGER_UI_CDN = "https://cdn.jsdelivr.net"
+SWAGGER_UI_CSP = {
+    **SECURE_CSP,
+    "script-src": [CSP.SELF, SWAGGER_UI_CDN],
+    "style-src": [CSP.SELF, SWAGGER_UI_CDN, CSP.UNSAFE_INLINE],
+    "img-src": [CSP.SELF, SWAGGER_UI_CDN, "data:"],
+}
 
 ROOT_URLCONF = "config.urls"
 

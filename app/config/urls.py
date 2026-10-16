@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import path
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.views.decorators.csp import csp_override
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerSplitView
 from rest_framework.routers import DefaultRouter
 from django.views.generic import RedirectView
 
@@ -47,7 +49,9 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
+        csp_override(settings.SWAGGER_UI_CSP)(
+            SpectacularSwaggerSplitView.as_view(url_name="schema")
+        ),
         name="swagger-ui",
     ),
     path(
