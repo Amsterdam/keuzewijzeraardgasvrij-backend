@@ -145,10 +145,14 @@ class HoofdsysteemCalculateTest(TestCase):
                 expected_cost_total,
             )
 
-    def test_calculate_sets_elektrisch_vermogen_to_zero_for_warmtelevering(self):
+    def test_calculate_sets_elektrisch_vermogen_to_zero_for_warmtelevering_after_name_change(
+        self,
+    ):
         hoofdsysteem = Hoofdsysteem.objects.get(
             naam="Particulier Externe warmtelevering"
         )
+        hoofdsysteem.naam = "Nieuwe naam"
+        hoofdsysteem.save(update_fields=["naam"])
         calc_input = _calculation_input()
 
         energie = EnergieCalculator().calculate(calc_input)

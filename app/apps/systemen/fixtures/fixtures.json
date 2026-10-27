@@ -79,6 +79,7 @@
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtenet",
       "beschrijving_url_title": "Warmtenet | Duurzaam Wonen Amsterdam",
       "naam": "Particulier Externe warmtelevering",
+      "verbruikt_elektriciteit": false,
       "subsystemen": [
         19
       ]
@@ -92,6 +93,7 @@
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtenet",
       "beschrijving_url_title": "Warmtenet | Duurzaam Wonen Amsterdam",
       "naam": "Particulier Externe warmtelevering + externe koeling",
+      "verbruikt_elektriciteit": false,
       "subsystemen": [
         20
       ]
@@ -155,6 +157,7 @@
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtenet",
       "beschrijving_url_title": "Warmtenet | Duurzaam Wonen Amsterdam",
       "naam": "Zakelijk Collectief Externe warmtelevering",
+      "verbruikt_elektriciteit": false,
       "subsystemen": [
         8,
         9,
@@ -170,6 +173,7 @@
       "beschrijving_url": "https://duurzaamwonen.amsterdam/woning-verbeteringen/verwarmen-en-koelen/warmtenet",
       "beschrijving_url_title": "Warmtenet | Duurzaam Wonen Amsterdam",
       "naam": "Zakelijk Collectief Externe warmtelevering + externe koeling",
+      "verbruikt_elektriciteit": false,
       "subsystemen": [
         22,
         17,
