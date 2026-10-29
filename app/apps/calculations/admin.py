@@ -54,6 +54,9 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
         subsysteem_rows = []
         hoofdsysteem_rows = []
         mca_rows = []
+        mca_weging_rows = []
+        mca_weging_totaal = ""
+        mca_score_rows = []
         hoofdsysteem_tco_sum_rows = []
         stadsverwarming_rows = []
         stadsverwarming_totals_rows = []
@@ -437,11 +440,61 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                     }
                 )
 
-            mca_rows = []
-            mca_rows = MultiCriteriaAnalyse().calculate(
+            toelichting = MultiCriteriaAnalyse().calculate_met_toelichting(
                 calculation_input=selected_input,
                 energie_calculation=energie,
             )
+            mca_rows = toelichting.rows
+            breakdowns = toelichting.score_breakdown_by_hoofdsysteem_naam
+
+            def format_4(value: Decimal) -> str:
+                return str(value.quantize(Decimal("0.0001")))
+
+            def punten_for(naam: str, hoofdcriterium: str) -> Decimal:
+                return sum(
+                    (
+                        c.punten
+                        for c in breakdowns[naam].componenten
+                        if c.hoofdcriterium == hoofdcriterium
+                    ),
+                    Decimal("0"),
+                )
+
+            # Weights are identical for every hoofdsysteem.
+            first_breakdown = next(iter(breakdowns.values()), None)
+            componenten = first_breakdown.componenten if first_breakdown else ()
+            mca_weging_rows = [
+                {
+                    "hoofdcriterium": c.hoofdcriterium,
+                    "weging_hoofdcriterium": format_4(c.weging_hoofdcriterium),
+                    "subcriterium": c.subcriterium,
+                    "weging_subcriterium": format_4(c.weging_subcriterium),
+                    "gewicht": format_4(c.gewicht),
+                    "max_punten": format(c.max_punten),
+                }
+                for c in componenten
+            ]
+            mca_weging_totaal = format(
+                sum((c.max_punten for c in componenten), Decimal("0"))
+            )
+
+            mca_score_rows = [
+                {
+                    "positie": positie,
+                    "naam": row["naam"],
+                    "is_mogelijk": "true" if row["is_mogelijk"] else "false",
+                    "tco": format(punten_for(row["naam"], "TCO")),
+                    "vermogen": format(punten_for(row["naam"], "Vermogen")),
+                    "ruimtebeslag": format(punten_for(row["naam"], "Ruimtebeslag")),
+                    "aanpassingen": format(
+                        punten_for(row["naam"], "Impact aanpassingen")
+                    ),
+                    "totaal": format(breakdowns[row["naam"]].totaal),
+                    "score": row["score"],
+                    "redenen_score": row["redenen_score"],
+                }
+                for positie, row in enumerate(mca_rows, start=1)
+            ]
 
         context = {
             **self.admin_site.each_context(request),
@@ -455,6 +508,9 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
             "subsysteem_rows": subsysteem_rows,
             "hoofdsysteem_rows": hoofdsysteem_rows,
             "mca_rows": mca_rows,
+            "mca_weging_rows": mca_weging_rows,
+            "mca_weging_totaal": mca_weging_totaal,
+            "mca_score_rows": mca_score_rows,
             "hoofdsysteem_tco_sum_rows": hoofdsysteem_tco_sum_rows,
             "stadsverwarming_rows": stadsverwarming_rows,
             "stadsverwarming_totals_rows": stadsverwarming_totals_rows,

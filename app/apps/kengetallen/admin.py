@@ -189,6 +189,7 @@ class MultiCriteriaAnalyseKengetalAdmin(AuditedAdmin):
         "huidig_systeem_individueel_2dp",
         "vloerverwarming_aanwezig_waar_2dp",
         "vloerverwarming_aanwezig_onwaar_2dp",
+        "verbruikt_elektriciteit",
     )
     list_select_related = True
 

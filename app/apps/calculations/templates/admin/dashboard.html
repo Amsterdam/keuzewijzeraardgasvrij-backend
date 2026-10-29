@@ -281,6 +281,74 @@
       </tbody>
     </table>
 
+    <h2>MCA gewichten</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>Hoofdcriterium</th>
+          <th>Weging hoofdcriterium</th>
+          <th>Subcriterium</th>
+          <th>Weging subcriterium</th>
+          <th>Effectief gewicht</th>
+          <th>Max punten (× 10)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in mca_weging_rows %}
+          <tr>
+            <td>{{ row.hoofdcriterium }}</td>
+            <td>{{ row.weging_hoofdcriterium }}</td>
+            <td>{{ row.subcriterium }}</td>
+            <td>{{ row.weging_subcriterium }}</td>
+            <td>{{ row.gewicht }}</td>
+            <td>{{ row.max_punten }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="5"><strong>Totaal</strong></td>
+          <td><strong>{{ mca_weging_totaal }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>MCA scoreopbouw per hoofdsysteem</h2>
+    <table class="adminlist">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Hoofdsysteem</th>
+          <th>Is mogelijk</th>
+          <th>TCO</th>
+          <th>Vermogen</th>
+          <th>Ruimtebeslag</th>
+          <th>Aanpassingen</th>
+          <th>Totaal (exact)</th>
+          <th>Score (afgerond)</th>
+          <th>Redenen score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in mca_score_rows %}
+          <tr>
+            <td>{{ row.positie }}</td>
+            <td>{{ row.naam }}</td>
+            <td>{{ row.is_mogelijk }}</td>
+            <td>{{ row.tco }}</td>
+            <td>{{ row.vermogen }}</td>
+            <td>{{ row.ruimtebeslag }}</td>
+            <td>{{ row.aanpassingen }}</td>
+            <td><strong>{{ row.totaal }}</strong></td>
+            <td>{{ row.score }}</td>
+            <td>
+              {% for r in row.redenen_score %}
+                {{ r }}<br />
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
     <h2>Hoofdsysteem TCO (incl. subsystemen)</h2>
     <table class="adminlist">
       <thead>

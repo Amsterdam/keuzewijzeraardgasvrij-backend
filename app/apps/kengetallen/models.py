@@ -179,6 +179,7 @@ class MultiCriteriaAnalyseKengetal(AuditedModel):
     vloerverwarming_aanwezig_onwaar = models.DecimalField(
         max_digits=18, decimal_places=9
     )
+    verbruikt_elektriciteit = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Multi-criteria analyse kengetal"
