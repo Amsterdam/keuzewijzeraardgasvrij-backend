@@ -96,8 +96,6 @@ SCORE_MULTIPLIER: Final[Decimal] = Decimal("10")
 class ScoreComponent:
     hoofdcriterium: str
     subcriterium: str
-    # "inverse_min_max" (lower value is better) or "direct" (0/1, higher is better)
-    methode: str
     weging_hoofdcriterium: Decimal
     weging_subcriterium: Decimal
     # genormaliseerd × weging_subcriterium × weging_hoofdcriterium
@@ -1736,7 +1734,6 @@ class MultiCriteriaAnalyse:
         return ScoreComponent(
             hoofdcriterium=hoofdcriterium,
             subcriterium=subcriterium,
-            methode="inverse_min_max",
             weging_hoofdcriterium=weging_hoofdcriterium,
             weging_subcriterium=weging_subcriterium,
             bijdrage=genormaliseerd * weging_subcriterium * weging_hoofdcriterium,
@@ -1755,7 +1752,6 @@ class MultiCriteriaAnalyse:
         return ScoreComponent(
             hoofdcriterium=hoofdcriterium,
             subcriterium=subcriterium,
-            methode="direct",
             weging_hoofdcriterium=weging_hoofdcriterium,
             weging_subcriterium=weging_subcriterium,
             bijdrage=waarde * weging_subcriterium * weging_hoofdcriterium,

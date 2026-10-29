@@ -291,7 +291,6 @@
           <th>Weging subcriterium</th>
           <th>Effectief gewicht</th>
           <th>Max punten (× 10)</th>
-          <th>Methode</th>
         </tr>
       </thead>
       <tbody>
@@ -303,13 +302,11 @@
             <td>{{ row.weging_subcriterium }}</td>
             <td>{{ row.gewicht }}</td>
             <td>{{ row.max_punten }}</td>
-            <td>{{ row.methode }}</td>
           </tr>
         {% endfor %}
         <tr>
           <td colspan="5"><strong>Totaal</strong></td>
           <td><strong>{{ mca_weging_totaal }}</strong></td>
-          <td></td>
         </tr>
       </tbody>
     </table>

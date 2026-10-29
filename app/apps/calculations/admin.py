@@ -471,7 +471,6 @@ class GebruikersInvoerAdmin(admin.ModelAdmin):
                     "weging_subcriterium": format_4(c.weging_subcriterium),
                     "gewicht": format_4(c.gewicht),
                     "max_punten": format(c.max_punten),
-                    "methode": c.methode,
                 }
                 for c in componenten
             ]
