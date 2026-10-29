@@ -8,9 +8,14 @@ from apps.calculations.calculator import (
     EnergieCalculator,
     EnergieType,
     MultiCriteriaAnalyse,
+    RedenenScoreMessages,
     _build_ruimtevraag,
 )
-from apps.calculations.models import Conversie, GebruikersInvoer
+from apps.calculations.models import (
+    Conversie,
+    GebruikersInvoer,
+    HuidigSysteemChoices,
+)
 from apps.kengetallen.models import AlgemeenKengetal, ScenarioKeuze
 from apps.systemen.models import Hoofdsysteem
 
@@ -164,6 +169,44 @@ class EnergieCalculatorTest(TestCase):
             ruimtevraag["installatieruimte_buiten"],
             metrics.collectieve_ruimte_buiten_benodigd,
         )
+
+    def test_aanpassing_message_based_on_huidig_systeem_and_vloerverwarming(self):
+        calc_input = _calculation_input(
+            huidig_systeem=HuidigSysteemChoices.INDIVIDUEEL,
+            vloerverwarming_aanwezig=False,
+        )
+        energie = EnergieCalculator().calculate(calc_input)
+        cases = {
+            # Systeem komt overeen, vloerverwarming komt overeen
+            "Particulier Externe warmtelevering": RedenenScoreMessages.AANPASSING_BEST,
+            # Systeem komt overeen, vloerverwarming niet
+            "Individuele Luchtwarmtepomp op Buitenlucht": (
+                RedenenScoreMessages.AANPASSING_AVERAGE
+            ),
+            # Systeem komt niet overeen
+            "Collectieve Luchtwarmtepomp op Buitenlucht": (
+                RedenenScoreMessages.AANPASSING_WORST
+            ),
+            "Zakelijk Collectief Externe warmtelevering": (
+                RedenenScoreMessages.AANPASSING_WORST
+            ),
+        }
+
+        for naam, expected in cases.items():
+            with self.subTest(naam=naam):
+                hoofdsysteem = Hoofdsysteem.objects.get(naam=naam)
+                full = hoofdsysteem.calculate(energie_calculation=energie)
+                metrics = MultiCriteriaAnalyse()._build_metrics(
+                    hoofdsysteem=hoofdsysteem,
+                    full=full,
+                    calculation_input=calc_input,
+                    tco=full.by_scenario[ScenarioKeuze.MIDDEN].tco,
+                )
+
+                self.assertEqual(
+                    MultiCriteriaAnalyse._aanpassing_message(metrics=metrics),
+                    expected,
+                )
 
     def test_past_in_tuin_is_true_when_bodemsysteem_fits(self):
         calc_input = _calculation_input(

@@ -64,7 +64,6 @@ class HoofdsysteemFullResult:
 
 class Hoofdsysteem(AuditedModel):
     naam = models.CharField(max_length=255)
-    verbruikt_elektriciteit = models.BooleanField(default=True)
     beschrijving = models.TextField(blank=True, null=True)
     subsystemen = models.ManyToManyField("Subsysteem", related_name="hoofdsystemen")
     beschrijving_url = models.URLField(blank=True, null=True)
@@ -178,7 +177,7 @@ class Hoofdsysteem(AuditedModel):
         elektrisch_vermogen = (
             (vermogen_tap / hoofdkengetal.cop_tap)
             + (vermogen_cv / hoofdkengetal.cop_cv)
-            if self.verbruikt_elektriciteit
+            if self.mca_kengetal.verbruikt_elektriciteit
             else Decimal("0")
         )
         kosten_tap = elec_tap_gj * prijs_tap
