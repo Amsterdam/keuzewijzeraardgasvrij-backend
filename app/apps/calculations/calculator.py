@@ -549,6 +549,7 @@ class EnergieCalculator:
         capaciteit_kwh = (
             kengetallen["koudevraag_capaciteit"]
             * calculation_input.bruto_vloeroppervlak
+            / Decimal(calculation_input.aantal_woningen)
         )
         capaciteit_gj = capaciteit_kwh * conversie_kwh_naar_gj
         return {

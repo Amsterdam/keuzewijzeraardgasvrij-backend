@@ -282,13 +282,12 @@ class CalculationInputCreateApiTest(TestCase):
 
     def test_post_returns_correct_scores(self):
         expected = [
+            ("Collectieve Luchtwarmtepomp op Buitenlucht", 8.0),
             (
                 "Collectief Open Bodem Energie Systeem met Individuele Bodemwarmtepomp",
-                7.0,
+                6.0,
             ),
-            ("Collectieve Luchtwarmtepomp op Buitenlucht", 6.0),
-            ("Individuele Luchtwarmtepomp op Buitenlucht", 1.0),
-            ("Zakelijk Collectief Externe warmtelevering", 9.0),
+            ("Individuele Luchtwarmtepomp op Buitenlucht", 4.0),
             (
                 "Collectief Gesloten Bodem Energie Systeem met collectieve Bodemwarmtepomp",
                 9.0,
@@ -297,18 +296,19 @@ class CalculationInputCreateApiTest(TestCase):
                 "Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp",
                 8.0,
             ),
-            ("Particulier Externe warmtelevering", 7.0),
+            ("Zakelijk Collectief Externe warmtelevering + externe koeling", 8.0),
+            ("Zakelijk Collectief Externe warmtelevering", 8.0),
             (
                 "Collectief Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
                 7.0,
             ),
-            ("Zakelijk Collectief Externe warmtelevering + externe koeling", 6.0),
-            ("Particulier Externe warmtelevering + externe koeling", 6.0),
             (
                 "Individuele Gesloten Bodem Energie Systeem met Individuele Bodemwarmtepomp",
                 6.0,
             ),
-            ("Individuele Luchtwarmtepomp op Ventilatie", 2.0),
+            ("Individuele Luchtwarmtepomp op Ventilatie", 6.0),
+            ("Particulier Externe warmtelevering", 5.0),
+            ("Particulier Externe warmtelevering + externe koeling", 4.0),
         ]
 
         response = self.client.post(self.url, data=_valid_payload(), format="json")

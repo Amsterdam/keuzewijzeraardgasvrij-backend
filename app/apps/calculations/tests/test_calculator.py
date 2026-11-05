@@ -344,7 +344,11 @@ class EnergieCalculatorTest(TestCase):
                 * calc_input.bruto_vloeroppervlak
                 / Decimal(calc_input.aantal_woningen)
             )
-            expected_kwh = koudevraag_capaciteit * calc_input.bruto_vloeroppervlak
+            expected_kwh = (
+                koudevraag_capaciteit
+                * calc_input.bruto_vloeroppervlak
+                / Decimal(calc_input.aantal_woningen)
+            )
             expected_gj = expected_kwh * conversie_kwh_naar_gj
 
             self.assertEqual(result.energie_type, EnergieType.GKW)
