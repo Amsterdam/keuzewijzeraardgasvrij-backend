@@ -174,11 +174,10 @@ class Hoofdsysteem(AuditedModel):
         vermogen_tap = by_type[EnergieType.TAP].vermogen_warmte_kw_per_vve
         vermogen_cv = by_type[EnergieType.CV].vermogen_warmte_kw_per_vve
 
-        verbruikt_elektriciteit = "warmtelevering" not in self.naam.lower()
         elektrisch_vermogen = (
             (vermogen_tap / hoofdkengetal.cop_tap)
             + (vermogen_cv / hoofdkengetal.cop_cv)
-            if verbruikt_elektriciteit
+            if self.mca_kengetal.verbruikt_elektriciteit
             else Decimal("0")
         )
         kosten_tap = elec_tap_gj * prijs_tap
