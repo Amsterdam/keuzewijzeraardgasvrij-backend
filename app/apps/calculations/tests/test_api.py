@@ -146,6 +146,24 @@ class CalculationInputCreateApiTest(TestCase):
             self.assertEqual(len(redenen_score_any), 4)
             self.assertEqual(redenen_score_any[0], expected_tco_msg_by_naam[naam])
 
+        # Hoofdsystemen that do not use electricity always get the "bijna geen stroom" message.
+        geen_stroom_namen = set(
+            Hoofdsysteem.objects.filter(
+                mca_kengetal__verbruikt_elektriciteit=False
+            ).values_list("naam", flat=True)
+        )
+        self.assertTrue(geen_stroom_namen)
+        for r in response.data:
+            naam = str(r["naam"])
+            if naam in geen_stroom_namen:
+                self.assertEqual(
+                    r["redenen_score"][1], RedenenScoreMessages.ELEKTRISCH_GEEN
+                )
+            else:
+                self.assertNotEqual(
+                    r["redenen_score"][1], RedenenScoreMessages.ELEKTRISCH_GEEN
+                )
+
         # Ordering: is_mogelijk=true first, then is_mogelijk=false; within each group sort by score high→low.
         is_mogelijk_flags = [bool(r.get("is_mogelijk")) for r in response.data]
         if False in is_mogelijk_flags:

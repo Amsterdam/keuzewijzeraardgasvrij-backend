@@ -74,6 +74,7 @@ class Metrics:
     collectieve_ruimte_tuin_benodigd: Decimal
     huidig_systeem: Decimal
     vloerverwarming: Decimal
+    verbruikt_elektriciteit: bool = True
 
 
 @dataclass(frozen=True, slots=True)
@@ -178,6 +179,7 @@ class RedenenScoreMessages:
         "Deze oplossing heeft een gemiddelde hoeveelheid stroom nodig."
     )
     ELEKTRISCH_WORST: Final[str] = "Deze oplossing heeft veel extra stroom nodig."
+    ELEKTRISCH_GEEN: Final[str] = "Deze oplossing verbruikt bijna geen stroom."
 
     # Ruimte
     RUIMTE_BEST: Final[str] = "Deze oplossing neemt weining ruimte in."
@@ -196,10 +198,11 @@ class RedenenScoreMessages:
     )
 
     TCO_ALL: Final[tuple[str, str, str]] = (TCO_BEST, TCO_AVERAGE, TCO_WORST)
-    ELEKTRISCH_ALL: Final[tuple[str, str, str]] = (
+    ELEKTRISCH_ALL: Final[tuple[str, str, str, str]] = (
         ELEKTRISCH_BEST,
         ELEKTRISCH_AVERAGE,
         ELEKTRISCH_WORST,
+        ELEKTRISCH_GEEN,
     )
     RUIMTE_ALL: Final[tuple[str, str, str]] = (
         RUIMTE_BEST,
@@ -1252,6 +1255,7 @@ class MultiCriteriaAnalyse:
             collectieve_ruimte_tuin_benodigd=collectieve_ruimte_tuin_benodigd,
             huidig_systeem=self._to_decimal(huidig_systeem),
             vloerverwarming=self._to_decimal(vloerverwarming),
+            verbruikt_elektriciteit=mca_kengetal.verbruikt_elektriciteit,
         )
 
     def _run_systeem_calculations(
@@ -1633,7 +1637,11 @@ class MultiCriteriaAnalyse:
             naam = row["naam"]
             row["redenen_score"] = [
                 tco_msg.get(naam, ""),
-                elektrisch_msg.get(naam, ""),
+                (
+                    elektrisch_msg.get(naam, "")
+                    if metrics_by_hoofdsysteem_naam[naam].verbruikt_elektriciteit
+                    else RedenenScoreMessages.ELEKTRISCH_GEEN
+                ),
                 ruimte_msg.get(naam, ""),
                 self._aanpassing_message(metrics=metrics_by_hoofdsysteem_naam[naam]),
             ]
