@@ -142,10 +142,10 @@ class HoofdsysteemCalculationResultSerializer(serializers.Serializer):
     redenen_niet_mogelijk = serializers.ListField(child=serializers.CharField())
     kosten_per_woning_per_jaar = serializers.IntegerField()
     kosten_per_woning_per_jaar_laag = RoundedIntegerField(
-        rounding=ROUND_FLOOR, base=100
+        rounding=ROUND_FLOOR, base=500
     )
     kosten_per_woning_per_jaar_hoog = RoundedIntegerField(
-        rounding=ROUND_CEILING, base=100
+        rounding=ROUND_CEILING, base=500
     )
     ruimtevraag = RuimtevraagSerializer()
     redenen_score = serializers.ListField(child=serializers.CharField())

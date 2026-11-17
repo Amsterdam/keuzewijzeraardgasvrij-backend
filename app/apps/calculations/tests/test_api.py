@@ -440,8 +440,8 @@ class HoofdsysteemCalculationResultSerializerTest(TestCase):
                 "is_mogelijk": True,
                 "redenen_niet_mogelijk": [],
                 "kosten_per_woning_per_jaar": 100,
-                "kosten_per_woning_per_jaar_laag": Decimal("1250.99"),
-                "kosten_per_woning_per_jaar_hoog": Decimal("1200.01"),
+                "kosten_per_woning_per_jaar_laag": Decimal("1499.99"),
+                "kosten_per_woning_per_jaar_hoog": Decimal("1000.01"),
                 "ruimtevraag": {
                     "installatieruimte_in_woning": 1,
                     "installatieruimte_in_gebouw": 2,
@@ -451,5 +451,5 @@ class HoofdsysteemCalculationResultSerializerTest(TestCase):
             }
         )
 
-        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_laag"], 1200)
-        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_hoog"], 1300)
+        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_laag"], 1000)
+        self.assertEqual(serializer.data["kosten_per_woning_per_jaar_hoog"], 1500)
