@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 from django.contrib import admin
-from django.contrib.contenttypes.models import ContentType
-
 from .models import AuditLog, AuditedModel
+from .services import create_audit_log, format_changed_snapshot, format_snapshot
 
 
 class AuditedAdmin(admin.ModelAdmin):
@@ -75,42 +74,18 @@ class AuditedAdmin(admin.ModelAdmin):
         super().delete_queryset(request, queryset)
 
     def _create_audit_log(self, *, request, obj, action: str, changes: str) -> None:
-        AuditLog.objects.create(
-            content_type=ContentType.objects.get_for_model(
-                obj, for_concrete_model=False
-            ),
-            object_id=str(obj.pk),
-            object_repr=str(obj),
-            action=action,
-            changes=changes,
-            changed_by=request.user if request.user.is_authenticated else None,
-        )
+        create_audit_log(obj=obj, action=action, changes=changes, user=request.user)
 
     def _format_created_snapshot(self, snapshot: dict[str, str]) -> str:
-        return "\n".join(
-            f"{field}: {self._render_value(value)}" for field, value in snapshot.items()
-        )
+        return format_snapshot(snapshot)
 
     def _format_deleted_snapshot(self, snapshot: dict[str, str]) -> str:
-        return "\n".join(
-            f"{field}: {self._render_value(value)}" for field, value in snapshot.items()
-        )
+        return format_snapshot(snapshot)
 
     def _format_changed_snapshot(
         self, before: dict[str, str], after: dict[str, str]
     ) -> str:
-        changes: list[str] = []
-        for field, new_value in after.items():
-            old_value = before.get(field, "")
-            if old_value == new_value:
-                continue
-            changes.append(
-                f"{field}: {self._render_value(old_value)} -> {self._render_value(new_value)}"
-            )
-        return "\n".join(changes)
-
-    def _render_value(self, value: str) -> str:
-        return value or "(leeg)"
+        return format_changed_snapshot(before, after)
 
 
 @admin.register(AuditLog)
