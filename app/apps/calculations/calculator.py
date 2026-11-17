@@ -1019,9 +1019,13 @@ class Eliminatie:
                 or aantal_woningen <= eliminatie_kengetal.woningen_max
             )
         ):
-            redenen.append(
-                f"{hoofdsysteem_naam} is het meest geschikt voor gebouwen tussen {eliminatie_kengetal.woningen_min} tot {max_label} woningen (er zijn {aantal_woningen} woningen in de VvE)."
-            )
+            reden = f"{hoofdsysteem_naam} is het meest geschikt voor gebouwen tussen {eliminatie_kengetal.woningen_min} en {max_label} woningen (er zijn {aantal_woningen} woningen in de VvE)."
+            if aantal_woningen < eliminatie_kengetal.woningen_min:
+                reden += (
+                    " Dit systeem is misschien mogelijk als u samenwerkt met gebouwen naast of dicht bij uw gebouw."
+                    " Bespreek dit met die buren en vul de keuzewijzer opnieuw in met de gegevens van alle gebouwen samen."
+                )
+            redenen.append(reden)
 
         if (
             calculation_input.beschikbare_ruimte_in_woning_m2 is not None
@@ -1030,6 +1034,7 @@ class Eliminatie:
         ):
             redenen.append(
                 f"Er is te weinig ruimte in de woning voor {hoofdsysteem_naam} (ongeveer nodig: {round(eliminatie_kengetal.benodigde_ruimte_in_woning_m2, 1)} m²)."
+                " Kijk of u ruimte kunt vrijmaken. Vul de keuzewijzer daarna opnieuw in met de nieuwe hoeveelheid ruimte."
             )
 
         if (
@@ -1047,6 +1052,7 @@ class Eliminatie:
         ):
             redenen.append(
                 f"Er is te weinig gezamenlijke buitenruimte voor {hoofdsysteem_naam} (ongeveer nodig: {collectief_ruimte_buiten_benodigd} m²)."
+                " Kijk of u buitenruimte kunt vrijmaken. Vul de keuzewijzer daarna in met de nieuwe hoeveelheid ruimte."
             )
 
         if (
@@ -1054,7 +1060,8 @@ class Eliminatie:
             and not calculation_input.mechanische_ventilatie_aanwezig
         ):
             redenen.append(
-                f"Voor {hoofdsysteem_naam} is mechanische ventilatie nodig, maar die is er niet."
+                f"Voor {hoofdsysteem_naam} is mechanische ventilatie nodig. Uw gebouw heeft dat nu niet."
+                " Gaat u het gebouw verbouwen en komt er mechanische ventilatie? Vul de keuzewijzer dan opnieuw in met deze informatie."
             )
 
         if calculation_input.wens_tot_koelen and not eliminatie_kengetal.kan_koelen:
