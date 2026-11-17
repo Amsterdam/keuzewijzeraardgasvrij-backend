@@ -1,7 +1,12 @@
 from decimal import Decimal
 from typing import Any
 
-from django.contrib import admin
+from django.conf import settings
+from django.contrib import admin, messages
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template.response import TemplateResponse
+from django.utils import timezone
 
 from apps.auditlog.admin import AuditedAdmin
 from .models import (
@@ -15,12 +20,21 @@ from .models import (
     GasverbruikGegeven,
     GelijktijdigheidCV,
     Hoofdkengetal,
+    KengetallenTransfer,
     McdaHoofdcriterium,
     McdaSubcriterium,
     MultiCriteriaAnalyseKengetal,
     StadsverwarmingKengetal,
     Subkengetal,
     Warmteprogramma,
+)
+from .transfer import (
+    TRANSFER_MODELS,
+    TransferError,
+    apply_import,
+    build_diff,
+    export_json,
+    parse,
 )
 
 ADMIN_FIELD_LABELS = {
@@ -248,3 +262,77 @@ class BuurtcodeWarmteprogrammaAdmin(AuditedAdmin):
 @admin.register(StadsverwarmingKengetal)
 class StadsverwarmingKengetalAdmin(AuditedAdmin):
     list_display = get_all_field_names(StadsverwarmingKengetal)
+
+
+@admin.register(KengetallenTransfer)
+class KengetallenTransferAdmin(admin.ModelAdmin):
+    """Exporteren en importeren van kengetallen tussen omgevingen."""
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_active and request.user.is_superuser
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        if not self.has_view_permission(request):
+            raise PermissionDenied
+
+        if request.method == "GET" and "export" in request.GET:
+            return self._export_response()
+
+        context = {
+            **self.admin_site.each_context(request),
+            "opts": self.model._meta,
+            "title": "Kengetallen export / import",
+            "environment": settings.ENVIRONMENT or "onbekend",
+            "transfer_models": [m._meta.verbose_name_plural for m in TRANSFER_MODELS],
+        }
+
+        if request.method == "POST":
+            action = request.POST.get("action")
+            try:
+                if action == "compare":
+                    upload = request.FILES.get("file")
+                    if upload is None:
+                        raise TransferError("Kies een bestand om te importeren.")
+                    payload = upload.read().decode("utf-8")
+                    diff = build_diff(parse(payload))
+                    context.update(
+                        diff=diff,
+                        payload=payload,
+                        filename=upload.name,
+                    )
+                elif action == "apply":
+                    diff = apply_import(
+                        request.POST.get("payload", ""),
+                        user=request.user,
+                        expected_fingerprint=request.POST.get("fingerprint"),
+                    )
+                    totals = diff.totals
+                    self.message_user(
+                        request,
+                        f"Import doorgevoerd: {totals['created']} aangemaakt, "
+                        f"{totals['updated']} gewijzigd, {totals['deleted']} verwijderd.",
+                        messages.SUCCESS,
+                    )
+                    return HttpResponseRedirect(request.path)
+            except (TransferError, UnicodeDecodeError) as exc:
+                self.message_user(request, str(exc), messages.ERROR)
+
+        return TemplateResponse(request, "admin/kengetallen/transfer.html", context)
+
+    def _export_response(self) -> HttpResponse:
+        env = settings.ENVIRONMENT or "export"
+        stamp = timezone.localtime().strftime("%Y%m%d-%H%M")
+        response = HttpResponse(export_json(), content_type="application/json")
+        response["Content-Disposition"] = (
+            f'attachment; filename="kengetallen-{env}-{stamp}.json"'
+        )
+        return response

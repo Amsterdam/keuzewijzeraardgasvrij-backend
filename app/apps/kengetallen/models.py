@@ -486,3 +486,12 @@ class GasverbruikGegeven(AuditedModel):
 
     def __str__(self) -> str:
         return f"{self.postcode_start}–{self.postcode_eind}: {self.gemiddeld_verbruik}"
+
+
+class KengetallenTransfer(AlgemeenKengetal):
+    """Proxy model om de export/import-pagina in de admin-sidebar te tonen."""
+
+    class Meta:
+        proxy = True
+        verbose_name = "Export / import"
+        verbose_name_plural = "Export / import"

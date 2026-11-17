@@ -1,0 +1,127 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .transfer-section { margin-bottom: 24px; }
+    .transfer-section h2 { margin-bottom: 8px; }
+    .diff-created { color: var(--message-success-color, #2e7d32); }
+    .diff-updated { color: var(--message-warning-color, #b26a00); }
+    .diff-deleted { color: var(--error-fg, #ba2121); }
+    .diff-old { text-decoration: line-through; opacity: .7; }
+    .diff-model summary { cursor: pointer; font-weight: bold; padding: 6px 0; }
+    .diff-model table { width: 100%; margin: 4px 0 12px; }
+    .diff-model td { vertical-align: top; }
+  </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; {{ opts.verbose_name_plural }}
+  </div>
+{% endblock %}
+
+{% block content %}
+  <p>Omgeving: <strong>{{ environment }}</strong></p>
+
+  <div class="transfer-section">
+    <h2>1. Exporteren</h2>
+    <p>Download alle kengetallen van deze omgeving als JSON.</p>
+    <a class="button" href="?export=1">Exporteer kengetallen</a>
+  </div>
+
+  <div class="transfer-section">
+    <h2>2. Importeren en vergelijken</h2>
+    <p>Upload een export. Je ziet eerst de verschillen, er wordt nog niets opgeslagen.</p>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="compare">
+      <input type="file" name="file" accept="application/json,.json" required>
+      <button type="submit" class="button">Vergelijk</button>
+    </form>
+  </div>
+
+  {% if diff %}
+    <div class="transfer-section">
+      <h2>3. Verschillen met {{ filename }}</h2>
+      {% if not diff.has_changes %}
+        <p>Geen verschillen. Deze omgeving is gelijk aan het bestand.</p>
+      {% else %}
+        <p>
+          <span class="diff-created">{{ diff.totals.created }} nieuw</span>,
+          <span class="diff-updated">{{ diff.totals.updated }} gewijzigd</span>,
+          <span class="diff-deleted">{{ diff.totals.deleted }} verwijderd</span>
+        </p>
+
+        {% for model in diff.models %}{% if model.has_changes %}
+          <details class="diff-model" open>
+            <summary>
+              {{ model.verbose_name }}
+              ({% if model.created %}<span class="diff-created">+{{ model.created|length }}</span> {% endif %}{% if model.updated %}<span class="diff-updated">~{{ model.updated|length }}</span> {% endif %}{% if model.deleted %}<span class="diff-deleted">-{{ model.deleted|length }}</span>{% endif %})
+            </summary>
+            <table>
+              <thead>
+                <tr><th>Actie</th><th>ID</th><th>Record</th><th>Veld</th><th>Oud</th><th>Nieuw</th></tr>
+              </thead>
+              <tbody>
+                {% for obj in model.updated %}
+                  {% for change in obj.changes %}
+                    <tr>
+                      {% if forloop.first %}
+                        <td rowspan="{{ obj.changes|length }}" class="diff-updated">Gewijzigd</td>
+                        <td rowspan="{{ obj.changes|length }}">{{ obj.pk }}</td>
+                        <td rowspan="{{ obj.changes|length }}">{{ obj.repr }}</td>
+                      {% endif %}
+                      <td>{{ change.field }}</td>
+                      <td class="diff-old">{{ change.old|default:"(leeg)" }}</td>
+                      <td>{{ change.new|default:"(leeg)" }}</td>
+                    </tr>
+                  {% endfor %}
+                {% endfor %}
+                {% for obj in model.created %}
+                  <tr>
+                    <td class="diff-created">Nieuw</td>
+                    <td>{{ obj.pk }}</td>
+                    <td>{{ obj.repr }}</td>
+                    <td colspan="3">
+                      {% for change in obj.changes %}{{ change.field }}: {{ change.new|default:"(leeg)" }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                    </td>
+                  </tr>
+                {% endfor %}
+                {% for obj in model.deleted %}
+                  <tr>
+                    <td class="diff-deleted">Verwijderd</td>
+                    <td>{{ obj.pk }}</td>
+                    <td>{{ obj.repr }}</td>
+                    <td colspan="3" class="diff-old">
+                      {% for change in obj.changes %}{{ change.field }}: {{ change.old|default:"(leeg)" }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </details>
+        {% endif %}{% endfor %}
+
+        <form method="post" onsubmit="return confirm('Weet je zeker dat je deze wijzigingen wilt doorvoeren op {{ environment|escapejs }}?');">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="apply">
+          <input type="hidden" name="fingerprint" value="{{ diff.fingerprint }}">
+          <textarea name="payload" hidden>{{ payload }}</textarea>
+          <button type="submit" class="button default">Wijzigingen doorvoeren</button>
+        </form>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="transfer-section">
+    <h2>Welke gegevens gaan mee?</h2>
+    <p>{{ transfer_models|join:", " }}.</p>
+    <p class="help">
+      Records worden gematcht op ID. Bij doorvoeren wordt deze omgeving gelijk gemaakt aan het bestand:
+      records die niet in het bestand staan worden verwijderd. Alle wijzigingen komen in de auditlog.
+    </p>
+  </div>
+{% endblock %}
