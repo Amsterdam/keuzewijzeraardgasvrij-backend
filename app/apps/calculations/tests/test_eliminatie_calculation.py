@@ -7,7 +7,11 @@ from django.test import TestCase
 
 from apps.calculations.calculator import Eliminatie
 from apps.calculations.models import GebruikersInvoer
-from apps.kengetallen.models import BuurtcodeWarmteprogramma, Warmteprogramma
+from apps.kengetallen.models import (
+    BuurtcodeWarmteprogramma,
+    EliminatieKengetal,
+    Warmteprogramma,
+)
 from apps.systemen.models import Hoofdsysteem
 
 
@@ -59,7 +63,8 @@ class EliminatieCalculatorTest(TestCase):
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
         assert result["is_mogelijk"] is False, result
         assert result["redenen"] == [
-            f"Voor {hoofdsysteem.naam} is mechanische ventilatie nodig, maar die is er niet."
+            f"Voor {hoofdsysteem.naam} is mechanische ventilatie nodig. Uw gebouw heeft dat nu niet."
+            " Gaat u het gebouw verbouwen en komt er mechanische ventilatie? Vul de keuzewijzer dan opnieuw in met deze informatie."
         ], result
 
     def test_eliminatie_reason_kan_niet_koelen_when_cooling_desired(self) -> None:
@@ -86,7 +91,67 @@ class EliminatieCalculatorTest(TestCase):
         result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
         assert result["is_mogelijk"] is False, result
         assert result["redenen"] == [
-            f"{hoofdsysteem.naam} is het meest geschikt voor gebouwen tussen 1 tot 20 woningen (er zijn 50 woningen in de VvE)."
+            f"{hoofdsysteem.naam} is het meest geschikt voor gebouwen tussen 1 en 20 woningen (er zijn 50 woningen in de VvE)."
+        ], result
+
+    def test_eliminatie_reason_te_weinig_ruimte_in_woning(self) -> None:
+        hoofdsysteem = (
+            EliminatieKengetal.objects.filter(woningen_min=20, woningen_max=150)
+            .first()
+            .hoofdsysteem
+        )
+        calc_input = _calculation_input(
+            aantal_woningen=50,
+            beschikbare_ruimte_in_woning_m2=Decimal("0.5"),
+            beschikbare_collectieve_ruimte_binnen_m2=Decimal("10000"),
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("10000"),
+        )
+
+        result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
+        assert result["is_mogelijk"] is False, result
+        assert result["redenen"] == [
+            f"Er is te weinig ruimte in de woning voor {hoofdsysteem.naam} (ongeveer nodig: 1.0 m²)."
+            " Kijk of u ruimte kunt vrijmaken. Vul de keuzewijzer daarna opnieuw in met de nieuwe hoeveelheid ruimte."
+        ], result
+
+    def test_eliminatie_reason_te_weinig_gezamenlijke_buitenruimte(self) -> None:
+        hoofdsysteem = Hoofdsysteem.objects.get(
+            naam="Collectief Open Bodem Energie Systeem met Centrale Bodemwarmtepomp"
+        )
+        calc_input = _calculation_input(
+            aantal_woningen=250,
+            beschikbare_ruimte_in_woning_m2=Decimal("10000"),
+            beschikbare_collectieve_ruimte_binnen_m2=Decimal("10000"),
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("0"),
+            beschikbare_collectieve_ruimte_dak_m2=Decimal("0"),
+        )
+
+        result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
+        assert result["is_mogelijk"] is False, result
+        assert result["redenen"] == [
+            f"Er is te weinig gezamenlijke buitenruimte voor {hoofdsysteem.naam} (ongeveer nodig: 60 m²)."
+            " Kijk of u buitenruimte kunt vrijmaken. Vul de keuzewijzer daarna in met de nieuwe hoeveelheid ruimte."
+        ], result
+
+    def test_eliminatie_reason_te_weinig_woningen_suggests_samenwerken(self) -> None:
+        hoofdsysteem = (
+            EliminatieKengetal.objects.filter(woningen_min=20, woningen_max=150)
+            .first()
+            .hoofdsysteem
+        )
+        calc_input = _calculation_input(
+            aantal_woningen=10,
+            beschikbare_ruimte_in_woning_m2=Decimal("10000"),
+            beschikbare_collectieve_ruimte_binnen_m2=Decimal("10000"),
+            beschikbare_collectieve_ruimte_tuin_m2=Decimal("10000"),
+        )
+
+        result = Eliminatie().calculate(calc_input, hoofdsysteem.naam)
+        assert result["is_mogelijk"] is False, result
+        assert result["redenen"] == [
+            f"{hoofdsysteem.naam} is het meest geschikt voor gebouwen tussen 20 en 150 woningen (er zijn 10 woningen in de VvE)."
+            " Dit systeem is misschien mogelijk als u samenwerkt met gebouwen naast of dicht bij uw gebouw."
+            " Bespreek dit met die buren en vul de keuzewijzer opnieuw in met de gegevens van alle gebouwen samen."
         ], result
 
     def test_eliminatie_reason_stadsverwarming_no_warmtenet_and_no_plans(self) -> None:
