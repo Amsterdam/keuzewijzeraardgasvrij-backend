@@ -16,6 +16,9 @@ SECRET_KEY = os.getenv("SECRET_KEY", "insecure")
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 DEBUG = ENVIRONMENT == "local"
 
+# Keep every environment except production out of search engines.
+X_ROBOTS_TAG = None if ENVIRONMENT == "production" else "noindex, nofollow"
+
 ALLOWED_HOSTS = ["*"]
 DEFAULT_WORKFLOW_TYPE = os.getenv("DEFAULT_WORKFLOW_TYPE", "director")
 
@@ -72,6 +75,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.csp.ContentSecurityPolicyMiddleware",
     "utils.middleware.ApiNoStoreMiddleware",
+    "utils.middleware.RobotsTagMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
